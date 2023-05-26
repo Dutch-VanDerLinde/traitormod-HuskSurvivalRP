@@ -1,8 +1,4 @@
-Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/baseconfig.lua")
-
-if not File.Exists(Traitormod.Path .. "/Lua/config/config.lua") then
-    File.Write(Traitormod.Path .. "/Lua/config/config.lua", File.Read(Traitormod.Path .. "/Lua/config/config.lua.example"))
-end
+Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/config.lua")
 
 -- user config
 loadfile(Traitormod.Path .. "/Lua/config/config.lua")(Traitormod.Config)

@@ -1,7 +1,7 @@
 local category = {}
 
 category.Name = "Clown"
-category.Decoration = "cultist"
+category.Decoration = "clown"
 category.FadeToBlack = true
 
 category.CanAccess = function(client)

@@ -286,21 +286,6 @@ category.Products = {
         IsLimitGlobal = false,
         Items = {"detonator"},
     },
-
-    {
-        Identifier = "huskoxygensupply",
-        Price = 1400,
-        Limit = 1,
-        IsLimitGlobal = true,
-
-        CanBuy = function (client, product)
-            return not Traitormod.RoundEvents.IsEventActive("OxygenGeneratorHusk")
-        end,
-
-        Action = function ()
-            Traitormod.RoundEvents.TriggerEvent("OxygenGeneratorHusk")
-        end
-    },
 }
 
 return category
