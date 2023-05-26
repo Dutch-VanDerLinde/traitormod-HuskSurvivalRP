@@ -1,4 +1,4 @@
-Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/config.lua")
+Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/configuration.lua")
 
 -- user config
 loadfile(Traitormod.Path .. "/Lua/config/config.lua")(Traitormod.Config)
