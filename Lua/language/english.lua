@@ -3,20 +3,26 @@ language.Name = "English"
 
 language.TipText = "Pro Tip: "
 language.Tips = {
-    "You can use !pointshop to spawn as creatures when you are dead.",
-    "Traitors have access to a special traitor shop. Use !pointshop to open it.",
-    "You can use !role to get information about your current role status.",
+    "You can use !shop to spawn as creatures when you are dead.",
+    "Traitors have access to a special traitor shop. Use !shop to open it.",
+    "You can use !traitor to get information about your traitor status.",
     "You can use !help to get a list of all available commands.",
     "You can use !write to write text to a logbook that spawns when you die.",
-    "Captain and security guards can never be traitors.",
+    "The warden, guards, and head guard can never be traitors.",
     "Ghost roles might become available when you are dead, you can use !ghostrole to claim them.",
     "Typing !kill in chat as a ghost role simply returns it to the list of available ghost roles, rather than killing it.",
-    "Dying in the first 15 seconds as a creature refunds the price of it fully.",
+    "Fabricating, fixing hulls, healing and killing monsters grant you points.",
+    "Doctors can be traitors, but at a lower chance.",
+    "If you have the Warden's ID, you can send a global announcement via !announce. Use this to communicate with the crew that do not have radios, or issue announcements for the prisoners and such. Make sure the ID doesn't get in the wrong hands though..",
+    "Join our discord! discord.gg/SqeTDM9KSP",
+    "Got RDMed? You can send a message to all available admins with the '.ahelp' command.",
+    "Type !role to see information about your role.",
+    "Dying in the first 15 seconds as a creature refunds the price of it fully."
 }
 
-language.Help = "\n!help - shows this help message\n!helptraitor - shows all traitor commands\n!helpadmin - lists all admin commands\n!traitor - show traitor information\n!pointshop - opens the point shop\n!points - show your points and lives\n!alive - list alive players (only while dead)\n!locatesub - shows you the distance and direction of the submarine, only for monsters\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!roundtime - shows the current round time"
-language.HelpTraitor = "\n!toggletraitor - toggles if the player can be selected as traitor\n!tc [msg] - sends a message to all traitors\n!tannounce [msg] - sends a traitor announcement for traitors\n!tdm [Name] [msg] - sends a anonymous msg to given player"
-language.HelpAdmin = "\n!traitoralive - check if all traitors died\n!roundinfo - show round information (spoiler!)\n!allpoints - shows point amounts of all connected clients\n!addpoint [Client] [+/-Amount] - add points to a client\n!addlife [Client] [+/-Amount] - add life(s) to a client\n!revive [Client] - revives a given client character\n!void [Character Name] - sends a character to the void\n!unvoid [Character Name] - brings a character back from the void\n!vote [text] [option1] [option2] [...] - starts a vote on the server\n!giveghostrole [text] [character] - assigns a character with the specified name as a ghost role"
+language.Help = "\n!role - see info about your current role\n!help - shows this help message\n!helptraitor - shows all traitor commands\n!helpadmin - lists all admin commands\n!traitor - show traitor information\n!pointshop - opens the point shop\n!points - show your points and lives\n!alive - list alive players (only while dead)\n!locatesub - shows you the distance and direction of the submarine, only for monsters\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!announce [msg] - if you have the warden's ID, sends an announcement\n!alive - if you're dead; see all players, their jobs and if they're dead or alive"
+language.HelpTraitor = "\n!toggletraitor - toggles if the player can be selected as traitor\n!tc [msg] - sends a message to all traitors\n!tdm [Name] [msg] - sends a anonymous msg to given player"
+language.HelpAdmin = "\n!traitoralive - check if all traitors died\n!roundinfo - show round information (spoiler!)\n!allpoints - shows point amounts of all connected clients\n!addpoint [Client] [+/-Amount] - add points to a client\n!addlife [Client] [+/-Amount] - add life(s) to a client\n!revive [Client] - revives a given client character\n!void [Character Name] - sends a character to the void\n!unvoid [Character Name] - brings a character back from the void\n!vote [text] [option1] [option2] [...] - starts a vote on the server\n!intercom [msg] - sends a global announcement as 'intercom'"
 
 language.NoTraitor = "You aren't a traitor."
 language.TraitorOn = "You can be selected as traitor."
@@ -37,6 +43,10 @@ language.TraitorWelcome = "You are a traitor!"
 language.TraitorDeath = "You have failed in your mission. As a result, the mission has been canceled and you will come back as part of the crew.\n\nYou are no longer a traitor, so play nice!"
 language.TraitorDirectMessage = "You received a secret message from a traitor:\n"
 language.TraitorBroadcast = "[Traitor %s]: %s"
+language.ClownBroadcast = "[Clown %s]: %s"
+language.CultistBroadcast = "[Cultist %s]: %s"
+language.PirateBroadcast = "[Pirate %s]: %s"
+language.HuskBroadcast = "[Husk Servant %s]: %s"
 
 language.NoObjectivesYet = " > No objectives yet... Stay futile."
 
@@ -45,7 +55,8 @@ language.SecondaryObjectivesYou = "Your secondary objectives are:"
 language.MainObjectivesOther = "Their main objectives were:"
 language.SecondaryObjectivesOther = "Their secondary objectives were:"
 
-language.CrewMember = "You are crew member of the submarine.\n\nYou have been assigned the following bonus objectives.\n\n"
+language.CrewMember = "You are crew member of the station.\n\nYou have been assigned the following bonus objectives.\n\n"
+language.PrisonerMessage = "You are a convict of the station.\n\nYou have been assigned the following bonus objectives.\n\n"
 
 language.SoloAntagonist = "You are the only antagonist."
 language.Partners = "Partners: %s"
@@ -96,6 +107,8 @@ language.CrewWins = "The crew successfully completed their mission!"
 language.TraitorHandcuffed = "The crew handcuffed the traitor %s."
 language.TraitorsWin = "The traitors succeeded in completing their objectives!"
 
+language.CMDPlaytime = "Your playtime is %s."
+
 language.TraitorsRound = "Traitors of the round:"
 language.NoTraitors = "No traitors."
 language.TraitorAlive = "You survived as a traitor."
@@ -138,13 +151,15 @@ language.ObjectiveAssassinate = "Assassinate %s."
 language.ObjectiveAssassinateDrunk = "Assassinate %s while drunk"
 language.ObjectiveAssassinatePressure = "Crush %s with high pressure"
 language.ObjectiveBananaSlip = "Slip %s on bananas (%s/%s) times."
+language.ObjectiveStealID = "Steal the %s's ID for %s seconds."
+language.ObjectiveConvert = "Put a clown mask on %s, then eliminate him."
 language.ObjectiveDestroyCaly = "Deconstruct %s Calyxanide(s)."
 language.ObjectiveDrunkSailor = "Give %s more than 80% drunkness."
 language.ObjectiveGrowMudraptors = "Grow (%s/%s) mudraptors."
 language.ObjectiveHusk = "Turn %s into a full husk."
 language.ObjectiveTurnHusk = "Turn yourself into a husk."
 language.ObjectiveSurvive = "Complete at least one objective and survive the shift."
-language.ObjectiveStealCaptainID = "Steal the captain's ID."
+language.ObjectiveStealCaptainID = "Steal the warden's ID."
 language.ObjectiveKidnap = "Handcuff %s for %s seconds."
 language.ObjectivePoisonCaptain = "Poison %s with %s."
 language.ObjectiveWreckGift = "Grab the gift"
@@ -156,6 +171,9 @@ language.ObjectiveKillMonsters = "Kill (%s/%s) %s."
 language.ObjectiveRepair = "Repair (%s/%s) %s"
 language.ObjectiveRepairHull = "Repair (%s/%s) damage from the hull."
 language.ObjectiveSecurityTeamSurvival = "Make sure at least one member of the security team survives."
+language.ObjectiveCleanBody = "Dump %s's body out the airlock once they have expired."
+language.ObjectiveCrewSurvival = "Ensure atleast 3 members of the crew survive."
+language.ObjectivePrisoner = "Ensure atleast %s convicts are in their cells at the end of the round."
 
 language.ObjectiveText = "Assassinate the crew in order to complete your mission."
 
@@ -249,10 +267,24 @@ language.PointshopRefunded = "You have been refunded %s points for your %s purch
 
 
 language.Pointshop = {
+    revivalfluid = "Revival Fluid",
+    revivalfluid_desc = "‖color:gui.yellow‖Revives a dead corpse as a husk‖color:end‖",
+    fakehandcuffs = "Fake Cuffs",
+    choke = "Chocker",
+    randomcoma = "Put random person into coma (Dangerous)",
+    hammerbuff = "Toy Hammer (Buffed)",
+    arthurmorgan = "Mycobacterium tuberculosis Sample",
+    ClownEnsemble = "Clown Ensemble",
+    HonkmotherClothes = "Mother's Ensemble (Armor Plated)",
+    separatistgear = "Separatist Gear",
+    choke_desc = "‖color:gui.red‖Silences the target‖color:end‖",
     jailgrenade = "DarkRP Jail Grenade",
     jailgrenade_desc = "‖color:gui.red‖A special grenade with an interesting surprise...‖color:end‖",
     clowngearcrate = "Clown Gear Crate",
+    clowngear = "Clown Gear",
     clowntalenttree = "Clown Talent Tree",
+    enrollclown = "Enroll into Clown College",
+    PsychoClown = "Psycho Clown",
     invisibilitygear = "Invisibility Gear",
     clownmagic = "Clown Magic (Randomly swaps places of people)",
     randomizelights = "Randomize Lights",
@@ -280,6 +312,8 @@ language.Pointshop = {
     teleporterrevolver = "Teleporter Revolver",
     poisonoxygensupply = "Poison Oxygen Supply",
     turnofflights = "Turn Off Lights For 3 Minutes",
+    insaneclown = "Summon Insane Clown",
+    autoclown = "Clown Auto-Injector",
     turnoffcommunications = "Turn Off Communications For 2 Minutes",
     spawnascrawler = "Spawn as Crawler",
     spawnascrawlerhusk = "Spawn as Crawler Husk",
@@ -299,6 +333,8 @@ language.Pointshop = {
     spawnaslegacycarrier = "Spawn as Legacy Carrier",
     spawnashammerhead = "Spawn as Hammerhead",
     spawnasfractalguardian = "Spawn as Fractal Guardian",
+    spawnasfractalguardian2 = "Spawn as Fractal Guardian 2",
+    spawnasfractalguardian3 = "Spawn as Fractal Guardian 3",
     spawnasgiantspineling = "Spawn as Giant Spineling",
     spawnasveteranmudraptor = "Spawn as Veteran Mudraptor",
     spawnaslatcher = "Spawn as Latcher",
@@ -307,7 +343,116 @@ language.Pointshop = {
     spawnaspeanut = "Spawn as Peanut",
     spawnasorangeboy = "Spawn as Orange Boy",
     spawnascthulhu = "Spawn as Cthulu",
+    spawnascyborgworm = "Spawn as Cyborg worm",
+    spawnashammerheadmar = "Spawn as Hammerhead Matriarch",
     spawnaspsilotoad = "Spawn as Psilotoad",
+    clown = "Clown",
+    cultist = "Cultist",
+    traitor = "Traitor",
+    deathspawn = "Death Spawn",
+    wiring = "Wiring",
+    ores = "Ores",
+    security = "Security",
+    ships = "Ships",
+    materials = "Materials",
+    medical = "Medical",
+    maintenance = "Maintenance",
+    other = "Other",
+    traitormedic = "Traitor Doctor",
+    eventmanager = "Event Manager Spawn",
+    prisoner = "Convict Uplink",
+    chef = "Cooking",
+    janitor = "Janitorial",
+    idcardlocator = "Id Card Locator",
+    idcardlocator_desc = "‖color:gui.red‖Id Card Locator‖color:end‖",
+    idcardlocator_result = "%s - %s - %s meters away",
 }
+
+language.FakeHandcuffsUsage = "You can free yourself from these handcuffs using !fhc"
+
+language.ShipTooCloseToWall = "Cannot spawn ship, position is too close to a level wall."
+language.ShipTooCloseToShip = "Cannot spawn ship, position is too close to another submarine."
+
+language.Pets = "Pets"
+language.SmallCreatures = "Small Creatures"
+language.LargeCreatures = "Large Creatures"
+language.AbyssCreature = "Abyss Creature"
+language.ElectricalDevices = "Electrical Devices"
+language.MechanicalDevices = "Mechanical Devices"
+
+language.MaleNames = {"Liam","Noah","James","Oliver","Benjamin","Elijah","Lucas","Mason","Logan","Alexander","Ethan","Jacob","Michael","Daniel",
+"Henry","Jackson","Sebastian","Aiden","Matthew","Samuel","David","Joseph","Carter","Owen","Wyatt","John","Jack","Luke","Jayden","Dylan",
+"Grayson","Levi","Isaac","Gabriel","Julian","Mateo","Anthony","Jaxon","Lincoln","Joshua","Christopher","Andrew","Theodore","Caleb","Ryan",
+"Asher","Nathan","Thomas","Leo","Isaiah","Charles","Josiah","Hudson","Christian","Hunter","Connor","Eli","Ezra","Aaron","Landon","Adrian",
+"Jonathan","Nolan","Jeremiah","Easton","Elias","Colton","Cameron","Carson","Robert","Angel","Maverick","Nicholas","Dominic","Jaxson",
+"Greyson","Adam","Ian","Austin","Santiago","Jordan","Cooper","Brayden","Roman","Evan","Ezekiel","Xavier","Jose","Jace","Jameson","Leonardo",
+"Bryson","Axel","Everett","Parker","Kayden","Miles","Sawyer","Jason","Gordon","Timothy","Justin","Brett","Marco","Joe","Jones","Richard",
+"Darwin","Jay","Stephen","Jeremy","Fritz","Kevin","Stuart","William","Preston","Dallas","Tobias","Hugo","Yousef","Jeff","Alan",
+"Peter","Patrick","Bruce","Tyler","Muhhamed","Abe","Adan","Ahmed","Aldo","Allan","Alonso","Alton","Alvaro","Alvin",
+"Andres","Anton","Antony","Arkadi","Arron","Arthur","Arturo","Avery","Barney","Barry","Barton","Ben","Bennie","Bertram","Bill",
+"Bo","Boyce","Boyd","Brady","Brian","Britt","Bruno","Bryce","Burl","Burt","Carlos","Carlton","Carmen","Chance","Christoper",
+"Chuck","Claude","Dan","Darius","Darrin","Delbert","Dewey","Devin","Dewitt","Dimitry","Dominick","Donn","Dorsey",
+"Edgar","Edison","Eldridge","Elmer","Erich","Erik","Ernie","Esteban","Everette","Ezequiel","Filiberto","Frances","Franklin", "Garrett",
+"Gerard","Glenn","Gregor","Hal","Harlan","Harrison","Harry","Hector","Herman","Hobert","Igor","Irwin","Ivan","Jackie","Jaime","Jamey","Jan","Jared",
+"Jarrod","Jarvis","Jc","Jean","Jerald","Jerrell","Jerrod","Jess","Joel","Johny","Jorge","Josef",
+"Jude","Julius","Keith","Kendall","Keneth","Kenton","Kerry","Keven","Kim","Kip","Lamont","Lane","Lanny","Lee","Len","Lenny","Lionel","Lynn",
+"Lynwood","Malcom","Manuel","Marc","Marcel","Marcelino","Marcellus","Mathew","Matt","Maurice","Mauricio","Mckinley","Mechislav","Merrill","Messiah",
+"Micheal","Milton","Minh","Mitchel","Mitrofan","Mohammad","Monte","Morton","Mose","Murray","Neal","Neil","Nick","Norman","Omari","Orval",
+"Oscar","Pedro","Pete","Quincy","Ramon","Randall","Raphael","Raymon","Reed","Reggie","Reginald","Renato","Rene","Rob",
+"Roderick","Roland","Romeo","Ronnie","Rosendo","Roy","Rupert","Sammie","Saul","Sergei","Seth","Shelby","Sidney","Simon","Son",
+"Sonny","Steve","Stevie","Sylvester","Terrance","Terrell","Timur","Tod","Todd","Tommie","Tory","Travis","Tyson","Ulof","Waldo",
+"Warner","Vasili","Wilford","Will","Willie","Willy","Winston","Virgil","Virgilio","Zachary","Clark","Johnathan","Sans","Kieran","Javier","Leviticus",
+"Angelo","Colm","Rains","Flaco","Jean-Luc","Zubin","Dutch","Hercule","Gaylord","Banana","Xalamus","Foob","Dillinger","Carl","Freddie","Micah"}
+
+language.FemaleNames = {"Emma","Olivia","Ava","Isabella","Sophia","Charlotte","Mia","Amelia","Harper","Evelyn","Abigail","Emily","Penelope",
+"Elizabeth","Mila","Ella","Avery","Ashlynn","Camila","Aria","Scarlett","Victoria","Madison","Luna","Grace","Chloe","Layla","Riley",
+"Zoey","Nora","Lily","Eleanor","Hannah","Lillian","Addison","Aubrey","Ellie","Stella","Natalie","Zoe","Leah","Hazel","Violet","Aurora",
+"Savannah","Audrey","Brooklyn","Bella","Claire","Skylar","Lucy","Sarah","Paisley","Everly","Anna","Caroline","Nova","Genesis","Emilia",
+"Kennedy","Samantha","Maya","Willow","Kinsley","Naomi","Aaliyah","Elena","Ariana","Allison","Gabriella","Alice","Madelyn","Cora","Ruby","Eva",
+"Serenity","Autumn","Adeline","Hailey","Gianna","Valentina","Isla","Eliana","Quinn","Nevaeh","Ivy","Sadie","Piper","Lydia","Alexa","Josephine",
+"Emery","Julia","Delilah","Arianna","Vivian","Kaylee","Sophie","Brielle","Madeline","Alyx","Jaida","Veronica","Jade","Lisa","Jessica","Rebecca",
+"Guenevere","Sandra","Monika","Melissa","Fiona","Bailey","Carmen","Megan","Bethany","Hollie","Isabelle","Carly","Katie","Anika","Scarlet", 
+"Ayala","Jenny","Amy","Karen","Albertine","Alexia","Alfredia","Alice","Alita","Alla","Alta","Althea","Alyce","Amee","Amira","Annette","Ara",
+"Arcelia","Arie","Armanda","Aryanna","Ashley","Ashly","Astrid","Avril","Azul","Barbra","Beaulah","Bell","Bertha","Bettyann","Beverley","Bridgett",
+"Candace","Cara","Carie","Carla","Cathleen","Cathy","Cecille","Christiana","Christine","Cinda","Cleopatra","Codi","Corinne",
+"Creola","Criselda","Dahlia","Danielle","Dannette","Darleen","Deborah","Denise","Denisha","Dona","Doria","Dorthy","Elinor","Eliza",
+"Elliana","Emerald","Emilee","Erica","Erline","Ethel","Eugenia","Fanny","Fernanda","Glenda","Gloria","Hortensia","Ilene","Ina","Inga",
+"Iris","Jacquline","Janee","Janessa","Janie","Jeanene","Jenine","Jina","Jodee","Joy","Joyce","Juana","Julianne","Jutta","Karyn","Katerina",
+"Katherina","Kathy","Katrina","Kellie","Kenna","Keri","Kizzie","Kristeen","Kristie","Larissa","Larita","Lauren","Laurie","Laurinda","Lavinia",
+"Leanne","Leila","Lelah","Lena","Leola","Lindy","Liza","Lola","Lora","Lorriane","Lorrie","Macey","Mafalda","Maira","Majorie","Marcy",
+"Margaret","Margeret","Mariela","Marin","Marissa","Marla","Maryann","Marylee","Masako","Maudie","Maybell","Mechelle","Melany","Melba",
+"Michele","Mikaela","Miranda","Muoi","Natalia","Natashia","Nicole","Nola","Noriko","Page","Pamela","Paula","Peggie","Phoenix","Priscilla",
+"Randi","Reatha","Renata","Rhonda","Roberta","Roselle","Rosina","Roslyn","Rowena","Ruthie","Sabrina","Sage","Sanda","Sara","Serena","Sharie","Shayla",
+"Shelly","Sherise","Sherita","Sherry","Shin","Shirlee","Siena","Socorro","Stefany","Stephane","Summer","Susy","Synthia","Tania",
+"Tanika","Tanya","Tawanda","Tera","Tessie","Thea","Tisha","Tracy","Trista","Trudie","Trudy","Valerie","Vanessa","Velma","Yahaira","Zandra","Kieran"}
+
+language.LastNames = {"Smith","Hall","Stewart","Price","Johnson","Allen","Sanchez","Bennett","Jones","Williams","Young","Morris","Wood",
+"Hernandez","Rogers","Barnes","Brown","King","Reed","Ross","Davis","Wright","Cook","Henderson","Miller","Lopez","Morgan","Coleman","Wilson",
+"Hill","Bell","Jenkins","Moore","Scott","Murphy","Perry","Taylor","Green","Bailey","Powell","Anderson","Adams","Rivera","Long","Thomas",
+"Baker","Cooper","Patterson","Jackson","Gonzalez","Richardson","Hughes","White","Nelson","Cox","Flores","Harris","Carter","Howard",
+"Washington","Martin","Mitchell","Ward","Butler","Thompson","Perez","Torres","Simmons","Garcia","Roberts","Peterson","Foster","Martinez",
+"Turner","Gray","Gonzales","Robinson","Phillips","Ramirez","Bryant","Clark","Campbell","James","Alexander","Rodriguez","Parker","Watson",
+"Russell","Lewis","Evans","Brooks","Griffin","Lee","Edwards","Kelly","Diaz","Walker","Collins","Sanders","Hayes","Freeman","Coomer","Judson",
+"Boris","Golden","Gatz","Afton","Donaldson","Wolfe","Boseman","Winston","Saulisbury","Clement","Bannon","Breen","Wayne","Truman","Humphrey",
+"Nuttingham","Bateman","Dimitrev","Marx","Aguilar","Aker","Angles","Ashley","Atterbury","Avery","Banks","Bartolomeo","Basnett",
+"Baumgardner","Beltran","Bergman","Berlin","Berner","Blackwell","Blakley","Boman","Bonham","Books","Box","Bradley","Brady","Breeki",
+"Buckley","Burke","Bushman","Callahan","Carey","Carroll","Case","Castillo","Castro","Chandler","Chaney","Chapman",
+"Chiu","Clements","Clothier","Cluck","Cobble","Colpitts","Combs","Connors","Cork","Cortese","Craig","Cuevas","Danko","Day",
+"Delange","Deloney","Deras","Dews","Dimauro","Dollinger","Donovan","Dorado","Dudley","Duplantier","Dyer","Eastman","Elliott","Ellison","Escobar",
+"Feinberg","Feinman","Fesler","Fleig","Flowers","Fonte","Frye","Gadberry","Gallagher","Gallardo","Gears","Geist","Gomez",
+"Goodin","Gordon","Gould","Graves","Gregory","Gumbs","Hajek","Hallett","Hampton","Hardy","Harp","Hebert","Hedrick",
+"Hefner","Heuer","Higgins","Hillard","Hines","Hinton","Hocker","Hoffman","Holter","House","Huber","Hurley","Hutchinson",
+"Huynh","Jack","Keller","Kidd","Kinney","Klein","Knowles","Krall","Kramer","Lane","Larsen","Lavey","Lawrence","Lawson",
+"Leonard","Lester","Linares","Little","Lowe","Lozano","Lucas","Lyons","Malone","Mansfield","Marchi","Marquez","Mason","Maxwell","Maynard",
+"Maynes","Mcclure","Mcdowell","McLeroy","McNeal","Mcneil","Mead","Meals","Meisner","Mell","Mendel","Mendez","Meza","Molina","Monroe","Mooney",
+"Moran","Moses","Mosley","Mulford","Mungo","Navarro","Newton","Nicolosi","Nunez","Ordway","Ouellette","Palmieri","Parchman",
+"Parks","Patel","Pearson","Petersen","Phoenix","Pickett","Planck","Pollard","Pool","Poole","Preston","Proctor","Quinn",
+"Radebaugh","Radice","Ram","Ramos","Rangel","Reeves","Reynolds","Rhymer","Riddle","Riles","Rios","Robertson","Rolfe","Roman",
+"Rosewood","Rowe","Sacks","Santillan","Santistevan","Saunders","Sawyer","Schmitt","Serrano","Severance","Sexton","Shah","Simpson",
+"Southworth","Sparks","Stalvey","Stanley","Stein","Stogner","Suarez","Summers","Summitt","Sunderland","Swanger","Swanson","Sykes","Tamashiro",
+"Tate","Terry","Thompkins","Tootle","Tseng","Tyson","Ulrich","Walls","Vaughn","Vazquez","Veach","Weaver","Velazquez","Welden","Wheeling",
+"Whitely","Wiley","Williams","Zhang","Barotrauma","van der Linde","Matthews","Pinhead","Marston","Escuella","MacGuire","Trelawny","Duffy","Cornwall",
+"O'Driscoll","Bronte","Falls","Hernández","Granger","Adler","Picard","Hawley","Federman","Horowitz","Cantor","Compson","Dickens","Fussar","Valdespino",
+"Boolean","Man","Harnley","Guitar","Fentanyl","Bones","Dingle","Delcan","Truther","Leana"}
 
 return language

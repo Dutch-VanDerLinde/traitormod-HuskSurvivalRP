@@ -8,7 +8,7 @@ end
 
 
 local peopleInOutpost = 0
-local n = 1
+local ghostRoleNumber = 1
 Hook.Add("think", "Traitormod.MiscThink", function ()
     if timer > Timer.GetTime() then return end
     if not Game.RoundStarted then return end
@@ -33,12 +33,13 @@ Hook.Add("think", "Traitormod.MiscThink", function ()
 
     if Traitormod.Config.GhostRoleConfig.Enabled then
         for key, character in pairs(Character.CharacterList) do
-            if not Traitormod.GhostRoles.IsGhostRole(character) then
+            local client = Traitormod.FindClientCharacter(character)
+            if not Traitormod.GhostRoles.IsGhostRole(character) and not client then
                 if Traitormod.Config.GhostRoleConfig.MiscGhostRoles[character.SpeciesName.Value] then
-                    Traitormod.GhostRoles.Ask(character.Name .. " " .. n, function (client)
+                    Traitormod.GhostRoles.Ask(character.Name .. " " .. ghostRoleNumber, function (client)
                         client.SetClientCharacter(character)
                     end, character)
-                    n = n + 1
+                    ghostRoleNumber = ghostRoleNumber + 1
                 end
             end
         end
@@ -68,6 +69,7 @@ end)
 
 Hook.Add("roundEnd", "Traitormod.MiscEnd", function ()
     peopleInOutpost = 0
+    ghostRoleNumber = 1
     huskBeacons = {}
 end)
 
@@ -115,3 +117,61 @@ if Traitormod.Config.DeathLogBook then
         return true
     end)
 end
+
+Traitormod.CountAliveConvictsInsideMainSub = function ()
+    local count = 0
+    for key, plr in pairs(Client.ClientList) do
+        if plr.Character and not plr.Character.IsDead and plr.Character.IsHuman and plr.Character.JobIdentifier == "convict" and plr.Character.Submarine == Submarine.MainSub then
+            count = count + 1
+        end
+    end
+    return count
+end
+
+Hook.Add("roundStart", "MessagesOnRoundStart", function ()
+    Timer.Wait(function ()
+        for key, value in pairs(Client.ClientList) do
+            if not Traitormod.Config.RoleIntros then return end
+            local name = Traitormod.GetData(client, "RPName")
+
+            if not name then
+                name = "Sans Undertale"
+            end
+
+            if not Traitormod.Config.RoleplayNames then
+                name = value.Name
+            end
+
+            if value.Character and value.Character.JobIdentifier == "warden" then
+                local text = "Welcome to your station, Warden "..name..". You're one of the pillars of what makes this station works. Make sure everything goes smoothly. (OOC: !announce command to announce stuff)"
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.LightBlue, value)
+            elseif value.Character.HasJob("headguard")  then
+                local text = "You are Head Guard "..name..". You're loyal to the warden, but have fully authority over the guards. Make sure they aren't slacking off."
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.Crimson, value)
+            elseif value.Character.HasJob("guard") then
+                local text = "You are Guard "..name..". Listen to the head guard, and get those prisoners in check."
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.BlueViolet, value)
+            elseif value.Character.HasJob("prisondoctor") then
+                local text = "You are Prison Doctor "..name..". Make sure the crew and prisoners are healthy. (OOC: If you do not understand neurotrauma, please consult the neurotrauma official trello.)"
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.IndianRed, value)
+            elseif value.Character and value.Character.JobIdentifier == "staff" then
+                local text = "You are Maintenance Worker "..name..". Make sure the walls are welded, and the electrical and mechanical devices are in working order."
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.Ivory, value)
+            elseif value.Character and value.Character.JobIdentifier == "janitor" then
+                local text = "You are Janitor "..name..". Make sure those walls are clean. Use the sprayer to clean stains. You should also clean any deceased crew with those body bags.."
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.DarkViolet, value)
+            elseif value.Character and value.Character.JobIdentifier == "convict" then
+                local text = "You're a convict! Work closely with the traitors and pirates to escape, they're your only allies."
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.OrangeRed, value)
+            elseif value.Character and value.Character.JobIdentifier == "he-chef" then
+                local text = "You are Chef "..name..". Prepare food for the prisoners and crew. Perhaps even booze?"
+                Traitormod.SendClientMessage(text, "TalentPointNotification", Color.Gold, value)
+            end
+        end
+    end, 25000)
+
+    Timer.Wait(function ()
+        if not Traitormod.Config.NLRMessage then return end
+        Traitormod.RoundEvents.SendEventMessage("Remember, NLR! You don't remember anything about your past lives.", "GameModeIcon.pvp", Color.Red)
+    end, 37000)
+end)

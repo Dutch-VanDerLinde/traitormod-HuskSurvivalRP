@@ -29,7 +29,7 @@ event.Start = function ()
         end
     end
 
-    local text = Traitormod.Language.SuperBallastFlora
+    local text = "High concentration of ballast flora spores has been detected in this area, it's advised to search pumps for ballast flora!"
     Traitormod.RoundEvents.SendEventMessage(text, "EndRoundButton")
 
     event.End()

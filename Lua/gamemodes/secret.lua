@@ -30,6 +30,27 @@ function gm:CharacterDeath(character)
     Traitormod.SendMessage(client, liveMsg, liveIcon)
 end
 
+function Traitormod.randomizeCharacterName(character)
+    local client = Traitormod.FindClientCharacter(character)
+    local randomName = ""
+
+    if client then
+        if character.IsMale then
+            randomName = Traitormod.GetRandomName("male")
+        else
+            randomName = Traitormod.GetRandomName("female")
+        end
+
+        if Traitormod.GetData(client, "RPName") == nil then
+            Traitormod.SetData(client, "RPName", randomName)
+            Traitormod.SaveData()
+        end
+
+        character.Info.Rename(Traitormod.GetData(client, "RPName"))
+        Traitormod.Log(Traitormod.ClientLogName(client).." has spawned in as "..Traitormod.GetData(client, "RPName"))
+    end
+end
+
 function gm:Start()
     local this = self
 
@@ -39,6 +60,11 @@ function gm:Start()
 
     Hook.Add("characterDeath", "Traitormod.Secret.CharacterDeath", function(character, affliction)
         this:CharacterDeath(character)
+    end)
+
+    Hook.Add("character.giveJobItems", "Traitormod.Secret.giveJobItems", function(character, waypoint)
+        if Traitormod.Config.HideCrewList then Networking.CreateEntityEvent(character, Character.RemoveFromCrewEventData.__new(character.TeamID, {})) end
+        if Traitormod.Config.RoleplayNames then Traitormod.randomizeCharacterName(character) end
     end)
 
     self:SelectAntagonists()
@@ -55,6 +81,14 @@ function gm:AssignAntagonists(antagonists)
                 end
             end
         end
+
+        Hook.Add("traitormod.midroundspawn", "Traitormod.Secret.MidRoundSpawn", function (client, character)
+            local role = Traitormod.RoleManager.GetRole(character)
+            if role == nil then
+                role = Traitormod.RoleManager.Roles["Crew"]
+                Traitormod.RoleManager.AssignRole(character, role:new())
+            end
+        end)
     end
 
     local function Assign(roles)
@@ -289,7 +323,7 @@ function gm:TraitorResults()
             local pointsGained = 0
 
             for key, value in pairs(role.Objectives) do
-                if value:IsCompleted() then
+                if value:IsCompleted() or value.IsAwarded then
                     objectives = objectives + 1
                     pointsGained = pointsGained + value.AmountPoints
                 end
@@ -318,11 +352,19 @@ function gm:End()
         self:CheckHandcuffedTraitors(character)
     end
 
+    for key, character in pairs(Character.CharacterList) do
+        if character.IsHuman then
+            Networking.CreateEntityEvent(character, Character.AddToCrewEventData.__new(character.TeamID, {}))
+        end
+    end
+
     gm:AwardCrew()
 
     Game.EnableControlHusk(false)
 
-    Hook.Remove("characterDeath", "Traitormod.Secret.CharacterDeath");
+    Hook.Remove("characterDeath", "Traitormod.Secret.CharacterDeath")
+    Hook.Remove("traitormod.midroundspawn", "Traitormod.Secret.MidRoundSpawn")
+    Hook.Remove("character.giveJobItems", "Traitormod.Secret.giveJobItems")
 end
 
 function gm:Think()

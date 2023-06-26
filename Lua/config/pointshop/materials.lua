@@ -1,12 +1,23 @@
 local category = {}
 
-category.Name = "Materials"
+category.Identifier = "materials"
+
+category.CanAccess = function(client)
+    if not client.Character or client.Character.IsDead then return false end
+    if not client.Character.HasJob("convict") then
+        return true
+    elseif client.Character.Submarine ~= Submarine.MainSub then
+        return true
+    end
+
+    return false
+end
 
 category.Products = {
     {
         Price = 120,
         Limit = 4,
-        Items = {"aluminum"}
+        Items = {"aluminium"}
     },
 
     {
@@ -83,9 +94,27 @@ category.Products = {
 
     {
         Price = 200,
-        Limit = 4,
+        Limit = 2,
         Items = {"physicorium"}
-    }
+    },
+
+    {
+        Price = 200,
+        Limit = 4,
+        Items = {"sulphuriteshard"}
+    },
+
+    {
+        Price = 300,
+        Limit = 1,
+        Items = {"incendium"}
+    },
+
+    {
+        Price = 200,
+        Limit = 4,
+        Items = {"fulgurium"}
+    },
 }
 
 return category

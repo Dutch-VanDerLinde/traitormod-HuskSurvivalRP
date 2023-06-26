@@ -8,8 +8,8 @@ event.MaxIntensity = 1
 event.ChancePerMinute = 0.12
 event.OnlyOncePerRound = true
 
-event.AmountPoints = 800
-event.AmountPointsPirate = 500
+event.AmountPoints = 900
+event.AmountPointsPirate = 1900
 
 event.Start = function ()
     local beacon = Level.Loaded.BeaconStation
@@ -18,19 +18,10 @@ event.Start = function ()
         return
     end
 
-    local index = 0
     for key, value in pairs(Character.CharacterList) do
         if value.IsHuman and value.TeamID == CharacterTeamType.None and value.Submarine == beacon then
-            value.Info.Name = "Pirate " .. value.Info.Name
             value.SetOriginalTeam(CharacterTeamType.Team2)
             value.UpdateTeam()
-            value.CanSpeak = false
-
-            Traitormod.GhostRoles.Ask("Beacon Pirate Helper " .. index, function (client)
-                Traitormod.LostLivesThisRound[client.SteamID] = false
-                client.SetClientCharacter(value)
-            end, value)
-            index = index + 1
         end
     end
 
@@ -45,14 +36,14 @@ event.Start = function ()
 
     local info = CharacterInfo(Identifier("human"))
     info.Name = "Pirate " .. info.Name
-    info.Job = Job(JobPrefab.Get("mechanic"))
+    info.Job = Job(JobPrefab.Get("warden"))
 
     local character = Character.Create(info, beacon.WorldPosition, info.Name, 0, false, true)
     event.Character = character
     event.Beacon = beacon
     event.EnteredMainSub = false
 
-    character.CanSpeak = false
+    character.CanSpeak = true
     character.TeamID = CharacterTeamType.Team2
     character.GiveJobItems(nil)
 
@@ -70,6 +61,31 @@ event.Start = function ()
             wifi.TeamID = CharacterTeamType.Team1
        end
     end
+
+--[[
+    for item in character.Inventory.AllItems do
+        if item.Prefab.Identifier == "handheldterminal"
+            or item.Prefab.Identifier == "handheldstatusmonitor"
+            or item.Prefab.Identifier == "coalitioncommendation"
+            or item.Prefab.Identifier == "handcuffs"
+            or item.Prefab.Identifier == "revolver"
+            or item.Prefab.Identifier == "captainspipe"
+        then
+            item.Drop()
+            Entity.Spawner.AddItemToRemoveQueue(item)
+        end
+    end
+--]]
+
+    character.Inventory.FindItemByIdentifier("captainspipe", true).Drop()
+    character.Inventory.FindItemByIdentifier("handcuffs", true).Drop()
+    character.Inventory.FindItemByIdentifier("coalitioncommendation", true).Drop()
+    character.Inventory.FindItemByIdentifier("coalitioncommendation", true).Drop()
+    character.Inventory.FindItemByIdentifier("coalitioncommendation", true).Drop()
+    character.Inventory.FindItemByIdentifier("coalitioncommendation", true).Drop()
+    character.Inventory.FindItemByIdentifier("revolver", true).Drop()
+    character.Inventory.FindItemByIdentifier("handheldterminal", true).Drop()
+    character.Inventory.FindItemByIdentifier("handheldstatusmonitor", true).Drop()
 
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.Prefabs["sonarbeacon"], beacon.WorldPosition, nil, nil, function(item)
         item.NonInteractable = true
@@ -98,6 +114,11 @@ event.Start = function ()
 
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("smgmagazine"), character.Inventory)
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("smgmagazine"), character.Inventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), character.Inventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), character.Inventory)
+
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("combatstimulantsyringe"), character.Inventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("tourniquet"), character.Inventory)
 
     for i = 1, 12, 1 do
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("shotgunshell"), character.Inventory)
@@ -107,17 +128,22 @@ event.Start = function ()
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antibiotics"), character.Inventory)
     end
     local toolbelt = character.Inventory.GetItemInLimbSlot(InvSlotType.Bag)
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antidama1"), toolbelt.OwnInventory)
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antidama1"), toolbelt.OwnInventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("scp_armykit"), toolbelt.OwnInventory)
     for i = 1, 6, 1 do
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antibleeding1"), toolbelt.OwnInventory)
     end
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("alienblood"), toolbelt.OwnInventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antibloodloss2"), toolbelt.OwnInventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antibloodloss2"), toolbelt.OwnInventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antibloodloss2"), toolbelt.OwnInventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("antibloodloss2"), toolbelt.OwnInventory)
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("fuelrod"), toolbelt.OwnInventory)
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("underwaterscooter"), toolbelt.OwnInventory, nil, nil, function (item)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), item.OwnInventory)
     end)
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("handheldsonar"), toolbelt.OwnInventory, nil, nil, function (item)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("plasmacutter"), toolbelt.OwnInventory, nil, nil, function (item)
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), item.OwnInventory)
+    end)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("handheldsonar"), character.Inventory, nil, nil, function (item)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), item.OwnInventory)
     end)
 
@@ -129,19 +155,27 @@ event.Start = function ()
         character.Inventory.TryPutItem(item, character.Inventory.FindLimbSlot(InvSlotType.InnerClothes), true, false, character)
     end)
 
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("pucs"), character.Inventory, nil, nil, function (item)
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("combatstimulantsyringe"), item.OwnInventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("scp_renegadedivingsuit"), character.Inventory, nil, nil, function (item)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), item.OwnInventory)
     end)
 
     event.ItemReward = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
 
-    local text = string.format(Traitormod.Language.BeaconPirate, event.AmountPoints)
+    for item in character.Inventory.AllItems do
+        item.AddTag("notarget")
+    end
+
+    local text = "There have been reports about a notorious pirate wearing a separatist dive suit terrorizing these waters, the pirate was detected recently inside a beacon station - eliminate the pirate to claim a reward of " .. event.AmountPoints .. " points for the entire crew."
     Traitormod.RoundEvents.SendEventMessage(text, "CrewWalletIconLarge")
 
     Traitormod.GhostRoles.Ask("Beacon Pirate", function (client)
         Traitormod.LostLivesThisRound[client.SteamID] = false
         client.SetClientCharacter(character)
+
+        if Traitormod.RoleManager.GetRole(character) ~= nil then
+            Traitormod.RoleManager.RemoveRole(character)
+        end
+        Traitormod.RoleManager.AssignRole(character, Traitormod.RoleManager.Roles.Pirate:new())
     end, character)
 
     Hook.Add("think", "BeaconPirate.Think", function ()
@@ -151,7 +185,7 @@ event.Start = function ()
 
         if character.Submarine == Submarine.MainSub and not event.EnteredMainSub then
             event.EnteredMainSub = true
-            Traitormod.RoundEvents.SendEventMessage(Traitormod.Language.PirateInside)
+            Traitormod.RoundEvents.SendEventMessage("Attention! A dangerous separatist pirate has been detected inside the main submarine!")
         end
     end)
 end
@@ -161,25 +195,25 @@ event.End = function (isEndRound)
     Hook.Remove("think", "BeaconPirate.Think")
 
     if isEndRound then
-        if event.Character and not event.Character.IsDead and event.Character.Submarine == event.Beacon then
+        if event.Character and not event.Character.IsDead then
             local client = Traitormod.FindClientCharacter(event.Character)
             if client then
                 Traitormod.AwardPoints(client, event.AmountPointsPirate)
-                Traitormod.SendMessage(client, string.format(Traitormod.Language.ReceivedPoints, event.AmountPointsPirate), "InfoFrameTabButton.Mission")
+                Traitormod.SendMessage(client, "You have received " .. event.AmountPointsPirate .. " points.", "InfoFrameTabButton.Mission")
             end
         end
 
         return
     end
 
-    local text = string.format(Traitormod.Language.PirateKilled, event.AmountPoints)
+    local text = "The PUCS pirate has been killed, the crew has received a reward of " .. event.AmountPoints .. " points."
 
     Traitormod.RoundEvents.SendEventMessage(text, "CrewWalletIconLarge")
 
     for _, client in pairs(Client.ClientList) do
         if client.Character and not client.Character.IsDead and client.Character.TeamID == CharacterTeamType.Team1 then
             Traitormod.AwardPoints(client, event.AmountPoints)
-            Traitormod.SendMessage(client, string.format(Traitormod.Language.ReceivedPoints, event.AmountPoints), "InfoFrameTabButton.Mission")
+            Traitormod.SendMessage(client, "You have received " .. event.AmountPoints .. " points.", "InfoFrameTabButton.Mission")
         end
     end
 end

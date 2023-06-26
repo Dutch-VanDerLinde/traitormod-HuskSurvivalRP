@@ -1,5 +1,7 @@
 -- Originally by MassCraxx, ported to Traitormod.
 
+Traitormod.DisableMidRoundSpawn = false
+
 local textPromptUtils = require("textpromptutils")
 
 local checkDelaySeconds = 10
@@ -12,6 +14,10 @@ local hasBeenSpawned = {}
 local newPlayers = {}
 
 local m = {}
+
+m.SetSpawnedClient = function (client, character)
+    hasBeenSpawned[client.SteamID] = character
+end
 
 m.SpawnClientCharacterOnSub = function(submarine, client)
     if not Game.RoundStarted or not client.InGame then return false end 
@@ -48,14 +54,14 @@ m.TryCreateClientCharacter = function(submarine, client)
 
     if jobPreference == nil then
         -- if no jobPreference, set assistant
-        jobPreference = m.GetJobVariant("assistant")
+        jobPreference = m.GetJobVariant("convict")
 
-    elseif preventMultiCaptain and jobPreference.Prefab.Identifier == "captain" then
+    elseif preventMultiCaptain and jobPreference.Prefab.Identifier == "warden" and jobPreference.Prefab.Identifier == "headguard" then
         -- if crew has a captain, spawn as security
-        if m.CrewHasJob("captain") then
-            Traitormod.Log(client.Name .. " tried to mid-round spawn as second captain - assigning security instead.")
+        if (m.CrewHasJob("warden") or m.CrewHasJob("headguard")) then
+            Traitormod.Log(client.Name .. " tried to mid-round spawn as second power role - assigning janitor instead.")
             -- set jobPreference = security
-            jobPreference = m.GetJobVariant("securityofficer")
+            jobPreference = m.GetJobVariant("janitor")
         end
     end
 
@@ -146,6 +152,7 @@ end
 
 Hook.Add("roundStart", "Traitormod.MidRoundSpawn.RoundStart", function ()
     if not Traitormod.Config.MidRoundSpawn then return end
+    if Traitormod.DisableMidRoundSpawn then return end
 
     -- Reset tables
     hasBeenSpawned = {}
@@ -161,8 +168,13 @@ Hook.Add("roundStart", "Traitormod.MidRoundSpawn.RoundStart", function ()
     end
 end)
 
+Hook.Add("roundEnd", "Traitormod.MidRoundSpawn.RoundEnd", function ()
+    Traitormod.DisableMidRoundSpawn = false
+end)
+
 Hook.Add("client.connected", "Traitormod.MidRoundSpawn.ClientConnected", function (newClient)
     if not Traitormod.Config.MidRoundSpawn then return end
+    if Traitormod.DisableMidRoundSpawn then return end
 
     -- client connects, round has started and client has not been considered for spawning yet
     if not Game.RoundStarted or hasBeenSpawned[newClient.SteamID] then return end
@@ -182,6 +194,7 @@ end)
 
 Hook.Add("think", "Traitormod.MidRoundSpawn.Think", function ()
     if not Traitormod.Config.MidRoundSpawn then return end
+    if Traitormod.DisableMidRoundSpawn then return end
 
     if Game.RoundStarted and checkTime and Timer.GetTime() > checkTime then
         checkTime = Timer.GetTime() + checkDelaySeconds
@@ -211,6 +224,7 @@ end)
 
 Traitormod.AddCommand("!midroundspawn", function (client, args)
     if not Traitormod.Config.MidRoundSpawn then return end
+    if Traitormod.DisableMidRoundSpawn then return end
 
     if client.InGame then
         if (not hasBeenSpawned[client.SteamID] or client.HasPermission(ClientPermissions.ConsoleCommands)) and (not client.Character or client.Character.IsDead) then
@@ -224,3 +238,5 @@ Traitormod.AddCommand("!midroundspawn", function (client, args)
 
     return true
 end)
+
+return m

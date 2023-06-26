@@ -23,17 +23,17 @@ event.Start = function()
 
     local area = areas[math.random(#areas)]
 
-    local jobs = {"mechanic", "engineer"}
-
     for i = 1, 4, 1 do
         local info = CharacterInfo(Identifier("human"))
-        info.Job = Job(JobPrefab.Get(jobs[math.random(#jobs)]))
+        info.Job = Job(JobPrefab.Get("staff"))
 
         local character = Character.Create(info, area.WorldPosition, info.Name, 0, false, true)
 
-        character.TeamID = CharacterTeamType.Team1
         character.GiveJobItems(nil)
         character.CanSpeak = false
+        local idcard = character.Inventory.FindItemByIdentifier("idcard")
+        idcard.AddTag("staff")
+        idcard.AddTag("eng")
 
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("divingsuit"), character.Inventory, nil, nil, function (item)
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), item.OwnInventory)
@@ -43,22 +43,17 @@ event.Start = function()
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("weldingfueltank"), item.OwnInventory)
         end)
 
-        if info.Job.Prefab.Identifier == "mechanic" then
-            local repairOrderPrefab = OrderPrefab.Prefabs["repairsystems"]
-            local repairOrder = Order(repairOrderPrefab, nil, nil).WithManualPriority(CharacterInfo.HighestManualOrderPriority)
-            character.SetOrder(repairOrder, true, false, true)
-        elseif info.Job.Prefab.Identifier == "engineer" then
-            local repairOrderPrefab = OrderPrefab.Prefabs["repairelectrical"]
-            local repairOrder = Order(repairOrderPrefab, nil, nil).WithManualPriority(CharacterInfo.HighestManualOrderPriority)
-            character.SetOrder(repairOrder, true, false, true)
-        end
+        local repairOrderPrefab = OrderPrefab.Prefabs["repairsystems"]
+        local repairOrder = Order(repairOrderPrefab, nil, nil).WithManualPriority(CharacterInfo.HighestManualOrderPriority)
+        character.SetOrder(repairOrder, true, false, true)
 
         local leakOrderPrefab = OrderPrefab.Prefabs["fixleaks"]
         local leakOrder = Order(leakOrderPrefab, nil, nil).WithManualPriority(CharacterInfo.HighestManualOrderPriority)
         character.SetOrder(leakOrder, true, false, true)
+        character.TeamID = CharacterTeamType.FriendlyNPC
     end
 
-    local text = Traitormod.Language.EmergencyTeam
+    local text = "A group of maintenance workers have entered the submarine to assist with repairs."
     Traitormod.RoundEvents.SendEventMessage(text, "GameModeIcon.sandbox")
 
     event.End()

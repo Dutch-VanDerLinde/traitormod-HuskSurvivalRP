@@ -14,6 +14,15 @@ ps.GlobalProductLimits = {}
 ps.LocalProductLimits = {}
 ps.Timeouts = {}
 ps.Refunds = {}
+ps.ActiveCategories = {}
+ps.AllCategories = {} -- It has config categories parsed as a table
+
+ps.Initialize = function(categories)
+    -- Adds required categories to a list so it can be used by the gamemode
+    for _, category in pairs(categories) do
+        table.insert(ps.ActiveCategories, ps.AllCategories[category])
+    end
+end
 
 ps.ValidateConfig = function ()
     for i, category in pairs(config.PointShopConfig.ItemCategories) do
@@ -25,11 +34,11 @@ ps.ValidateConfig = function ()
                     end
 
                     if type(item) ~= "table" then
-                        Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that is invalid", category.Name, product.Identifier))
+                        Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that is invalid", category.Identifier, product.Identifier))
                     elseif item.Identifier == nil then
-                        Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that has items without an Identifier", category.Name, product.Identifier))
+                        Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that has items without an Identifier", category.Identifier, product.Identifier))
                     elseif ItemPrefab.GetItemPrefab(item.Identifier) == nil then
-                        Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that has an invalid item identifier \"%s\"", category.Name, product.Identifier or "", item.Identifier or ""))
+                        Traitormod.Error(string.format("PointShop Error: Inside the Category \"%s\" theres a Product with Identifier \"%s\", that has an invalid item identifier \"%s\"", category.Identifier, product.Identifier or "", item.Identifier or ""))
                     end
                 end
             end
@@ -126,6 +135,19 @@ ps.GetProductName = function (product)
     return product.Identifier
 end
 
+ps.GetCategoryName = function (category)
+    if category == nil then
+        error("GetCategoryName: argument #1 was nil", 2)
+    end
+
+    if category.Identifier == nil then return "invalid_category" end
+
+    local name = Traitormod.Language.Pointshop[category.Identifier]
+    if name then return name end
+
+    return category.Identifier
+end
+
 ps.FindProductByName = function (client, name)
     for i, category in pairs(config.PointShopConfig.ItemCategories) do
         if ps.CanClientAccessCategory(client, category) then
@@ -199,7 +221,7 @@ ps.SpawnItem = function(client, item, onSpawned)
     end
 end
 
-ps.ActivateProduct = function (client, product)
+ps.ActivateProduct = function (client, product, paidPrice)
     local spawnedItems = {}
     local spawnedItemCount = 0
 
@@ -209,7 +231,7 @@ ps.ActivateProduct = function (client, product)
         spawnedItemCount = spawnedItemCount + 1
 
         if spawnedItemCount == #product.Items and product.Action then
-            product.Action(client, product, spawnedItems)
+            product.Action(client, product, spawnedItems, paidPrice)
         end
     end
 
@@ -235,7 +257,7 @@ ps.ActivateProduct = function (client, product)
     end
 
     if (product.Items == nil or #product.Items == 0) and product.Action then
-        product.Action(client, product)
+        product.Action(client, product, nil, paidPrice)
     end
 end
 
@@ -254,9 +276,10 @@ ps.GetProductPrice = function (client, product)
 end
 
 ps.BuyProduct = function(client, product)
+    local price = 0
     if not Traitormod.Config.TestMode then
         local points = Traitormod.GetData(client, "Points") or 0
-        local price = ps.GetProductPrice(client, product)
+        price = ps.GetProductPrice(client, product)
 
         if product.CanBuy then
             local success, result = product.CanBuy(client, product)
@@ -290,7 +313,7 @@ ps.BuyProduct = function(client, product)
     end
 
     -- Activate the product
-    ps.ActivateProduct(client, product)
+    ps.ActivateProduct(client, product, price)
 end
 
 ps.HandleProductBuy = function (client, product, result, quantity)
@@ -405,10 +428,9 @@ ps.ShowCategory = function(client)
     local categoryLookup = {}
 
     table.insert(options, Traitormod.Language.PointshopCancel)
-
-    for key, value in pairs(config.PointShopConfig.ItemCategories) do
+    for key, value in pairs(ps.ActiveCategories) do
         if ps.CanClientAccessCategory(client, value) then
-            table.insert(options, value.Name)
+            table.insert(options, ps.GetCategoryName(value))
             categoryLookup[#options] = value
         end
     end
@@ -431,11 +453,16 @@ ps.ShowCategory = function(client)
     end, "officeinside")
 end
 
-ps.TrackRefund = function (client, product)
-    ps.Refunds[client] = { Product = product, Time = Timer.GetTime() }
+ps.TrackRefund = function (client, product, paidPrice)
+    ps.Refunds[client] = { Product = product, Time = Timer.GetTime(), Price = paidPrice }
 end
 
 Traitormod.AddCommand({"!pointshop", "!pointsshop", "!ps", "!shop"}, function (client, args)
+    if #ps.ActiveCategories == 0 then
+        textPromptUtils.Prompt(Traitormod.Language.PointshopNotAvailable, {}, client, function (id, client) end, "gambler")
+        return true    
+    end
+
     if not ps.ValidateClient(client) then
         return true
     end
@@ -479,8 +506,32 @@ Hook.Add("roundStart", "TraitormMod.PointShop.RoundStart", function ()
     end
 end)
 
+local function refundProduct(client, refundTable, increaseProduct)
+    -- it will not increase the amount of the product at the end of the round
+    if increaseProduct ~= nil then
+        -- increase the amount of the product
+        ps.UseProductLimit(client, refundTable.Product, increaseProduct)
+    end
+
+    Traitormod.AwardPoints(client, refundTable.Price)
+    Traitormod.SendMessage(client, string.format(Traitormod.Language.PointshopRefunded, refundTable.Price, ps.GetProductName(refundTable.Product)))
+
+    ps.Refunds[client] = nil
+end
+
 Hook.Add("roundEnd", "TraitorMod.PointShop.RoundEnd", function ()
     ps.ResetProductLimits()
+    ps.ActiveCategories = {}
+
+    if Traitormod.Config.TestMode then return end
+    if config.PointShopConfig.DeathSpawnRefundAtEndRound then
+        for client, refundTable in pairs(ps.Refunds) do
+            if client.Character ~= nil and not client.Character.IsPet then -- client.Character is surely alive
+                -- it will also remove elements in the ps.Refunds
+                refundProduct(client, refundTable)
+            end
+        end
+    end 
 end)
 
 Hook.Add("characterDeath", "Traitormod.Pointshop.Death", function (character)
@@ -489,22 +540,21 @@ Hook.Add("characterDeath", "Traitormod.Pointshop.Death", function (character)
     if client == nil then return end
     if Traitormod.Config.TestMode then return end
 
-    local refund = ps.Refunds[client]
+    local refundTable = ps.Refunds[client]
 
-    if refund and refund.Time + 15 > Timer.GetTime() then
-        ps.UseProductLimit(client, refund.Product, -1)
-
-        Traitormod.AwardPoints(client, ps.GetProductPrice(client, refund.Product))
-        Traitormod.SendMessage(client, string.format(Traitormod.Language.PointshopRefunded, ps.GetProductPrice(client, refund.Product), ps.GetProductName(refund.Product)))
-
-        ps.Refunds[client] = nil
+    -- check if the character died in the first 15 seconds in order to get a refund
+    if refundTable and refundTable.Time + 15 > Timer.GetTime() then
+        refundProduct(client, refundTable, -1)
     else
         ps.Timeouts[client.SteamID] = Timer.GetTime() + config.PointShopConfig.DeathTimeoutTime
     end
+    -- this line will make sure it doesnt stay in the memory
+    ps.Refunds[client] = nil
 end)
 
 for _, category in pairs(config.PointShopConfig.ItemCategories) do
     if category.Init then category.Init() end
+    ps.AllCategories[category.Identifier] = category -- Creates a table out of config
 
     for __, product in pairs(category.Products) do
         if not product.Identifier then
@@ -515,7 +565,7 @@ for _, category in pairs(config.PointShopConfig.ItemCategories) do
                     product.Identifier = product.Items[1]
                 end
             else
-                Traitormod.Error("Product has no identifier nor any items, unable to figure out an identifier for the product. Category = %s, Name = %s, Price = %s", tostring(category.Name), tostring(product.Name),  tostring(product.Price))
+                Traitormod.Error("Product has no identifier nor any items, unable to figure out an identifier for the product. Category = %s, Name = %s, Price = %s", tostring(category.Identifier), tostring(product.Name),  tostring(product.Price))
 
                 product.Identifier = "unknown_" .. tostring(math.random(1, 100000))
             end

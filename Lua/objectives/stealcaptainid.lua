@@ -1,7 +1,7 @@
 local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "StealCaptainID"
-objective.RoleFilter = {["captain"] = true}
+objective.RoleFilter = {["warden"] = true}
 objective.AmountPoints = 1300
 
 function objective:Start(target)
@@ -17,7 +17,7 @@ end
 
 function objective:IsCompleted()
     for item in self.Character.Inventory.AllItems do
-        if item.Prefab.Identifier == "idcard" and item.GetComponentString("IdCard").OwnerJobId == "captain" then
+        if item.Prefab.Identifier == "idcard" and item.GetComponentString("IdCard").OwnerJobId == "warden" then
             return true
         end
     end

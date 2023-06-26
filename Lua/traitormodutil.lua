@@ -1,4 +1,8 @@
-Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/configuration.lua")
+Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/config.lua")
+
+if not File.Exists(Traitormod.Path .. "/Lua/config/config.lua") then
+    File.Write(Traitormod.Path .. "/Lua/config/config.lua", File.Read(Traitormod.Path .. "/Lua/config/config.lua.example"))
+end
 
 -- user config
 loadfile(Traitormod.Path .. "/Lua/config/config.lua")(Traitormod.Config)
@@ -155,6 +159,17 @@ Traitormod.SendMessage = function (client, text, icon)
     end
 
     Game.SendDirectChatMessage("", text, nil, Traitormod.Config.ChatMessageType, client)
+end
+
+Traitormod.SendClientMessage = function (text, icon, color, client)
+    local messageChat = ChatMessage.Create("", text, ChatMessageType.Default, nil, nil)
+    if color then messageChat.Color = color end
+    Game.SendDirectChatMessage(messageChat, client)
+
+    local messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+    if icon then messageBox.IconStyle = icon end
+    if color then messageBox.Color = color end
+    Game.SendDirectChatMessage(messageBox, client)
 end
 
 Traitormod.SendChatMessage = function (client, text, color)
@@ -431,7 +446,9 @@ Traitormod.GetDataInfo = function(client, showWeights)
     if showWeights then
         local maxPoints = 0
         for index, value in pairs(Client.ClientList) do
-            maxPoints = maxPoints + (Traitormod.GetData(value, "Weight") or 0)
+            if value.Character and not value.Character.IsDead or not Game.RoundStarted then
+                maxPoints = maxPoints + (Traitormod.GetData(value, "Weight") or 0)
+            end
         end
     
         local percentage = (Traitormod.GetData(client, "Weight") or 0) / maxPoints * 100
@@ -448,6 +465,17 @@ end
 
 Traitormod.ClientLogName = function(client, name)
     if name == nil then name = client.Name end
+
+    name = string.gsub(name, "%‖", "")
+
+    local log = "‖metadata:" .. client.SteamID .. "‖" .. name .. "‖end‖"
+    return log
+end
+
+Traitormod.CharacterLogName = function(character, name)
+    if name == nil then name = character.Name end
+
+    local client = Traitormod.FindClientCharacter(character)
 
     name = string.gsub(name, "%‖", "")
 
@@ -504,6 +532,38 @@ end
 
 Traitormod.SendWelcome = function(client)
     if Traitormod.Config.SendWelcomeMessage or Traitormod.Config.SendWelcomeMessage == nil then
-        Game.SendDirectChatMessage("", "| Traitor Mod v" .. Traitormod.VERSION .. " |\n" .. Traitormod.GetDataInfo(client), nil, ChatMessageType.Server, client)
+        Game.SendDirectChatMessage("", "| Prison RP Traitor Mod v" .. Traitormod.VERSION .. " |\n" .. Traitormod.GetDataInfo(client), nil, ChatMessageType.Server, client)
     end
+end
+
+Traitormod.ParseSubmarineConfig = function (description)
+    local startIndex, endIndex = string.find(description, "%[traitormod%]")
+
+    if startIndex == nil then return {} end
+
+    local configString = string.sub(description, endIndex + 1)
+    local success, result = pcall(json.decode, configString)
+
+    if not success then return {} end
+
+    return result
+end
+
+Traitormod.GetRandomName = function (gender)
+    local firstname = "Unknown"
+
+    if gender == "male" then
+        firstname = Traitormod.Language.MaleNames[math.random(1, #Traitormod.Language.MaleNames)]
+    elseif gender == "female" then
+        firstname = Traitormod.Language.FemaleNames[math.random(1, #Traitormod.Language.FemaleNames)]
+    end
+
+    local lastname = Traitormod.Language.LastNames[math.random(1, #Traitormod.Language.LastNames)]
+    local fullname = firstname.." "..lastname
+
+    return fullname
+end
+
+Traitormod.FormatTime = function(seconds)
+    return TimeSpan.FromSeconds(seconds).ToString()
 end

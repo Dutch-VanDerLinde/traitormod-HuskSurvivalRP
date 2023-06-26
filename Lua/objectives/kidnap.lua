@@ -2,6 +2,15 @@ local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "Kidnap"
 objective.AmountPoints = 2500
+objective.RoleFilter = { 
+    ["he-chef"] = true,
+    ["staff"] = true,
+    ["janitor"] = true,
+    ["prisondoctor"] = true,
+    ["guard"] = true,
+    ["warden"] = true,
+    ["headguard"] = true,
+}
 
 function objective:Start(target)
     self.Target = target
@@ -12,10 +21,9 @@ function objective:Start(target)
 
     self.TargetName = Traitormod.GetJobString(target) .. " " .. target.Name
 
-    self.Text = string.format(Traitormod.Language.ObjectiveKidnap, self.TargetName,
-    self.Seconds)
-
     self.SecondsLeft = self.Seconds
+
+    self.Text = string.format(Traitormod.Language.ObjectiveKidnap, self.TargetName, math.floor(self.SecondsLeft))
 
     return true
 end

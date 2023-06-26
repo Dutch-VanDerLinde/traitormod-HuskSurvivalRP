@@ -5,14 +5,14 @@ objective.AmountPoints = 400
 objective.EndRoundObjective = true
 
 function objective:Start(target)
-    self.Text = Traitormod.Language.SecurityTeamSurvival
+    self.Text = Traitormod.Language.ObjectiveSecurityTeamSurvival
 
     return true
 end
 
 function objective:IsCompleted()
     for key, value in pairs(Character.CharacterList) do
-        if value.IsSecurity and not value.IsDead and value.TeamID == CharacterTeamType.Team1 then
+        if value.HasJob("guard") and not value.IsDead and value.TeamID == CharacterTeamType.Team1 then
             return true
         end
     end
