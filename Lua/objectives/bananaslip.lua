@@ -3,15 +3,6 @@ local objective = Traitormod.RoleManager.Objectives.Objective:new()
 objective.Name = "BananaSlip"
 objective.AmountPoints = 850
 objective.Times = 3
-objective.RoleFilter = {
-    ["he-chef"] = true,
-    ["staff"] = true,
-    ["janitor"] = true,
-    ["prisondoctor"] = true,
-    ["guard"] = true,
-    ["warden"] = true,
-    ["headguard"] = true,
-}
 
 objective.Static = function ()
     local replacement = [[

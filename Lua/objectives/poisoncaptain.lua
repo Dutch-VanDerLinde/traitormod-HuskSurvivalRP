@@ -1,7 +1,7 @@
 local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "PoisonCaptain"
-objective.RoleFilter = { ["warden"] = true }
+objective.RoleFilter = { ["captain"] = true }
 objective.AmountPoints = 1600
 
 function objective:Start(target)
@@ -11,8 +11,8 @@ function objective:Start(target)
         return false
     end
 
-    if not self.Character.HasJob("prisondoctor") then
-        Traitormod.Debug("PoisonWarden is only available for medics.")
+    if not self.Character.IsMedic then
+        Traitormod.Debug("PoisonCaptain is only available for medics.")
         return false
     end
 

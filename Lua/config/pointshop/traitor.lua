@@ -1,11 +1,11 @@
 local category = {}
 
 category.Identifier = "traitor"
-category.Decoration = "Separatists"
+category.Decoration = "clown"
 category.FadeToBlack = true
 
 category.CanAccess = function(client)
-    return client.Character and not client.Character.IsDead and Traitormod.RoleManager.HasRole(client.Character, "Traitor") and not client.Character.HasJob("prisondoctor")
+    return client.Character and not client.Character.IsDead and Traitormod.RoleManager.HasRole(client.Character, "Traitor")
 end
 
 category.Init = function ()
@@ -72,16 +72,8 @@ end
 
 category.Products = {
     {
-        Identifier = "separatistgear",
-        Price = 1500,
-        Limit = 3,
-        IsLimitGlobal = true,
-        Items = {"pirateclotheshard", "piratebodyarmor", "piratehelmet"},
-    },
-
-    {
         Identifier = "explosiveautoinjector",
-        Price = 2500,
+        Price = 1700,
         Limit = 1,
         IsLimitGlobal = false,
         Action = function (client)
@@ -104,10 +96,56 @@ category.Products = {
     },
 
     {
-        Price = 3500,
+        Identifier = "invisibilitygear",
+        Price = 800,
         Limit = 1,
-        IsLimitGlobal = true,
-        Items = {"hackingdevice"},
+        IsLimitGlobal = false,
+        Action = function (client)
+            local suit = ItemPrefab.GetItemPrefab("divingsuit")
+            Entity.Spawner.AddItemToSpawnQueue(suit, client.Character.Inventory, nil, nil, function (item)
+                local light = item.GetComponentString("LightComponent")
+
+                item.set_InventoryIconColor(Color(100, 100, 100, 50))
+                item.SpriteColor = Color(0, 0, 0, 0)
+                item.Tags = "smallitem"
+                light.LightColor = Color(0, 0, 0, 0)
+
+                local color = item.SerializableProperties[Identifier("SpriteColor")]
+                Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(color, item))            
+                local invColor = item.SerializableProperties[Identifier("InventoryIconColor")]
+                Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(invColor, item))
+                local lightColor = light.SerializableProperties[Identifier("LightColor")]
+                Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(lightColor, light))
+
+                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), item.OwnInventory)
+            end)
+
+            local robes = ItemPrefab.GetItemPrefab("cultistrobes")
+            Entity.Spawner.AddItemToSpawnQueue(robes, client.Character.Inventory, nil, nil, function (item)
+
+                item.set_InventoryIconColor(Color(100, 100, 100, 50))
+                item.SpriteColor = Color(0, 0, 0, 0)
+                item.Tags = "smallitem"
+
+                local color = item.SerializableProperties[Identifier("SpriteColor")]
+                Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(color, item))            
+                local invColor = item.SerializableProperties[Identifier("InventoryIconColor")]
+                Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(invColor, item))
+            end)
+
+            local cap = ItemPrefab.GetItemPrefab("ironhelmet")
+            Entity.Spawner.AddItemToSpawnQueue(cap, client.Character.Inventory, nil, nil, function (item)
+
+                item.set_InventoryIconColor(Color(100, 100, 100, 50))
+                item.SpriteColor = Color(0, 0, 0, 0)
+                item.Tags = "smallitem"
+
+                local color = item.SerializableProperties[Identifier("SpriteColor")]
+                Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(color, item))            
+                local invColor = item.SerializableProperties[Identifier("InventoryIconColor")]
+                Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(invColor, item))
+            end)
+        end
     },
 
     {
@@ -142,7 +180,7 @@ category.Products = {
         Limit = 1,
         IsLimitGlobal = false,
         Action = function (client)
-            local revolver = ItemPrefab.GetItemPrefab("piratebandana")
+            local revolver = ItemPrefab.GetItemPrefab("ironhelmet")
             Entity.Spawner.AddItemToSpawnQueue(revolver, client.Character.Inventory, nil, nil, function (item)
                 item.Tags = "chocker"
                 item.Description = Traitormod.Language.Pointshop.choke_desc
@@ -175,7 +213,7 @@ category.Products = {
     },
 
     {
-        Price = 3200,
+        Price = 1800,
         Limit = 1,
         IsLimitGlobal = false,
         Items = {"shotgununique", 
@@ -190,7 +228,7 @@ category.Products = {
     },
 
     {
-        Price = 2900,
+        Price = 1600,
         Limit = 1,
         IsLimitGlobal = false,
         Items = {"smgunique", "smgmagazine", "smgmagazine"},
@@ -232,10 +270,25 @@ category.Products = {
     },
 
     {
-        Price = 1200,
-        Limit = 5,
+        Price = 530,
+        Limit = 3,
+        IsLimitGlobal = false,
+        Items = {"badcreepingorange"},
+    },
+
+    {
+        Identifier = "poisonoxygensupply",
+        Price = 1000,
+        Limit = 1,
         IsLimitGlobal = true,
-        Items = {"molotovcoctail"},
+
+        CanBuy = function (client, product)
+            return not Traitormod.RoundEvents.IsEventActive("OxygenGeneratorPoison")
+        end,
+
+        Action = function ()
+            Traitormod.RoundEvents.TriggerEvent("OxygenGeneratorPoison")
+        end
     },
 
     {
@@ -266,13 +319,6 @@ category.Products = {
         Action = function ()
             Traitormod.RoundEvents.TriggerEvent("CommunicationsOffline")
         end
-    },
-
-    {
-        Price = 3500,
-        Limit = 1,
-        IsLimitGlobal = true,
-        Items = {"suicidevestDJL", "uex"},
     },
 }
 

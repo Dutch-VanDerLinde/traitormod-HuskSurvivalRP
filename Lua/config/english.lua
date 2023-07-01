@@ -3,26 +3,22 @@ language.Name = "English"
 
 language.TipText = "Pro Tip: "
 language.Tips = {
-    "You can use !shop to spawn as creatures when you are dead.",
-    "Traitors have access to a special traitor shop. Use !shop to open it.",
-    "You can use !traitor to get information about your traitor status.",
+    "You can use !pointshop to spawn as creatures when you are dead.",
+    "Traitors have access to a special traitor shop. Use !pointshop to open it.",
+    "You can use !role to get information about your current role status.",
     "You can use !help to get a list of all available commands.",
     "You can use !write to write text to a logbook that spawns when you die.",
-    "The warden, guards, and head guard can never be traitors.",
+    "Captain and security guards can never be traitors.",
     "Ghost roles might become available when you are dead, you can use !ghostrole to claim them.",
     "Typing !kill in chat as a ghost role simply returns it to the list of available ghost roles, rather than killing it.",
-    "Fabricating, fixing hulls, healing and killing monsters grant you points.",
-    "Doctors can be traitors, but at a lower chance.",
-    "If you have the Warden's ID, you can send a global announcement via !announce. Use this to communicate with the crew that do not have radios, or issue announcements for the prisoners and such. Make sure the ID doesn't get in the wrong hands though..",
-    "Join our discord! discord.gg/SqeTDM9KSP",
-    "Got RDMed? You can send a message to all available admins with the '.ahelp' command.",
-    "Type !role to see information about your role.",
-    "Dying in the first 15 seconds as a creature refunds the price of it fully."
+    "Dying in the first 15 seconds as a creature refunds the price of it fully.",
 }
 
-language.Help = "\n!role - see info about your current role\n!help - shows this help message\n!helptraitor - shows all traitor commands\n!helpadmin - lists all admin commands\n!traitor - show traitor information\n!pointshop - opens the point shop\n!points - show your points and lives\n!alive - list alive players (only while dead)\n!locatesub - shows you the distance and direction of the submarine, only for monsters\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!announce [msg] - if you have the warden's ID, sends an announcement\n!alive - if you're dead; see all players, their jobs and if they're dead or alive"
-language.HelpTraitor = "\n!toggletraitor - toggles if the player can be selected as traitor\n!tc [msg] - sends a message to all traitors\n!tdm [Name] [msg] - sends a anonymous msg to given player"
-language.HelpAdmin = "\n!traitoralive - check if all traitors died\n!roundinfo - show round information (spoiler!)\n!allpoints - shows point amounts of all connected clients\n!addpoint [Client] [+/-Amount] - add points to a client\n!addlife [Client] [+/-Amount] - add life(s) to a client\n!revive [Client] - revives a given client character\n!void [Character Name] - sends a character to the void\n!unvoid [Character Name] - brings a character back from the void\n!vote [text] [option1] [option2] [...] - starts a vote on the server\n!intercom [msg] - sends a global announcement as 'intercom'"
+language.Help = "\n!help - shows this help message\n!helptraitor - shows all traitor commands\n!helpadmin - lists all admin commands\n!traitor - show traitor information\n!pointshop - opens the point shop\n!points - show your points and lives\n!alive - list alive players (only while dead)\n!locatesub - shows you the distance and direction of the submarine, only for monsters\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!roundtime - shows the current round time"
+language.HelpTraitor = "\n!toggletraitor - toggles if the player can be selected as traitor\n!tc [msg] - sends a message to all traitors\n!tannounce [msg] - sends a traitor announcement for traitors\n!tdm [Name] [msg] - sends a anonymous msg to given player"
+language.HelpAdmin = "\n!traitoralive - check if all traitors died\n!roundinfo - show round information (spoiler!)\n!allpoints - shows point amounts of all connected clients\n!addpoint [Client] [+/-Amount] - add points to a client\n!addlife [Client] [+/-Amount] - add life(s) to a client\n!revive [Client] - revives a given client character\n!void [Character Name] - sends a character to the void\n!unvoid [Character Name] - brings a character back from the void\n!vote [text] [option1] [option2] [...] - starts a vote on the server\n!giveghostrole [text] [character] - assigns a character with the specified name as a ghost role"
+
+language.TestingMode = "1P testing mode - no points can be gained or lost"
 
 language.NoTraitor = "You aren't a traitor."
 language.TraitorOn = "You can be selected as traitor."
@@ -43,10 +39,6 @@ language.TraitorWelcome = "You are a traitor!"
 language.TraitorDeath = "You have failed in your mission. As a result, the mission has been canceled and you will come back as part of the crew.\n\nYou are no longer a traitor, so play nice!"
 language.TraitorDirectMessage = "You received a secret message from a traitor:\n"
 language.TraitorBroadcast = "[Traitor %s]: %s"
-language.ClownBroadcast = "[Clown %s]: %s"
-language.CultistBroadcast = "[Cultist %s]: %s"
-language.PirateBroadcast = "[Pirate %s]: %s"
-language.HuskBroadcast = "[Husk Servant %s]: %s"
 
 language.NoObjectivesYet = " > No objectives yet... Stay futile."
 
@@ -55,8 +47,7 @@ language.SecondaryObjectivesYou = "Your secondary objectives are:"
 language.MainObjectivesOther = "Their main objectives were:"
 language.SecondaryObjectivesOther = "Their secondary objectives were:"
 
-language.CrewMember = "You are crew member of the station.\n\nYou have been assigned the following bonus objectives.\n\n"
-language.PrisonerMessage = "You are a convict of the station.\n\nYou have been assigned the following bonus objectives.\n\n"
+language.CrewMember = "You are crew member of the submarine.\n\nYou have been assigned the following bonus objectives.\n\n"
 
 language.SoloAntagonist = "You are the only antagonist."
 language.Partners = "Partners: %s"
@@ -102,12 +93,11 @@ language.Gamemode = "Gamemode: %s"
 language.RandomEvents = "Random Events: %s"
 language.ObjectiveCompleted = "Objective completed: %s"
 language.ObjectiveFailed = "Objective failed: %s"
+language.CharacterDeath = "Your character %s has died. You have lost a life and a new character will be made."
 
-language.CrewWins = "The crew successfully completed their mission!"
+language.CrewWins = "The humans have survived."
 language.TraitorHandcuffed = "The crew handcuffed the traitor %s."
-language.TraitorsWin = "The traitors succeeded in completing their objectives!"
-
-language.CMDPlaytime = "Your playtime is %s."
+language.HusksWin = "All humans have succumbed to the husk!"
 
 language.TraitorsRound = "Traitors of the round:"
 language.NoTraitors = "No traitors."
@@ -151,15 +141,14 @@ language.ObjectiveAssassinate = "Assassinate %s."
 language.ObjectiveAssassinateDrunk = "Assassinate %s while drunk"
 language.ObjectiveAssassinatePressure = "Crush %s with high pressure"
 language.ObjectiveBananaSlip = "Slip %s on bananas (%s/%s) times."
-language.ObjectiveStealID = "Steal the %s's ID for %s seconds."
-language.ObjectiveConvert = "Put a clown mask on %s, then eliminate him."
 language.ObjectiveDestroyCaly = "Deconstruct %s Calyxanide(s)."
 language.ObjectiveDrunkSailor = "Give %s more than 80% drunkness."
 language.ObjectiveGrowMudraptors = "Grow (%s/%s) mudraptors."
 language.ObjectiveHusk = "Turn %s into a full husk."
 language.ObjectiveTurnHusk = "Turn yourself into a husk."
 language.ObjectiveSurvive = "Complete at least one objective and survive the shift."
-language.ObjectiveStealCaptainID = "Steal the warden's ID."
+language.ObjectiveStealCaptainID = "Steal the captain's ID."
+language.ObjectiveStealID = "Steal the %s's ID for %s seconds."
 language.ObjectiveKidnap = "Handcuff %s for %s seconds."
 language.ObjectivePoisonCaptain = "Poison %s with %s."
 language.ObjectiveWreckGift = "Grab the gift"
@@ -171,9 +160,6 @@ language.ObjectiveKillMonsters = "Kill (%s/%s) %s."
 language.ObjectiveRepair = "Repair (%s/%s) %s"
 language.ObjectiveRepairHull = "Repair (%s/%s) damage from the hull."
 language.ObjectiveSecurityTeamSurvival = "Make sure at least one member of the security team survives."
-language.ObjectiveCleanBody = "Dump %s's body out the airlock once they have expired."
-language.ObjectiveCrewSurvival = "Ensure atleast 3 members of the crew survive."
-language.ObjectivePrisoner = "Ensure atleast %s convicts are in their cells at the end of the round."
 
 language.ObjectiveText = "Assassinate the crew in order to complete your mission."
 
@@ -267,24 +253,13 @@ language.PointshopRefunded = "You have been refunded %s points for your %s purch
 
 
 language.Pointshop = {
-    revivalfluid = "Revival Fluid",
-    revivalfluid_desc = "‖color:gui.yellow‖Revives a dead corpse as a husk‖color:end‖",
     fakehandcuffs = "Fake Cuffs",
     choke = "Chocker",
-    randomcoma = "Put random person into coma (Dangerous)",
-    hammerbuff = "Toy Hammer (Buffed)",
-    arthurmorgan = "Mycobacterium tuberculosis Sample",
-    ClownEnsemble = "Clown Ensemble",
-    HonkmotherClothes = "Mother's Ensemble (Armor Plated)",
-    separatistgear = "Separatist Gear",
     choke_desc = "‖color:gui.red‖Silences the target‖color:end‖",
     jailgrenade = "DarkRP Jail Grenade",
     jailgrenade_desc = "‖color:gui.red‖A special grenade with an interesting surprise...‖color:end‖",
     clowngearcrate = "Clown Gear Crate",
-    clowngear = "Clown Gear",
     clowntalenttree = "Clown Talent Tree",
-    enrollclown = "Enroll into Clown College",
-    PsychoClown = "Psycho Clown",
     invisibilitygear = "Invisibility Gear",
     clownmagic = "Clown Magic (Randomly swaps places of people)",
     randomizelights = "Randomize Lights",
@@ -312,8 +287,6 @@ language.Pointshop = {
     teleporterrevolver = "Teleporter Revolver",
     poisonoxygensupply = "Poison Oxygen Supply",
     turnofflights = "Turn Off Lights For 3 Minutes",
-    insaneclown = "Summon Insane Clown",
-    autoclown = "Clown Auto-Injector",
     turnoffcommunications = "Turn Off Communications For 2 Minutes",
     spawnascrawler = "Spawn as Crawler",
     spawnascrawlerhusk = "Spawn as Crawler Husk",
@@ -333,8 +306,6 @@ language.Pointshop = {
     spawnaslegacycarrier = "Spawn as Legacy Carrier",
     spawnashammerhead = "Spawn as Hammerhead",
     spawnasfractalguardian = "Spawn as Fractal Guardian",
-    spawnasfractalguardian2 = "Spawn as Fractal Guardian 2",
-    spawnasfractalguardian3 = "Spawn as Fractal Guardian 3",
     spawnasgiantspineling = "Spawn as Giant Spineling",
     spawnasveteranmudraptor = "Spawn as Veteran Mudraptor",
     spawnaslatcher = "Spawn as Latcher",
@@ -343,8 +314,6 @@ language.Pointshop = {
     spawnaspeanut = "Spawn as Peanut",
     spawnasorangeboy = "Spawn as Orange Boy",
     spawnascthulhu = "Spawn as Cthulu",
-    spawnascyborgworm = "Spawn as Cyborg worm",
-    spawnashammerheadmar = "Spawn as Hammerhead Matriarch",
     spawnaspsilotoad = "Spawn as Psilotoad",
     clown = "Clown",
     cultist = "Cultist",
@@ -358,11 +327,6 @@ language.Pointshop = {
     medical = "Medical",
     maintenance = "Maintenance",
     other = "Other",
-    traitormedic = "Traitor Doctor",
-    eventmanager = "Event Manager Spawn",
-    prisoner = "Convict Uplink",
-    chef = "Cooking",
-    janitor = "Janitorial",
     idcardlocator = "Id Card Locator",
     idcardlocator_desc = "‖color:gui.red‖Id Card Locator‖color:end‖",
     idcardlocator_result = "%s - %s - %s meters away",
@@ -379,6 +343,24 @@ language.LargeCreatures = "Large Creatures"
 language.AbyssCreature = "Abyss Creature"
 language.ElectricalDevices = "Electrical Devices"
 language.MechanicalDevices = "Mechanical Devices"
+
+language.CMDAliveToUse = "You must be alive to use this command."
+language.CMDNoRole = "You have no special role."
+language.CMDAlreadyDead = "You are already dead!"
+language.CMDHandcuffed = "You cant use this command while handcuffed."
+language.CMDKnockedDown = "You cant this command while knocked down."
+language.GamemodeNone = "Gamemode: None"
+language.CMDPermisionPoints = "You do not have permissions to add points."
+language.CMDInvalidNumber = "Invalid number value."
+language.CMDClientNotFound = "Couldn't find a client with name / steamID."
+language.CMDCharacterNotFound = "Couldn't find a character with the specified name."
+language.CMDAdminAddedPointsEveryone = "Admin added %s points to everyone."
+language.CMDAdminAddedPoints = "Admin added %s points to %s."
+language.CMDAdminAddedLives = "Admin added %s lives to %s."
+language.CMDOnlyMonsters = "Only monsters are able to use this command."
+language.CMDLocateSub = "Submarine is %sm away from you, at %s."
+language.CMDRoundTime = "This round has been going for %s."
+language.CMDPlaytime = "Your playtime is %s."
 
 language.MaleNames = {"Liam","Noah","James","Oliver","Benjamin","Elijah","Lucas","Mason","Logan","Alexander","Ethan","Jacob","Michael","Daniel",
 "Henry","Jackson","Sebastian","Aiden","Matthew","Samuel","David","Joseph","Carter","Owen","Wyatt","John","Jack","Luke","Jayden","Dylan",

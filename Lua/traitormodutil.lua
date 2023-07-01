@@ -1,17 +1,9 @@
 Traitormod.Config = dofile(Traitormod.Path .. "/Lua/config/config.lua")
-
-if not File.Exists(Traitormod.Path .. "/Lua/config/config.lua") then
-    File.Write(Traitormod.Path .. "/Lua/config/config.lua", File.Read(Traitormod.Path .. "/Lua/config/config.lua.example"))
-end
-
--- user config
-loadfile(Traitormod.Path .. "/Lua/config/config.lua")(Traitormod.Config)
+--loadfile(Traitormod.Path .. "/Lua/config/config.lua")(Traitormod.Config)
 
 Traitormod.Patching = loadfile(Traitormod.Path .. "/Lua/xmlpatching.lua")(Traitormod.Path)
 
-Traitormod.Languages = {
-    dofile(Traitormod.Path .. "/Lua/language/english.lua")
-}
+Traitormod.Languages = Traitormod.Config.Languages
 
 Traitormod.DefaultLanguage = Traitormod.Languages[1]
 Traitormod.Language = Traitormod.DefaultLanguage
@@ -159,17 +151,6 @@ Traitormod.SendMessage = function (client, text, icon)
     end
 
     Game.SendDirectChatMessage("", text, nil, Traitormod.Config.ChatMessageType, client)
-end
-
-Traitormod.SendClientMessage = function (text, icon, color, client)
-    local messageChat = ChatMessage.Create("", text, ChatMessageType.Default, nil, nil)
-    if color then messageChat.Color = color end
-    Game.SendDirectChatMessage(messageChat, client)
-
-    local messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
-    if icon then messageBox.IconStyle = icon end
-    if color then messageBox.Color = color end
-    Game.SendDirectChatMessage(messageBox, client)
 end
 
 Traitormod.SendChatMessage = function (client, text, color)
@@ -472,17 +453,6 @@ Traitormod.ClientLogName = function(client, name)
     return log
 end
 
-Traitormod.CharacterLogName = function(character, name)
-    if name == nil then name = character.Name end
-
-    local client = Traitormod.FindClientCharacter(character)
-
-    name = string.gsub(name, "%‖", "")
-
-    local log = "‖metadata:" .. client.SteamID .. "‖" .. name .. "‖end‖"
-    return log
-end
-
 Traitormod.InsertString = function(str1, str2, pos)
     return str1:sub(1,pos)..str2..str1:sub(pos+1)
 end
@@ -532,7 +502,7 @@ end
 
 Traitormod.SendWelcome = function(client)
     if Traitormod.Config.SendWelcomeMessage or Traitormod.Config.SendWelcomeMessage == nil then
-        Game.SendDirectChatMessage("", "| Prison RP Traitor Mod v" .. Traitormod.VERSION .. " |\n" .. Traitormod.GetDataInfo(client), nil, ChatMessageType.Server, client)
+        Game.SendDirectChatMessage("", "| Traitor Mod v" .. Traitormod.VERSION .. " |\n" .. Traitormod.GetDataInfo(client), nil, ChatMessageType.Server, client)
     end
 end
 
@@ -564,6 +534,90 @@ Traitormod.GetRandomName = function (gender)
     return fullname
 end
 
+Traitormod.GetRPName = function (client)
+    local name = Traitormod.GetData(client, "RPName")
+
+    return name
+end
+
+Traitormod.ChangeRPName = function (client, name)
+    Traitormod.SetData(client, "RPName", name)
+    Traitormod.SaveData()
+
+    if client.Character and not client.Character.IsDead then
+        client.Character.Info.Rename(name)
+    end
+end
+
 Traitormod.FormatTime = function(seconds)
     return TimeSpan.FromSeconds(seconds).ToString()
+end
+
+Traitormod.randomizeCharacterName = function (character)
+    local client = Traitormod.FindClientCharacter(character)
+    local randomName = ""
+
+    if client then
+        local name = Traitormod.GetRPName(client)
+
+        if character.IsMale then
+            randomName = Traitormod.GetRandomName("male")
+        else
+            randomName = Traitormod.GetRandomName("female")
+        end
+
+        if name == nil then
+            Traitormod.ChangeRPName(client, randomName)
+            name = randomName
+        else
+            character.Info.Rename(name)
+        end
+
+        Traitormod.Log(Traitormod.ClientLogName(client).." has spawned in as "..name)
+    end
+end
+
+Traitormod.SpawnBatteryCell = function (inventory)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), inventory)
+end
+
+Traitormod.GiveJobItems = function (character)
+    local job = tostring(character.JobIdentifier)
+    local jobLoadout = Traitormod.Loadouts[job]
+    local outfitLoadout = Traitormod.Outfits[job]
+    local randomitemset = outfitLoadout[math.random(1, #outfitLoadout)]
+    local defaultclothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
+    local defaulthat = character.Inventory.GetItemInLimbSlot(InvSlotType.Head)
+    local clothes = ItemPrefab.GetItemPrefab(randomitemset[1])
+    local hat = ItemPrefab.GetItemPrefab(randomitemset[2])
+
+    Entity.Spawner.AddEntityToRemoveQueue(defaultclothes)
+    Entity.Spawner.AddEntityToRemoveQueue(defaulthat)
+    Entity.Spawner.AddItemToSpawnQueue(clothes, character.Inventory, nil, nil, function(spawned)
+        local slot = character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
+        character.Inventory.TryPutItem(spawned, slot, true, false, character)
+    end)
+
+    Entity.Spawner.AddItemToSpawnQueue(hat, character.Inventory, nil, nil, function(spawned)
+        local slot = character.Inventory.FindLimbSlot(InvSlotType.Head)
+        character.Inventory.TryPutItem(spawned, slot, true, false, character)
+    end)
+    
+    for item in jobLoadout do
+        local object = ItemPrefab.GetItemPrefab(item[1])
+        local amount = item[2]
+        local chance = item[3]
+        local givenChance = math.random()
+
+        if givenChance <= chance then
+            for count=1, amount do
+                Entity.Spawner.AddItemToSpawnQueue(object, character.Inventory, nil, nil, function(spawned)
+                    if item[4] then
+                        local slot = character.Inventory.FindLimbSlot(item[4])
+                        character.Inventory.TryPutItem(spawned, slot, true, false, character)
+                    end
+                end)
+            end
+        end
+    end
 end

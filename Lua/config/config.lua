@@ -5,7 +5,10 @@ local config = {}
 config.DebugLogs = true
 
 ----- USER FEEDBACK -----
-config.Language = "English"
+config.Languages = {
+    dofile(Traitormod.Path .. "/Lua/config/english.lua"), -- If it can't find a specific language key, it will always fallback to the first language on the list.
+}
+config.Language = "English" -- English, Russian
 config.SendWelcomeMessage = true
 config.ChatMessageType = ChatMessageType.Private    -- Error = red | Private = green | Dead = blue | Radio = yellow
 
@@ -34,41 +37,43 @@ config.OptionalTraitors = true        -- players can use !toggletraitor
 config.RagdollOnDisconnect = false
 config.EnableControlHusk = false     -- EXPERIMENTAL: enable to control husked character after death
 config.DeathLogBook = true
-config.HideCrewList = false -- EXPERIMENTAL
+config.HideCrewList = true
+config.RoleplayNames = true
 
 -- This overrides the game's respawn shuttle, and uses it as a submarine injector, to spawn submarines in game easily. Respawn should still work as expected, but the shuttle submarine file needs to be manually added here.
 -- Note: If this is disabled, traitormod will disable all functions related to submarine spawning.
 -- Warning: Only respawn shuttles will be used, the option to spawn people directly into the submarine doesnt work.
-config.OverrideRespawnSubmarine = false
+config.OverrideRespawnSubmarine = true
 config.RespawnSubmarineFile = "Content/Submarines/Selkie.sub"
 config.RespawnText = "Respawn in %s seconds."
 config.RespawnTeam = CharacterTeamType.Team1
 config.RespawnOnKillPoints = 0
-config.RespawnEnabled = true -- set this to false to disable respawn, respawn shuttle override features will still be active, there just wont be any respawns
+config.RespawnEnabled = false -- set this to false to disable respawn, respawn shuttle override features will still be active, there just wont be any respawns
+config.RespawnTextOnlySpectators = false
 
 -- Allows players that just joined the server to instantly spawn
-config.MidRoundSpawn = false
+config.MidRoundSpawn = true
 
 ----- POINTS + LIVES -----
-config.StartPoints = 5000 -- new players start with this amount of points
+config.StartPoints = 3000 -- new players start with this amount of points
 config.PermanentPoints = true      -- sets if points and lives will be stored in and loaded from a file
 config.RemotePoints = nil
 config.RemoteServerAuth = {}
 config.PermanentStatistics = true  -- sets if statistics be stored in and loaded from a file
 config.MaxLives = 5
-config.MinRoundTimeToLooseLives = 180
+config.MinRoundTimeToLooseLives = 30
 config.RespawnedPlayersDontLooseLives = true
 config.MaxExperienceFromPoints = 500000     -- if not nil, this amount is the maximum experience players gain from stored points (30k = lvl 10 | 38400 = lvl 12)
 
-config.FreeExperience = 250         -- temporary experience given every ExperienceTimer seconds
+config.FreeExperience = 750         -- temporary experience given every ExperienceTimer seconds
 config.ExperienceTimer = 120
 
 config.PointsGainedFromSkill = {
-    medical = 3,
-    weapons = 2,
-    mechanical = 1,
-    electrical = 1,
-    helm = 1,
+    medical = 8,
+    weapons = 5,
+    mechanical = 3,
+    electrical = 3,
+    helm = 2,
 }
 
 config.PointsLostAfterNoLives = function (x)
@@ -88,90 +93,16 @@ end
 
 ----- GAMEMODE -----
 config.GamemodeConfig = {
-    Secret = {
-        PointshopCategories = {"clown", "traitor", "cultist", "deathspawn", "maintenance", "materials", "medical", "ores", "other", "security", "wiring", "ships"},
+    Survival = {
+        PointshopCategories = {"deathspawn", "ships"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
         EndGameDelaySeconds = 15,
-
         TraitorSelectDelayMin = 120,
         TraitorSelectDelayMax = 150,
 
-        PointsGainedFromHandcuffedTraitors = 1000,
-        DistanceToEndOutpostRequired = 8000,
-
-        MissionPoints = {
-            Salvage = 1100,
-            Monster = 1050,
-            Cargo = 1000,
-            Beacon = 1200,
-            Nest = 1700,
-            Mineral = 1000,
-            Combat = 1400,
-            AbandonedOutpost = 500,
-            Escort = 1200,
-            Pirate = 1300,
-            GoTo = 1000,
-            ScanAlienRuins = 1600,
-            ClearAlienRuins = 2000,
-            Default = 1000,
-        },
         PointsGainedFromCrewMissionsCompleted = 1000,
         LivesGainedFromCrewMissionsCompleted = 1,
-
-        TraitorTypeSelectionMode = "Vote", -- Vote | Random
-        TraitorTypeChance = {
-            Traitor = 50, -- Traitors have 33% chance of being a normal traitor
-            Cultist = 50,
-            Clown = 50,
-        },
-
-        AmountTraitors = function (amountPlayers)
-            config.TestMode = false
-            if amountPlayers > 18 and math.random() < 0.25 then return 4 end
-            if amountPlayers > 12 then return 3 end
-            if amountPlayers > 7 then return 2 end            
-            if amountPlayers > 3 then return 1 end
-            if amountPlayers == 1 then 
-                Traitormod.SendMessageEveryone("1P testing mode - no points can be gained or lost") 
-                config.TestMode = true
-                return 1
-            end
-            print("Not enough players to start traitor mode.")
-            return 0
-        end,
-
-        -- 0 = 0% chance
-        -- 1 = 100% chance
-        TraitorFilter = function (client)
-            if client.Character.TeamID ~= CharacterTeamType.Team1 then return 0 end
-            if not client.Character.IsHuman then return 0 end
-            if client.Character.HasJob("captain") then return 0 end
-            if client.Character.HasJob("securityofficer") then return 0 end
-            if client.Character.HasJob("medicaldoctor") then return 0.5 end
-
-            return 1
-        end
-    },
-
-    PvP = {
-        PointshopCategories = {"clown", "traitor", "cultist", "deathspawn", "maintenance", "materials", "medical", "ores", "other", "security", "wiring", "ships"},
-        EnableRandomEvents = false, -- most events are coded to only affect the main submarine
-        WinningPoints = 1000,
-        WinningDeadPoints = 500,
-        MinimumPlayersForPoints = 4,
-        ShowSonar = true,
-        IdCardAllAccess = true,
-        CrossTeamCommunication = true,
-        BannedItems = {"coilgunammoboxexplosive", "nuclearshell"}
-    },
-
-    AttackDefend = {
-        PointshopCategories = {"maintenance", "materials", "medical", "ores", "other", "wiring"},
-        DefendTime = 15,
-        DefendRespawn = 60,
-        AttackRespawn = 70,
-        WinningPoints = 1000,
     },
 }
 
@@ -318,17 +249,8 @@ config.RandomEventConfig = {
 config.PointShopConfig = {
     Enabled = true,
     DeathTimeoutTime = 60,
+    DeathSpawnRefundAtEndRound = true,
     ItemCategories = {
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/clown.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/cultist.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/traitor.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/security.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/maintenance.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/materials.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/medical.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/ores.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/other.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/wiring.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/deathspawn.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/ships.lua"),
     }

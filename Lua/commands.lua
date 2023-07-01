@@ -35,7 +35,8 @@ Traitormod.AddCommand("!announce", function(client, args)
     if client.Character == nil or client.Character.IsDead then
         feedback = "You're dead."
         Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
-    return true end
+        return true
+    end
 
     if client.Character.IsUnconscious
         or client.Character.IsRagdolled

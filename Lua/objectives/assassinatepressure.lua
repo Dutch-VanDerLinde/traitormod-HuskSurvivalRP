@@ -47,12 +47,4 @@ function objective:IsFailed()
     return not conditionsMet
 end
 
-function objective:TargetPreference(character)
-    if character.HasJob("warden") or character.HasJob("headguard") then
-        return false
-    end
-
-    return true
-end
-
 return objective

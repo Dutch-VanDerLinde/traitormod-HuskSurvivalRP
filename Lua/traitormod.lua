@@ -1,4 +1,5 @@
 dofile(Traitormod.Path .. "/Lua/traitormodutil.lua")
+dofile(Traitormod.Path .. "/Lua/roles/roleloadouts.lua")
 
 Game.OverrideTraitors(true)
 
@@ -58,16 +59,10 @@ Traitormod.PreRoundStart = function (submarineInfo, chooseGamemode)
         for key, value in pairs(subConfig) do
             Traitormod.SelectedGamemode[key] = value
         end
-    elseif Game.ServerSettings.GameModeIdentifier == "pvp" then
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes.PvP:new()
-    elseif Game.ServerSettings.GameModeIdentifier == "multiplayercampaign" then
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes.Gamemode:new()
-    elseif Game.ServerSettings.TraitorsEnabled == 1 and math.random() > 0.5 then
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes.Secret:new()
-    elseif Game.ServerSettings.TraitorsEnabled == 2 then
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes.Secret:new()
-    else
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes.Gamemode:new()
+    end
+    
+    if Game.ServerSettings.GameModeIdentifier ~= "pvp" then
+        Traitormod.SelectedGamemode = Traitormod.Gamemodes.Survival:new()
     end
 
     if Traitormod.SelectedGamemode.RequiredGamemode then
@@ -86,7 +81,6 @@ Traitormod.RoundStart = function()
     pointsGiveTimer = Timer.GetTime() + Traitormod.Config.ExperienceTimer
 
     Traitormod.CodeWords = Traitormod.SelectCodeWords()
-    Game.ExecuteCommand('enablecheats')
 
     -- give XP to players based on stored points
     for key, value in pairs(Client.ClientList) do
@@ -104,13 +98,10 @@ Traitormod.RoundStart = function()
         Traitormod.SendWelcome(value)
     end
 
-    if Traitormod.Config.HideCrewList then
-        for key, character in pairs(Character.CharacterList) do
-            if character.IsHuman then
-                Networking.CreateEntityEvent(character, Character.RemoveFromCrewEventData.__new(character.TeamID, {}))
-                Traitormod.randomizeCharacterName(character)
-            end
-        end
+    for key, value in pairs(Character.CharacterList) do
+        if not value.IsHuman then return end
+        if Traitormod.Config.HideCrewList then Networking.CreateEntityEvent(value, Character.RemoveFromCrewEventData.__new(value.TeamID, {})) end
+        if Traitormod.Config.RoleplayNames then Traitormod.randomizeCharacterName(value) end
     end
 
     if Traitormod.SelectedGamemode == nil then
@@ -145,30 +136,13 @@ Hook.Add("roundStart", "Traitormod.RoundStart", function()
     Traitormod.RoundStart()
 end)
 
-Hook.Add("characterDeath", "Traitormod.CharacterDeath", function(character)
-    if not character.IsHuman then return end
-    local client = Traitormod.FindClientCharacter(character)
-
-    if client then
-        Traitormod.SetData(client, "RPName", nil)
-        Traitormod.SaveData()
-    end
-end)
-
 Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     Traitormod.RoundMissions = missions
     Traitormod.Debug("missionsEnded with " .. #Traitormod.RoundMissions .. " missions.")
 
     for key, value in pairs(Client.ClientList) do
-        -- add weight based on if they're alive or not and if they were a traitor that past round
-        Traitormod.AddData(value, "Weight", 1)
-        if value.Character and Traitormod.RoleManager.IsAntagonist(value.Character) then
-            -- do nothing
-        elseif value.Character and value.Character.TeamID == CharacterTeamType.Team1 and not value.Character.IsDead then
-            Traitormod.AddData(value, "Weight", 2)
-        else
-            Traitormod.AddData(value, "Weight", 1)
-        end
+        -- add weight according to points and config conversion
+        Traitormod.AddData(value, "Weight", Traitormod.Config.AmountWeightWithPoints(Traitormod.GetData(value, "Points") or 0))
     end
 
     Traitormod.Debug("Round " .. Traitormod.RoundNumber .. " ended.")
@@ -446,7 +420,7 @@ dofile(Traitormod.Path .. "/Lua/respawnshuttle.lua")
 dofile(Traitormod.Path .. "/Lua/traitormodmisc.lua")
 
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/gamemode.lua"))
-Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/secret.lua"))
+Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/survival.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/pvp.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/submarineroyale.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/attackdefend.lua"))
@@ -465,10 +439,6 @@ Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/b
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/suffocatecrew.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/growmudraptors.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/assassinatepressure.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/save.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/destroyweapons.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/convert.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/acid.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/stealidcard.lua"))
 
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/killmonsters.lua"))
@@ -484,21 +454,12 @@ Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/c
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/repairhull.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/healcharacters.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/finishallobjectives.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/crewsurvival.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/escape.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/prisonerstay.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/cleanbodies.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/motherget.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/makefood.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/cookwalter.lua"))
-Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/makedrugs.lua"))
 
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/role.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/antagonist.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/traitor.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/cultist.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/huskservant.lua"))
-Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/pirate.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/crew.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/clown.lua"))
 

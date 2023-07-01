@@ -36,31 +36,6 @@ extension.Init = function ()
         Traitormod.Patching.RemoveAll(element, "Attack")
         Traitormod.Patching.Add(element, replacement)
     end
-
-     do -- Heavy Wrench
-        local replacement = [[
-        <overwrite>
-            <Attack targetimpulse="15" structuredamage="7" itemdamage="9">
-                 <Affliction identifier="blunttrauma" strength="17" />
-                 <Affliction identifier="stun" strength="0.8" />
-                 <StatusEffect type="OnUse" target="UseTarget">
-                    <Conditional entitytype="eq Character"/>
-                    <Sound file="Content/Items/Weapons/Smack1.ogg" selectionmode="random" range="500"/>
-                    <Sound file="Content/Items/Weapons/Smack2.ogg" range="500" />
-                </StatusEffect>
-                <StatusEffect type="OnUse" target="This" >
-                   <Conditional skillrequirement="true" mechanical="lt 75" />
-                   <Affliction identifier="stun" strength="0.3" />
-                </StatusEffect>
-            </Attack>
-        </overwrite>
-        ]]
-    
-        local itemPrefab = ItemPrefab.GetItemPrefab("heavywrench")
-        local element = itemPrefab.ConfigElement.Element.Element("MeleeWeapon")
-        Traitormod.Patching.RemoveAll(element, "Attack")
-        Traitormod.Patching.Add(element, replacement)
-    end
 end
 
 return extension
