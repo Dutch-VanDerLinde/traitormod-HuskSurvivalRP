@@ -84,7 +84,7 @@ Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
     end
 
     if #args < 1 then
-        Traitormod.SendMessage(client, "Usage: !monster message")
+        Traitormod.SendMessage(client, "Usage: !hc or !huskchat message")
         return true
     end
 
