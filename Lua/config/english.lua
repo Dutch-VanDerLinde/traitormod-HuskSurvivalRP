@@ -361,6 +361,7 @@ language.CMDOnlyMonsters = "Only monsters are able to use this command."
 language.CMDLocateSub = "Submarine is %sm away from you, at %s."
 language.CMDRoundTime = "This round has been going for %s."
 language.CMDPlaytime = "Your playtime is %s."
+language.CMDHuskChat = "%s (as %s)"
 
 language.MaleNames = {"Liam","Noah","James","Oliver","Benjamin","Elijah","Lucas","Mason","Logan","Alexander","Ethan","Jacob","Michael","Daniel",
 "Henry","Jackson","Sebastian","Aiden","Matthew","Samuel","David","Joseph","Carter","Owen","Wyatt","John","Jack","Luke","Jayden","Dylan",

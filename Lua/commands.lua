@@ -95,11 +95,10 @@ Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
 
     for _, client in pairs(Client.ClientList) do
         if (not client.Character or client.Character.IsDead) or not client.Character.IsHuman then
-            local truename = "%s (as %s)"
-            local formatedname = string.format(truename, client.Character.Name, client.Name)
-            local chatMessage = ChatMessage.Create(formatedname, msg, ChatMessageType.Default)
-            chatMessage.Color = Color(60,140,195,255)
-        
+            local formatedname = string.format(Traitormod.Language.CMDHuskChat, client.Character.Name, client.Name)
+            local truename = "‖color:gui.indianred"..formatedname.."‖color:end‖"
+            local chatMessage = ChatMessage.Create(truename, msg, ChatMessageType.Default)
+            chatMessage.Color = Color(60,107,195,255)
             Game.SendDirectChatMessage(chatMessage, client)
         end
     end
