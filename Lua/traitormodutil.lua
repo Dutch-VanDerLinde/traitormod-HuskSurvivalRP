@@ -594,10 +594,9 @@ end
 Traitormod.GiveJobItems = function (character)
     local client = Traitormod.FindClientCharacter(character)
     if character.HasJob("huskJob") then
-        HF.SetAffliction(character, "huskinfection", 100)
-        return
+        HF.SetAffliction(character, "huskinfection", 95)
     end
-
+    
     local job = tostring(character.JobIdentifier)
     local jobLoadout = Traitormod.Loadouts[job]
     local outfitLoadout = Traitormod.Outfits[job]
