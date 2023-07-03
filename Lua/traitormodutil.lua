@@ -593,13 +593,12 @@ end
 
 Traitormod.GiveJobItems = function (character)
     local client = Traitormod.FindClientCharacter(character)
-    local job = tostring(character.JobIdentifier)
-    if job == "huskJob" and client then
-        Entity.Spawner.AddCharacterToSpawnQueue("Husk", character.WorldPosition, function (monster)
-            client.SetClientCharacter(monster)
-        end)
+    if character.HasJob("huskJob") then
+        HF.SetAffliction(character, "huskinfection", 100)
         return
     end
+
+    local job = tostring(character.JobIdentifier)
     local jobLoadout = Traitormod.Loadouts[job]
     local outfitLoadout = Traitormod.Outfits[job]
     local randomitemset = outfitLoadout[math.random(1, #outfitLoadout)]
