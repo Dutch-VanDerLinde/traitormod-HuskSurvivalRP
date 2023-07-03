@@ -77,6 +77,36 @@ Traitormod.AddCommand("!announce", function(client, args)
     end
 end)
 
+Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
+    if client.Character == nil or client.Character.IsHuman then
+        Traitormod.SendMessage(client, Traitormod.Language.CMDOnlyMonsters)
+        return true
+    end
+
+    if #args < 1 then
+        Traitormod.SendMessage(client, "Usage: !monster message")
+        return true
+    end
+
+    local msg = ""
+    for word in args do
+        msg = msg .. " " .. word
+    end
+
+    for _, client in pairs(Client.ClientList) do
+        if (not client.Character or client.Character.IsDead) or not client.Character.IsHuman then
+            local truename = "%s (as %s)"
+            local formatedname = string.format(truename, client.Character.Name, client.Name)
+            local chatMessage = ChatMessage.Create(formatedname, msg, ChatMessageType.Default)
+            chatMessage.Color = Color(60,140,195,255)
+        
+            Game.SendDirectChatMessage(chatMessage, client)
+        end
+    end
+
+    return true
+end)
+
 Traitormod.AddCommand("!version", function (client, args)
     Traitormod.SendMessage(client, "Running Evil Factory's Traitor Mod v" .. Traitormod.VERSION)
 
