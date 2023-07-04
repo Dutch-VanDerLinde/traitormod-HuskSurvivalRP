@@ -2,13 +2,10 @@ dofile(Traitormod.Path .. "/Lua/traitormodutil.lua")
 dofile(Traitormod.Path .. "/Lua/roles/roleloadouts.lua")
 
 Game.OverrideTraitors(true)
+Game.EnableControlHusk(true)
 
 if Traitormod.Config.RagdollOnDisconnect ~= nil then
     Game.DisableDisconnectCharacter(not Traitormod.Config.RagdollOnDisconnect)
-end
-
-if Traitormod.Config.EnableControlHusk ~= nil then
-    Game.EnableControlHusk(Traitormod.Config.EnableControlHusk)
 end
 
 math.randomseed(os.time())
@@ -197,6 +194,16 @@ end)
 
 Hook.Add("characterCreated", "Traitormod.CharacterCreated", function(character)
     -- if character is valid player
+    if character.IsHusk then
+        Timer.Wait(function ()
+            local client = Traitormod.FindClientCharacter(character)
+            if client then
+                local role = Traitormod.RoleManager.Roles["Husk"]
+                Traitormod.RoleManager.AssignRole(character, role:new())
+            end
+        end, 1000)
+    end
+
     if character == nil or
         character.IsBot == true or
         character.IsHuman == false or
@@ -458,10 +465,8 @@ Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/c
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/role.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/antagonist.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/traitor.lua"))
-Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/cultist.lua"))
-Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/huskservant.lua"))
+Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/husk.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/crew.lua"))
-Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/clown.lua"))
 
 if Traitormod.Config.Extensions then
     for key, extension in pairs(Traitormod.Config.Extensions) do

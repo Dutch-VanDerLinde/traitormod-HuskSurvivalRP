@@ -168,8 +168,6 @@ function gm:End()
 
     gm:AwardCrew()
 
-    Game.EnableControlHusk(false)
-
     Hook.Remove("characterDeath", "Traitormod.Survival.CharacterDeath")
     Hook.Remove("traitormod.midroundspawn", "Traitormod.Survival.MidRoundSpawn")
     Hook.Remove("character.giveJobItems", "Husk.Survival.giveJobItems")
@@ -190,8 +188,14 @@ function gm:Think()
     if not self.Ending and Game.RoundStarted and self.EndOnComplete and ended then
         local delay = self.EndGameDelaySeconds or 0
 
-        Traitormod.SendMessageEveryone(Traitormod.Language.HusksWin)
+        Traitormod.SendColoredMessageEveryone(Traitormod.Language.HusksWin, "GameModeIcon.pvp", Color.LightSeaGreen)
         Traitormod.Log("Survival gamemode complete. Ending round in " .. delay)
+
+        for key, value in pairs(Character.CharacterList) do
+            if value.IsHuman and not value.IsDead then
+                Networking.CreateEntityEvent(value, Character.AddToCrewEventData.__new(value.TeamID, {}))
+            end
+        end
 
         Timer.Wait(function ()
             Game.EndGame()

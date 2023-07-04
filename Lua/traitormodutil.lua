@@ -512,8 +512,21 @@ end
 
 Traitormod.SendWelcome = function(client)
     if Traitormod.Config.SendWelcomeMessage or Traitormod.Config.SendWelcomeMessage == nil then
-        Game.SendDirectChatMessage("", "| Traitor Mod v" .. Traitormod.VERSION .. " |\n" .. Traitormod.GetDataInfo(client), nil, ChatMessageType.Server, client)
+        Game.SendDirectChatMessage("", "| Husk Survival RP v" .. Traitormod.VERSION .. " |\n" .. Traitormod.GetDataInfo(client), nil, ChatMessageType.Server, client)
     end
+end
+
+Traitormod.SendColoredMessageEveryone = function (text, icon, color)
+    for key, value in pairs(Client.ClientList) do
+        local messageChat = ChatMessage.Create("", text, ChatMessageType.Default, nil, nil)
+        messageChat.Color = Color(200, 30, 241, 255)
+        Game.SendDirectChatMessage(messageChat, value)
+
+        local messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+        messageBox.IconStyle = icon
+        if color then messageBox.Color = color end
+        Game.SendDirectChatMessage(messageBox, value)
+    end 
 end
 
 Traitormod.ParseSubmarineConfig = function (description)
@@ -603,6 +616,7 @@ Traitormod.GiveJobItems = function (character)
     local job = tostring(character.JobIdentifier)
     local jobLoadout = Traitormod.Loadouts[job]
     local outfitLoadout = Traitormod.Outfits[job]
+    if not (jobLoadout or outfitLoadout) then Traitormod.Log(character.Name.." was not able to load items. Their job has no item loadout!") return end
     local randomitemset = outfitLoadout[math.random(1, #outfitLoadout)]
     local defaultclothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
     local defaulthat = character.Inventory.GetItemInLimbSlot(InvSlotType.Head)
@@ -615,8 +629,6 @@ Traitormod.GiveJobItems = function (character)
         local slot = character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
         character.Inventory.TryPutItem(spawned, slot, true, false, character)
     end)
-
-    if (not jobLoadout or not outfitLoadout) then Traitormod.Log(character.Name.." was not able to load items. Their job has no item loadout!") return end
 
     if wearable then
         Entity.Spawner.AddItemToSpawnQueue(wearable, character.Inventory, nil, nil, function(spawned)
@@ -632,6 +644,20 @@ Traitormod.GiveJobItems = function (character)
         end)
     end
 
+    if math.random(1, 12) == 12 then
+        local possibleLimbs = {
+            LimbType.LeftLeg,
+            LimbType.RightLeg,
+            LimbType.RightArm,
+            LimbType.LeftArm
+        }
+        local limb = possibleLimbs[math.random(1, #possibleLimbs)]
+        NT.SurgicallyAmputateLimb(character,limb,100,100)
+        if math.random(1, 15) == 15 then
+            NTCyb.CyberifyLimb(character, limb)
+        end
+    end
+
     Timer.Wait(function()
         for item in jobLoadout do
             local object = ItemPrefab.GetItemPrefab(item[1])
@@ -645,32 +671,6 @@ Traitormod.GiveJobItems = function (character)
                         if item[4] then
                             local slot = character.Inventory.FindLimbSlot(item[4])
                             character.Inventory.TryPutItem(spawned, slot, true, false, character)
-                        end
-                    end)
-                end
-            end
-        end
-
-        if character.HasJob("huskJob") then
-            HF.SetAffliction(character, "huskinfection", 100)
-            for count=1, math.random(1, 5) do
-                local random = randomitemshusk[math.random(1, #randomitemshusk)]
-                local num = 1
-                if random.MaxStackSize > 4 then 
-                    num = math.random(1, 8)
-                    if (random.Tags == "smallitem,medical" or random.Tags == "chem,syringe,smallitem,medical") then
-                        num = math.random(1, 4)
-                        if random.Identifier == "calyxanide" then
-                            num = 1
-                        elseif random.Identifier == "husk_praziquantel" then
-                            num = math.random(1, 2)
-                        end
-                    end
-                end
-                for counttwo=1, num do
-                    Entity.Spawner.AddItemToSpawnQueue(random, character.Inventory, nil, nil, function (spawned) 
-                        if (spawned.HasTag("mobilecontainer") or spawned.HasTag("crate") or spawned.HasTag("organ")) then
-                            Entity.Spawner.AddEntityToRemoveQueue(spawned)
                         end
                     end)
                 end

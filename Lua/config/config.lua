@@ -97,7 +97,7 @@ config.GamemodeConfig = {
         PointshopCategories = {"deathspawn", "ships"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
-        EndGameDelaySeconds = 15,
+        EndGameDelaySeconds = 10,
         TraitorSelectDelayMin = 120,
         TraitorSelectDelayMax = 150,
 
@@ -118,27 +118,8 @@ config.RoleConfig = {
         }
     },
 
-    Cultist = {
-        SubObjectives = {"Assassinate", "Kidnap", "TurnHusk", "DestroyCaly"},
-        MinSubObjectives = 2,
-        MaxSubObjectives = 3,
-
-        NextObjectiveDelayMin = 30,
-        NextObjectiveDelayMax = 60,
-
-        TraitorBroadcast = true,           -- traitors can broadcast to other traitors using !tc
-        TraitorBroadcastHearable = false,  -- if true, !tc will be hearable in the vicinity via local chat
-        TraitorDm = true,                  -- traitors can send direct messages to other players using !tdm
-
-        -- Names, None
-        TraitorMethodCommunication = "Names",
-
-        SelectBotsAsTargets = true,
-        SelectPiratesAsTargets = false,
-    },
-
-    HuskServant = {
-        TraitorBroadcast = true,
+    Husk = {
+        TraitorBroadcast = false,
     },
 
     Traitor = {
@@ -160,25 +141,6 @@ config.RoleConfig = {
         SelectPiratesAsTargets = false,
         SelectUniqueTargets = true,     -- every traitor target can only be chosen once per traitor (respawn+false -> no end)
         PointsPerAssassination = 100,
-    },
-
-    Clown = {
-        SubObjectives = {"BananaSlip", "SuffocateCrew", "AssassinateDrunk", "GrowMudraptors", "Survive"},
-        MinSubObjectives = 3,
-        MaxSubObjectives = 3,
-
-        NextObjectiveDelayMin = 30,
-        NextObjectiveDelayMax = 60,
-
-        TraitorBroadcast = true,           -- traitors can broadcast to other traitors using !tc
-        TraitorBroadcastHearable = false,  -- if true, !tc will be hearable in the vicinity via local chat
-        TraitorDm = true,                  -- traitors can send direct messages to other players using !tdm
-
-        -- Names, None
-        TraitorMethodCommunication = "Names",
-
-        SelectBotsAsTargets = true,
-        SelectPiratesAsTargets = false,
     },
 }
 
