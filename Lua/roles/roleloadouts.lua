@@ -15,3 +15,32 @@ Traitormod.Outfits["captain"] = {
     {"captainsuniform2", "captainscap2"},
     {"captainsuniform3", "captainscap3"}
 }
+
+Traitormod.Loadouts["huskJob"] = {
+	{"smgunique", 1, 0.09},
+    {"shotgununique", 1, 0.05},
+    {"shotgunshell", math.random(1,12), 0.35},
+    {"thgflaregun", 1, 0.3},
+    {"thgphosphorusflareshot", 2, 0.23},
+    {"flare", 3, 0.55},
+    {"thgflashlightheavy", 1, 0.4},
+}
+
+Traitormod.Outfits["huskJob"] = {
+    {"divinginstructorgarments"},
+    {"divinginstructorgarments", "ballistichelmet1"},
+    {"divinginstructorgarments", "divingmask"},
+    {"divinginstructorgarments", "bluebeanie"},
+    {"divinginstructorgarments", "bluebeanie", "bodyarmor"},
+    {"divinginstructorgarments", "divingmask", "bodyarmor"},
+    {"banditclothes2", "divingmask"},
+    {"banditclothes2", "advanceddivingmask"},
+    {"banditclothes2", "baseballcap"},
+    {"banditclothes2", "bluebeanie"},
+    {"banditclothes2"},
+    {"crewchiefclothes"},
+    {"crewchiefclothes"},
+    {"crewchiefclothes", "captainscap3"},
+    {"crewchiefclothes", "bodyarmor"},
+    {"crewchiefclothes", "captainscap3"}
+}

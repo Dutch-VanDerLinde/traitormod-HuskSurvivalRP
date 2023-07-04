@@ -591,12 +591,15 @@ Traitormod.SpawnBatteryCell = function (inventory)
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), inventory)
 end
 
+local randomitemshusk = {}
+for prefab in ItemPrefab.Prefabs do
+    if prefab.CanBeSold or prefab.CanBeBought and not prefab.Tags == "" and not prefab.Tags == "chair" and not prefab.Tags == "clothing,smallitem" then
+        table.insert(randomitemshusk, prefab)
+    end
+end
+
 Traitormod.GiveJobItems = function (character)
     local client = Traitormod.FindClientCharacter(character)
-    if character.HasJob("huskJob") then
-        HF.SetAffliction(character, "huskinfection", 95)
-    end
-    
     local job = tostring(character.JobIdentifier)
     local jobLoadout = Traitormod.Loadouts[job]
     local outfitLoadout = Traitormod.Outfits[job]
@@ -605,7 +608,7 @@ Traitormod.GiveJobItems = function (character)
     local defaulthat = character.Inventory.GetItemInLimbSlot(InvSlotType.Head)
     local clothes = ItemPrefab.GetItemPrefab(randomitemset[1])
     local hat = ItemPrefab.GetItemPrefab(randomitemset[2])
-
+    local wearable = ItemPrefab.GetItemPrefab(randomitemset[3])
     Entity.Spawner.AddEntityToRemoveQueue(defaultclothes)
     Entity.Spawner.AddEntityToRemoveQueue(defaulthat)
     Entity.Spawner.AddItemToSpawnQueue(clothes, character.Inventory, nil, nil, function(spawned)
@@ -613,26 +616,65 @@ Traitormod.GiveJobItems = function (character)
         character.Inventory.TryPutItem(spawned, slot, true, false, character)
     end)
 
-    Entity.Spawner.AddItemToSpawnQueue(hat, character.Inventory, nil, nil, function(spawned)
-        local slot = character.Inventory.FindLimbSlot(InvSlotType.Head)
-        character.Inventory.TryPutItem(spawned, slot, true, false, character)
-    end)
-    
-    for item in jobLoadout do
-        local object = ItemPrefab.GetItemPrefab(item[1])
-        local amount = item[2]
-        local chance = item[3]
-        local givenChance = math.random()
+    if (not jobLoadout or not outfitLoadout) then Traitormod.Log(character.Name.." was not able to load items. They have no item loadout!") return end
 
-        if givenChance <= chance then
-            for count=1, amount do
-                Entity.Spawner.AddItemToSpawnQueue(object, character.Inventory, nil, nil, function(spawned)
-                    if item[4] then
-                        local slot = character.Inventory.FindLimbSlot(item[4])
-                        character.Inventory.TryPutItem(spawned, slot, true, false, character)
-                    end
-                end)
+    if wearable then
+        Entity.Spawner.AddItemToSpawnQueue(wearable, character.Inventory, nil, nil, function(spawned)
+            local slot = character.Inventory.FindLimbSlot(InvSlotType.OuterClothes)
+            character.Inventory.TryPutItem(spawned, slot, true, false, character)
+        end)
+    end
+
+    if hat then
+        Entity.Spawner.AddItemToSpawnQueue(hat, character.Inventory, nil, nil, function(spawned)
+            local slot = character.Inventory.FindLimbSlot(InvSlotType.Head)
+            character.Inventory.TryPutItem(spawned, slot, true, false, character)
+        end)
+    end
+
+    Timer.Wait(function()
+        for item in jobLoadout do
+            local object = ItemPrefab.GetItemPrefab(item[1])
+            local amount = item[2]
+            local chance = item[3]
+            local givenChance = math.random()
+
+            if givenChance <= chance then
+                for count=1, amount do
+                    Entity.Spawner.AddItemToSpawnQueue(object, character.Inventory, nil, nil, function(spawned)
+                        if item[4] then
+                            local slot = character.Inventory.FindLimbSlot(item[4])
+                            character.Inventory.TryPutItem(spawned, slot, true, false, character)
+                        end
+                    end)
+                end
             end
         end
-    end
+
+        if character.HasJob("huskJob") then
+            HF.SetAffliction(character, "huskinfection", 100)
+            for count=1, math.random(1, 5) do
+                local random = randomitemshusk[math.random(1, #randomitemshusk)]
+                local num = 1
+                if random.MaxStackSize > 4 then 
+                    num = math.random(1, 8)
+                    if (random.Tags == "smallitem,medical" or random.Tags == "chem,syringe,smallitem,medical") then
+                        num = math.random(1, 4)
+                        if random.Identifier == "calyxanide" then
+                            num = 1
+                        elseif random.Identifier == "husk_praziquantel" then
+                            num = math.random(1, 2)
+                        end
+                    end
+                end
+                for counttwo=1, num do
+                    Entity.Spawner.AddItemToSpawnQueue(random, character.Inventory, nil, nil, function (spawned) 
+                        if (spawned.HasTag("mobilecontainer") or spawned.HasTag("crate") or spawned.HasTag("organ")) then
+                            Entity.Spawner.AddEntityToRemoveQueue(spawned)
+                        end
+                    end)
+                end
+            end
+        end
+    end, 100)
 end
