@@ -616,7 +616,7 @@ Traitormod.GiveJobItems = function (character)
         character.Inventory.TryPutItem(spawned, slot, true, false, character)
     end)
 
-    if (not jobLoadout or not outfitLoadout) then Traitormod.Log(character.Name.." was not able to load items. They have no item loadout!") return end
+    if (not jobLoadout or not outfitLoadout) then Traitormod.Log(character.Name.." was not able to load items. Their job has no item loadout!") return end
 
     if wearable then
         Entity.Spawner.AddItemToSpawnQueue(wearable, character.Inventory, nil, nil, function(spawned)
