@@ -35,7 +35,7 @@ config.AmountCodeWords = 2
 
 config.OptionalTraitors = true        -- players can use !toggletraitor
 config.RagdollOnDisconnect = false
-config.EnableControlHusk = false     -- EXPERIMENTAL: enable to control husked character after death
+config.EnableControlHusk = true     -- EXPERIMENTAL: enable to control husked character after death
 config.DeathLogBook = true
 config.HideCrewList = true
 config.RoleplayNames = true
