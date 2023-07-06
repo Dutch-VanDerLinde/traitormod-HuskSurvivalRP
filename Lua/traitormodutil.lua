@@ -517,14 +517,15 @@ Traitormod.SendWelcome = function(client)
 end
 
 Traitormod.SendColoredMessageEveryone = function (text, icon, color)
+    if not color then color = Color(255,255,255,255) end
     for key, value in pairs(Client.ClientList) do
         local messageChat = ChatMessage.Create("", text, ChatMessageType.Default, nil, nil)
-        messageChat.Color = Color(200, 30, 241, 255)
+        messageChat.Color = color
         Game.SendDirectChatMessage(messageChat, value)
 
         local messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
         messageBox.IconStyle = icon
-        if color then messageBox.Color = color end
+        messageBox.Color = color
         Game.SendDirectChatMessage(messageBox, value)
     end 
 end
@@ -644,7 +645,7 @@ Traitormod.GiveJobItems = function (character)
         end)
     end
 
-    if math.random(1, 12) == 12 then
+    if math.random(1, 7) == 1 then
         local possibleLimbs = {
             LimbType.LeftLeg,
             LimbType.RightLeg,
@@ -652,8 +653,8 @@ Traitormod.GiveJobItems = function (character)
             LimbType.LeftArm
         }
         local limb = possibleLimbs[math.random(1, #possibleLimbs)]
-        NT.SurgicallyAmputateLimb(character,limb,100,100)
-        if math.random(1, 15) == 15 then
+        NT.SurgicallyAmputateLimb(character,limb,100,0)
+        if math.random(1, 5) == 1 then
             NTCyb.CyberifyLimb(character, limb)
         end
     end

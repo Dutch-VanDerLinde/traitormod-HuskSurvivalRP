@@ -192,7 +192,7 @@ function gm:Think()
         Traitormod.Log("Survival gamemode complete. Ending round in " .. delay)
 
         for key, value in pairs(Character.CharacterList) do
-            if value.IsHuman and not value.IsDead then
+            if value.IsHuman then
                 Networking.CreateEntityEvent(value, Character.AddToCrewEventData.__new(value.TeamID, {}))
             end
         end

@@ -251,7 +251,6 @@ Traitormod.AddCommand("!alive", function (client, args)
     for index, value in pairs(Client.ClientList) do
         if value.Character and value.Character.IsHuman and not value.Character.IsBot then
             local job = tostring(value.Character.Info.Job.Prefab.Name)
-
             if job == "Prison Doctor" then
                 job = "Doctor"
             elseif job == "Maintenance Worker" then
@@ -265,6 +264,7 @@ Traitormod.AddCommand("!alive", function (client, args)
             end
         end
     end
+    if msg == "" then msg = Traitormod.Language.CMDAliveNoPlayers end
 
     Traitormod.SendMessage(client, msg)
 

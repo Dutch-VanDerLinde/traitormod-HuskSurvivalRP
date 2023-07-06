@@ -362,6 +362,7 @@ language.CMDLocateSub = "Submarine is %sm away from you, at %s."
 language.CMDRoundTime = "This round has been going for %s."
 language.CMDPlaytime = "Your playtime is %s."
 language.CMDHuskChat = "%s (as %s)"
+language.CMDAliveNoPlayers = "There no alive human players currently."
 
 language.MaleNames = {"Liam","Noah","James","Oliver","Benjamin","Elijah","Lucas","Mason","Logan","Alexander","Ethan","Jacob","Michael","Daniel",
 "Henry","Jackson","Sebastian","Aiden","Matthew","Samuel","David","Joseph","Carter","Owen","Wyatt","John","Jack","Luke","Jayden","Dylan",
