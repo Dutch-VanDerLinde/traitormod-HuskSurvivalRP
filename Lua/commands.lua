@@ -258,9 +258,9 @@ Traitormod.AddCommand("!alive", function (client, args)
             end
 
             if value.Character.IsDead then
-                msg = msg .. value.Name .. " ---- " .. Traitormod.Language.Dead .. " as " .. job .. " " ..value.Name .."\n"
+                msg = msg .. value.Name .. " ---- " .. Traitormod.Language.Dead .. " as " .. job .. " " ..value.Character.Name .."\n"
             else
-                msg = msg .. value.Name .. " ++++ " .. Traitormod.Language.Alive .. " as " .. job .. " " .. value.Name .."\n"
+                msg = msg .. value.Name .. " ++++ " .. Traitormod.Language.Alive .. " as " .. job .. " " .. value.Character.Name .."\n"
             end
         end
     end

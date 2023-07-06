@@ -187,15 +187,8 @@ function gm:Think()
 
     if not self.Ending and Game.RoundStarted and self.EndOnComplete and ended then
         local delay = self.EndGameDelaySeconds or 0
-
         Traitormod.SendColoredMessageEveryone(Traitormod.Language.HusksWin, "GameModeIcon.pvp", Color.LightSeaGreen)
         Traitormod.Log("Survival gamemode complete. Ending round in " .. delay)
-
-        for key, value in pairs(Character.CharacterList) do
-            if value.IsHuman then
-                Networking.CreateEntityEvent(value, Character.AddToCrewEventData.__new(value.TeamID, {}))
-            end
-        end
 
         Timer.Wait(function ()
             Game.EndGame()
