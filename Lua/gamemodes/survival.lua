@@ -11,11 +11,10 @@ gm.LootTable = {
         {'antidama2', 0.35, 3, 1},
         {'revolverround', 0.25, 3, 3}
     },
-    seeds = {
+    seed = {
         {'batterycell', 0.3, 1, 1},
         {'opium', 0.3, 2, 1},
         {'tonicliquid', 0.2, 3, 1},
-        {'idcardstaff', 0.3, 1, 1}
     },
 }
 
@@ -58,6 +57,8 @@ function gm:Start()
     Hook.Add("characterDeath", "Traitormod.Survival.CharacterDeath", function(character, affliction)
         this:CharacterDeath(character)
     end)
+
+    Traitormod.SpawnLootTables(gm.LootTable)
 end
 
 function gm:PreStart()
@@ -69,8 +70,6 @@ function gm:PreStart()
 
         Traitormod.GiveJobItems(character)
     end)
-
-    Traitormod.SpawnLootTables(gm.LootTable)
 end
 
 function gm:AwardCrew()
@@ -207,6 +206,13 @@ function gm:Think()
         local delay = self.EndGameDelaySeconds or 0
         Traitormod.SendColoredMessageEveryone(Traitormod.Language.HusksWin, "GameModeIcon.pvp", Color.LightSeaGreen)
         Traitormod.Log("Survival gamemode complete. Ending round in " .. delay)
+
+        for key, value in pairs(Character.CharacterList) do
+            if value.IsHuman and value.IsDead then
+                value.Revive(false)
+                Networking.CreateEntityEvent(value, Character.AddToCrewEventData.__new(value.TeamID, {}))
+            end
+        end
 
         Timer.Wait(function ()
             Game.EndGame()
