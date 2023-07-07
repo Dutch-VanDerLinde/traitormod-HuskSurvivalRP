@@ -2,21 +2,6 @@ local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 gm.Name = "Survival"
-gm.LootTable = {
-    --Uses binomial distribution (p is %, n is tries)
-    --refrigator = {
-    --{'identifier', p, n, amount}
-    rations = {
-        {'plastic', 0.6, 3, 1},
-        {'antidama2', 0.35, 3, 1},
-        {'revolverround', 0.25, 3, 3}
-    },
-    seed = {
-        {'batterycell', 0.3, 1, 1},
-        {'opium', 0.3, 2, 1},
-        {'tonicliquid', 0.2, 3, 1},
-    },
-}
 
 function gm:CharacterDeath(character)
     local client = Traitormod.FindClientCharacter(character)
@@ -58,7 +43,37 @@ function gm:Start()
         this:CharacterDeath(character)
     end)
 
-    Traitormod.SpawnLootTables(gm.LootTable)
+    local loottable = {
+        --Uses binomial distribution (p is %, n is tries)
+        --refrigator = {
+        --{'identifier', p, n, amount}
+        rations = {
+            {"he-humanburger", 0.65, 2, 1},
+            {"he-crawlerburger", 0.5, 2, math.random(1, 2)},
+            {"he-bread", 0.75, 2, math.random(1, 3)},
+            {"banana", 0.4, 2, math.random(1, 2)},
+            {"he-cookedthresherfilet", 0.4, 1, 1},
+            {"he-cookedcrawlerfilet", 0.75, math.random(1, 2), 2},
+        },
+        seed = {
+            {"aquaticpoppyseed", 0.2, 2, 1},
+            {"elastinseed", 0.2, 1, 1},
+            {"yeastshroomseed", 0.2, 1, 1},
+            {"fiberseed", 0.2, 1, 1},
+            {"rubberseed", 0.8, 2, math.random(1, 2)},
+            {"thal_rustseed", 0.3, 2, 1},
+            {"thal_wheatseed", 0.4, 2, 1},
+            {"saltvineseed", 0.9, 1, 1},
+            {"bubbleberryvineseed", 0.55, 2, 1},
+            {"creepingorangevineseed", 0.65, 2, 2},
+            {"popnutvineseed", 0.57, 2, 1},
+            {"tobaccovineseed", 0.7, 1, 1},
+            {"bacteriaslime", 0.5, 2, 1},
+            {"seedbag", 1, 1, 1},
+        },
+    }
+
+    Traitormod.SpawnLootTables(loottable)
 end
 
 function gm:PreStart()
