@@ -605,11 +605,16 @@ Traitormod.SpawnBatteryCell = function (inventory)
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), inventory)
 end
 
-local randomitemshusk = {}
-for prefab in ItemPrefab.Prefabs do
-    if prefab.CanBeSold or prefab.CanBeBought and not prefab.Tags == "" and not prefab.Tags == "chair" and not prefab.Tags == "clothing,smallitem" then
-        table.insert(randomitemshusk, prefab)
-    end
+Traitormod.shuffleArray = function (array)
+	local shuffledArray = {}
+	local originalArray = {}
+	for key, value in pairs(array) do
+		originalArray[key] = value
+	end
+	while #originalArray > 0 do
+		table.insert(shuffledArray, table.remove(originalArray, math.random(#originalArray)))
+	end
+	return shuffledArray
 end
 
 Traitormod.GiveJobItems = function (character)
@@ -645,7 +650,7 @@ Traitormod.GiveJobItems = function (character)
         end)
     end
 
-    if math.random(1, 7) == 1 then
+    if math.random(1, 8) == 1 then
         local possibleLimbs = {
             LimbType.LeftLeg,
             LimbType.RightLeg,
@@ -678,4 +683,25 @@ Traitormod.GiveJobItems = function (character)
             end
         end
     end, 100)
+end
+
+Traitormod.SpawnLootTables = function (loottable)
+    for item in Submarine.MainSub.GetItems(false) do
+        if item.HasTag("container") then
+            for tag, content in pairs(loottable) do
+                if item.HasTag(tag) then
+                    -- Iterate through all the items in the loot table and do spawning procedure
+                    for loot in Traitormod.shuffleArray(content) do
+                        for n = 1, loot[3] do
+                            if math.random() <= loot[2] then
+                                for n = 1, loot[4] do
+                                    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(loot[1]), item.OwnInventory, nil, nil, nil)
+                                end
+                            end
+                        end
+                    end
+                end
+            end
+        end
+    end
 end

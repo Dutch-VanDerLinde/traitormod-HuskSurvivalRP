@@ -2,6 +2,22 @@ local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 gm.Name = "Survival"
+gm.LootTable = {
+    --Uses binomial distribution (p is %, n is tries)
+    --refrigator = {
+    --{'identifier', p, n, amount}
+    rations = {
+        {'plastic', 0.6, 3, 1},
+        {'antidama2', 0.35, 3, 1},
+        {'revolverround', 0.25, 3, 3}
+    },
+    seeds = {
+        {'batterycell', 0.3, 1, 1},
+        {'opium', 0.3, 2, 1},
+        {'tonicliquid', 0.2, 3, 1},
+        {'idcardstaff', 0.3, 1, 1}
+    },
+}
 
 function gm:CharacterDeath(character)
     local client = Traitormod.FindClientCharacter(character)
@@ -53,6 +69,8 @@ function gm:PreStart()
 
         Traitormod.GiveJobItems(character)
     end)
+
+    Traitormod.SpawnLootTables(gm.LootTable)
 end
 
 function gm:AwardCrew()
