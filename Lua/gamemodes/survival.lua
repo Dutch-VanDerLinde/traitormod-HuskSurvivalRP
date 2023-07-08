@@ -209,7 +209,7 @@ function gm:Think()
     local ended = true
 
     for key, value in pairs(Character.CharacterList) do
-        if not value.IsDead and value.IsHuman and value.TeamID == CharacterTeamType.Team1 then
+        if not value.IsDead and value.IsHuman and value.TeamID == CharacterTeamType.Team1 and not value.IsBot then
             local role = Traitormod.RoleManager.GetRole(value)
             if role == nil or not role.IsAntagonist then
                 ended = false
@@ -223,7 +223,7 @@ function gm:Think()
         Traitormod.Log("Survival gamemode complete. Ending round in " .. delay)
 
         for key, value in pairs(Character.CharacterList) do
-            if value.IsHuman and value.IsDead then
+            if value.IsHuman then
                 value.Revive(false)
                 Networking.CreateEntityEvent(value, Character.AddToCrewEventData.__new(value.TeamID, {}))
             end

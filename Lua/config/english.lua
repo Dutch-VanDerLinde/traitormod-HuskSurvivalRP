@@ -97,7 +97,7 @@ language.CharacterDeath = "Your character %s has died. You have lost a life and 
 
 language.CrewWins = "The humans have survived."
 language.TraitorHandcuffed = "The crew handcuffed the traitor %s."
-language.HusksWin = "All humans have succumbed to the husk!"
+language.HusksWin = "All humans have succumbed to the husk! The round ends."
 
 language.TraitorsRound = "Traitors of the round:"
 language.NoTraitors = "No traitors."
