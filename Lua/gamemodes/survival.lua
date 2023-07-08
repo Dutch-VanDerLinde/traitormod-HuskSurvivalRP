@@ -221,14 +221,17 @@ function gm:Think()
         local delay = self.EndGameDelaySeconds or 0
         Traitormod.SendColoredMessageEveryone(Traitormod.Language.HusksWin, "GameModeIcon.pvp", Color.LightSeaGreen)
         Traitormod.Log("Survival gamemode complete. Ending round in " .. delay)
-
+        --[[
         for key, value in pairs(Character.CharacterList) do
             if value.IsHuman then
+                local afflictionlist = value.CharacterHealth.GetAllAfflictions()
                 value.Revive(false)
-                Networking.CreateEntityEvent(value, Character.AddToCrewEventData.__new(value.TeamID, {}))
+                Timer.Wait(function() 
+                    Networking.CreateEntityEvent(value, Character.AddToCrewEventData.__new(value.TeamID, {}))
+                end, 1000)
             end
         end
-
+        --]]
         Timer.Wait(function ()
             Game.EndGame()
         end, delay * 1000)

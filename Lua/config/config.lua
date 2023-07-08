@@ -97,7 +97,7 @@ config.GamemodeConfig = {
         PointshopCategories = {"deathspawn", "ships"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
-        EndGameDelaySeconds = 10,
+        EndGameDelaySeconds = 15,
         TraitorSelectDelayMin = 120,
         TraitorSelectDelayMax = 150,
 
