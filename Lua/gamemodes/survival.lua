@@ -70,6 +70,8 @@ function gm:Start()
             {"tobaccovineseed", 0.7, 1, 1},
             {"bacteriaslime", 0.5, 2, 1},
             {"seedbag", 1, 1, 1},
+            {"fertilizer", 1, 1, 1},
+            {"fertilizer", 0.2, 1, 1},
         },
     }
 
