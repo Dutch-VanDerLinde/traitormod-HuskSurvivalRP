@@ -321,6 +321,8 @@ language.Pointshop = {
     deathspawn = "Death Spawn",
     wiring = "Wiring",
     ores = "Ores",
+    administrator2 = "Administrator",
+    administrator = "Administrator",
     security = "Security",
     ships = "Ships",
     materials = "Materials",
@@ -438,5 +440,14 @@ language.LastNames = {"Smith","Hall","Stewart","Price","Johnson","Allen","Sanche
 "Whitely","Wiley","Williams","Zhang","Barotrauma","van der Linde","Matthews","Pinhead","Marston","Escuella","MacGuire","Trelawny","Duffy","Cornwall",
 "O'Driscoll","Bronte","Falls","Hernández","Granger","Adler","Picard","Hawley","Federman","Horowitz","Cantor","Compson","Dickens","Fussar","Valdespino",
 "Boolean","Man","Harnley","Guitar","Fentanyl","Bones","Dingle","Delcan","Truther","Leana"}
+
+
+--administrator delivery stuff
+language.ToAzoe = "There's a label on it, it says: 'To Azoe Region'"
+language.ToMeltwater = "There's a label on it, it says: 'To Meltwater Region'"
+language.DeliverySuccess = "Thank you for purchasing. Your supplies will be delivered to you shortly. ETA: 3 minutes"
+language.DeliveryArrival = "Your delivery has arrived!"
+
+language.MedicalDeliveryCrate = "A crate full of medical supplies. %s"
 
 return language

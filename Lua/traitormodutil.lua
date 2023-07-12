@@ -601,10 +601,6 @@ Traitormod.randomizeCharacterName = function (character)
     end
 end
 
-Traitormod.SpawnBatteryCell = function (inventory)
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), inventory)
-end
-
 Traitormod.shuffleArray = function (array)
 	local shuffledArray = {}
 	local originalArray = {}
@@ -659,7 +655,7 @@ Traitormod.GiveJobItems = function (character)
         }
         local limb = possibleLimbs[math.random(1, #possibleLimbs)]
         NT.SurgicallyAmputateLimb(character,limb,100,0)
-        if math.random(1, 5) == 1 then
+        if math.random(1, 2) == 1 then
             NTCyb.CyberifyLimb(character, limb)
         end
     end
