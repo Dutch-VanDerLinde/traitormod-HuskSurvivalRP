@@ -1,9 +1,17 @@
 local category = {}
 
 category.Identifier = "administrator2"
+category.CanAccess = function(client)
+    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.HasJob("adminone") then
+        return true
+    else
+        return false
+    end
+end
 
-local team = Traitormod.Language.ToAzoe
+local team = "Placeholder"
 local function SpawnCrate(client, items, color, description)
+    local team = Traitormod.Language.ToAzoe
     local messageChat = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.Default, nil, nil)
     local messageBox = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.ServerMessageBoxInGame, nil, nil)
     messageChat.Color = Color(66, 135, 235)
@@ -12,10 +20,12 @@ local function SpawnCrate(client, items, color, description)
     Game.SendDirectChatMessage(messageBox, client)
 
     Timer.Wait(function ()
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("securemetalcrate"), client.Character.Inventory, nil, nil, function (item)
+        local spawn = Traitormod.GetRandomJobWaypoint("DeliverySpawnAzoe")
+
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("securemetalcrate"), spawn.WorldPosition, nil, nil, function (item)
             item.Description = description
             item.set_InventoryIconColor(color)
-            item.SpriteColor = Color(color)
+            item.SpriteColor = color
 
             local colorsprite = item.SerializableProperties[Identifier("SpriteColor")]
             Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(colorsprite, item))
@@ -27,10 +37,14 @@ local function SpawnCrate(client, items, color, description)
             end
         end)
 
-        messageChat = ChatMessage.Create("ARRIVED", Traitormod.Language.DeliveryArrival, ChatMessageType.Default, nil, nil)
+        messageChat = ChatMessage.Create("", Traitormod.Language.DeliveryArrival, ChatMessageType.Default, nil, nil)
         Game.SendDirectChatMessage(messageChat, client)
-    end, math.random(2, 4)*60000) -- convert minutes to milliseconds
+    end, math.random(2, 4)*60000)
 end
+
+Timer.Wait(function () 
+    team = Traitormod.Language.ToAzoe
+end, 5000)
 
 category.Products = {
     {
@@ -40,7 +54,7 @@ category.Products = {
         PricePerLimit = 1000,
         Action = function (client, product, paidPrice)
             local description = string.format(Traitormod.Language.MedicalDeliveryCrate, team)
-            local color = Color(250, 80, 65)
+            local color = Color(250, 80, 65, 255)
             local items = {
                 "antidama1",
                 "antidama1",

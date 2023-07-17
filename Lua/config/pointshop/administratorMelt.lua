@@ -1,8 +1,15 @@
 local category = {}
 
 category.Identifier = "administrator"
+category.CanAccess = function(client)
+    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.HasJob("admintwo") then
+        return true
+    else
+        return false
+    end
+end
 
-local team = Traitormod.Language.ToMeltwater
+local team = "Placeholder"
 local function SpawnCrate(client, items, color, description)
     local messageChat = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.Default, nil, nil)
     local messageBox = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.ServerMessageBoxInGame, nil, nil)
@@ -31,6 +38,10 @@ local function SpawnCrate(client, items, color, description)
         Game.SendDirectChatMessage(messageChat, client)
     end, math.random(2, 4)*60000) -- convert minutes to milliseconds
 end
+
+Timer.Wait(function () 
+    team = Traitormod.Language.ToMeltwater
+end, 5000)
 
 category.Products = {
     {

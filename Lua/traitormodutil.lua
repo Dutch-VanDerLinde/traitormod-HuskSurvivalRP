@@ -8,6 +8,7 @@ Traitormod.Languages = Traitormod.Config.Languages
 Traitormod.DefaultLanguage = Traitormod.Languages[1]
 Traitormod.Language = Traitormod.DefaultLanguage
 
+--[[
 for key, value in pairs(Traitormod.Languages) do
     if Traitormod.Config.Language == value.Name then
         Traitormod.Language = value
@@ -21,6 +22,7 @@ for key, value in pairs(Traitormod.Languages) do
         break
     end
 end
+--]]
 
 local json = dofile(Traitormod.Path .. "/Lua/json.lua")
 
@@ -700,4 +702,17 @@ Traitormod.SpawnLootTables = function (loottable)
             end
         end
     end
+end
+
+Traitormod.GetRandomJobWaypoint = function (JobIdentifier)
+    local waypoints = {}
+
+    for key, value in pairs(Submarine.MainSub.GetWaypoints(true)) do
+        if value.AssignedJob and value.AssignedJob.Identifier == JobIdentifier then
+            table.insert(waypoints, value)
+        end
+    end
+
+    local waypoint = waypoints[math.random(#waypoints)]
+    return waypoint
 end

@@ -73,6 +73,11 @@ function gm:Start()
             {"fertilizer", 1, 1, 1},
             {"fertilizer", 0.2, 1, 1},
         },
+        divingsuitcontainerhorizontal = {
+            {"armoredivingmask_improved", 0.4, 1, math.random(1, 3)},
+            {"armoredivingmask", 0.8, 2, 1},
+            {"armoredivingmask", 1, 1, 1},
+        },
     }
 
     Traitormod.SpawnLootTables(loottable)
