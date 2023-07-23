@@ -251,10 +251,16 @@ Traitormod.AddCommand("!alive", function (client, args)
     for index, value in pairs(Client.ClientList) do
         if value.Character and value.Character.IsHuman and not value.Character.IsBot then
             local job = tostring(value.Character.Info.Job.Prefab.Name)
-            if job == "Prison Doctor" then
-                job = "Doctor"
-            elseif job == "Maintenance Worker" then
-                job = "M. Worker"
+            if job == "Meltwater Region Admin" then
+                job = "Melt Admin"
+            elseif job == "Azoe Region Admin" then
+                job = "Azoe Admin"
+            elseif job == "Meltwater Security" then
+                job = "Melt Security"
+            elseif job == "Cave Dweller" then
+                job = "C. Dweller"
+            elseif job == "Medical Doctor" then
+                job = "Medic"
             end
 
             if value.Character.IsDead then

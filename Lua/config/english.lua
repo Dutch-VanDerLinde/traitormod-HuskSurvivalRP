@@ -93,7 +93,7 @@ language.Gamemode = "Gamemode: %s"
 language.RandomEvents = "Random Events: %s"
 language.ObjectiveCompleted = "Objective completed: %s"
 language.ObjectiveFailed = "Objective failed: %s"
-language.CharacterDeath = "Your character %s has died. You have lost a life and a new character will be made."
+language.CharacterDeath = "Your character %s has died. You are no longer allowed to information from that character. A new name has been given."
 
 language.CrewWins = "The humans have survived."
 language.TraitorHandcuffed = "The crew handcuffed the traitor %s."

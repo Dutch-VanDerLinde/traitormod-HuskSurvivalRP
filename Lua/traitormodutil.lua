@@ -592,6 +592,11 @@ Traitormod.randomizeCharacterName = function (character)
             randomName = Traitormod.GetRandomName("female")
         end
 
+        if client.SteamID == "76561198408663756" then
+            name = nil
+            randomName = "Dr. Javier"
+        end
+
         if name == nil then
             Traitormod.ChangeRPName(client, randomName)
             name = randomName
@@ -628,22 +633,22 @@ Traitormod.GiveJobItems = function (character)
     local hat = ItemPrefab.GetItemPrefab(randomitemset[2])
     local wearable = ItemPrefab.GetItemPrefab(randomitemset[3])
     Entity.Spawner.AddEntityToRemoveQueue(defaultclothes)
-    Entity.Spawner.AddEntityToRemoveQueue(defaulthat)
     Entity.Spawner.AddItemToSpawnQueue(clothes, character.Inventory, nil, nil, function(spawned)
         local slot = character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
         character.Inventory.TryPutItem(spawned, slot, true, false, character)
     end)
 
-    if wearable then
-        Entity.Spawner.AddItemToSpawnQueue(wearable, character.Inventory, nil, nil, function(spawned)
-            local slot = character.Inventory.FindLimbSlot(InvSlotType.OuterClothes)
+    if hat then
+        Entity.Spawner.AddEntityToRemoveQueue(defaulthat)
+        Entity.Spawner.AddItemToSpawnQueue(hat, character.Inventory, nil, nil, function(spawned)
+            local slot = character.Inventory.FindLimbSlot(InvSlotType.Head)
             character.Inventory.TryPutItem(spawned, slot, true, false, character)
         end)
     end
 
-    if hat then
-        Entity.Spawner.AddItemToSpawnQueue(hat, character.Inventory, nil, nil, function(spawned)
-            local slot = character.Inventory.FindLimbSlot(InvSlotType.Head)
+    if wearable then
+        Entity.Spawner.AddItemToSpawnQueue(wearable, character.Inventory, nil, nil, function(spawned)
+            local slot = character.Inventory.FindLimbSlot(InvSlotType.OuterClothes)
             character.Inventory.TryPutItem(spawned, slot, true, false, character)
         end)
     end
@@ -661,6 +666,8 @@ Traitormod.GiveJobItems = function (character)
             NTCyb.CyberifyLimb(character, limb)
         end
     end
+
+    Traitormod.DoJobSet(character)
 
     Timer.Wait(function()
         for item in jobLoadout do
@@ -715,4 +722,76 @@ Traitormod.GetRandomJobWaypoint = function (JobIdentifier)
 
     local waypoint = waypoints[math.random(#waypoints)]
     return waypoint
+end
+
+Traitormod.DoJobSet = function (character)
+    if character.HasJob("cavedweller") then
+        Entity.Spawner.AddEntityToRemoveQueue(character.Inventory.GetItemInLimbSlot(InvSlotType.Head))
+        local possibleMasks = {
+            "divingmaskbeanie",
+            "divingmask",
+            "advanceddivingmask",
+            "advanceddivingmaskbeanie",
+        }
+        local possibleBags = { -- Multiple of the same item to increase commonness
+            "toolbelt",
+            "toolbelt",
+            "toolbelt",
+            "toolbelt",
+            "toolbelt",
+            "toolbelt",
+            "scp_tacpack",
+            "scp_tacpack",
+            "scp_assaultpack",
+            "scp_assaultpack",
+            "scp_assaultpack",
+            "scp_fieldpack",
+            "scp_heavypack",
+        }
+        local possibleMelee = { -- Multiple of the same item to increase commonness
+            "divingknife",
+            "divingknife",
+            "divingknife",
+            "divingknife",
+            "huskstinger",
+            "huskstinger",
+            "huskstinger",
+            "huskstinger",
+            "crowbar",
+            "crowbar",
+            "crowbar",
+            "scp_m9bayonet",
+            "scp_m9bayonet",
+            "scp_m9bayonet",
+            "scp_improvmachete",
+            "scp_improvmachete",
+            "scp_machete",
+        }
+        local possibleLights = { -- Multiple of the same item to increase commonness
+            "flashlight",
+            "flashlight",
+            "thgflashlightheavy",
+            "thgflashlightheavy",
+            "thgcellcharger",
+            "thgtorch",
+        }
+
+        local randomMask = possibleMasks[math.random(1, #possibleMasks)]
+        local randomBag = possibleBags[math.random(1, #possibleBags)]
+        local randomMelee = possibleMelee[math.random(1, #possibleMelee)]
+        local randomLight = possibleLights[math.random(1, #possibleLights)]
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMask), character.Inventory, nil, nil, function(spawned)
+            character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Head), true, false, character)
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), spawned.OwnInventory, math.random(28, 90))
+        end)
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomBag), character.Inventory, nil, nil, function(spawned)
+            character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Bag), true, false, character)
+        end)
+        if math.random(1, 5) ~= 5 then
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomLight), character.Inventory, nil, nil, function(spawned)
+                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))
+            end)
+        end
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil, math.random(0, 2))
+    end 
 end

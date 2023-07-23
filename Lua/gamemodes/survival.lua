@@ -28,7 +28,7 @@ function gm:CharacterDeath(character)
     local name = Traitormod.GetRPName(client)
     local msg = string.format(Traitormod.Language.CharacterDeath, name)
     Traitormod.SendMessage(client, msg, "GameModeIcon.pvp")
-    Traitormod.AdjustLives(client, -1)
+    --Traitormod.AdjustLives(client, -1)
     Traitormod.ChangeRPName(client, nil)
 end
 

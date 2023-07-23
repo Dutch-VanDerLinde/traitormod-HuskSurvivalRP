@@ -3,6 +3,7 @@ dofile(Traitormod.Path .. "/Lua/roles/roleloadouts.lua")
 
 Game.OverrideTraitors(true)
 Game.EnableControlHusk(true)
+Game.NetLobbyScreen.LevelSeed = "DownDown" -- So the map is on a better seed suited for Husk Survival
 
 if Traitormod.Config.RagdollOnDisconnect ~= nil then
     Game.DisableDisconnectCharacter(not Traitormod.Config.RagdollOnDisconnect)

@@ -42,31 +42,22 @@ local function SpawnCrate(client, items, color, description)
     end, math.random(2, 4)*60000)
 end
 
-Timer.Wait(function () 
+Timer.Wait(function ()
     team = Traitormod.Language.ToAzoe
 end, 5000)
 
 category.Products = {
     {
         Identifier = "Medical Delivery",
-        Price = 2000,
+        Price = 1000,
         Limit = 2,
         PricePerLimit = 1000,
         Action = function (client, product, paidPrice)
             local description = string.format(Traitormod.Language.MedicalDeliveryCrate, team)
             local color = Color(250, 80, 65, 255)
             local items = {
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
+                "antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1",
+
             }
 
             SpawnCrate(client, items, color, description)
