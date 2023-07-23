@@ -1,6 +1,4 @@
-﻿local part = 1
-
-if SERVER then
+﻿if SERVER then
     -- Functions
     local function HideIntercomButton(client, team)
         local message = Networking.Start("IntercomHide")
@@ -52,6 +50,53 @@ if SERVER then
                     ShowIntercomButton(client, "melt")
                  end
              end
+        end
+    end)
+
+    -- Admin message
+    Networking.Receive("admin", function(message, sender)
+        local adminmsg = message.ReadString()
+        local finalmsg = nil
+        local discordWebHook = "https://discord.com/api/webhooks/1132681601235550248/Bv-aVamzlUk6NamJlnyXQjBDD3A_zMTNBI3fZdKJD0m-liucLGdTru_DjBBddPLaF861"
+        local function escapeQuotes(str)
+            return str:gsub("\"", "\\\"")
+        end
+        
+        if sender.Character then
+            finalmsg = "``User "..sender.Name.." as "..sender.Character.Name..":`` "..adminmsg
+        else
+            finalmsg = "``User "..sender.Name..":`` "..adminmsg
+        end
+        local escapedMessage = escapeQuotes(finalmsg)
+        Networking.RequestPostHTTP(discordWebHook, function(result) end, '{\"content\": \"'..escapedMessage..'\", \"username\": \"'..'ADMIN HELP (HUSK SURVIVAL)'..'\"}')
+        for key, client in pairs(Client.ClientList) do
+            if client.HasPermission(ClientPermissions.Kick) then
+                local messageChat = ChatMessage.Create("", "TO ADMINS:\n"..adminmsg, ChatMessageType.Default, nil, sender)
+                messageChat.Color = Color.IndianRed
+                Game.SendDirectChatMessage(messageChat, client)
+                Game.SendDirectChatMessage(messageChat, sender)
+            end
+        end
+    end)
+
+    -- Check if the ID card is correct when intercom button is pressed
+    Networking.Receive("checkID", function(message, sender)
+        if sender.Character and not sender.Character.IsDead and sender.Character.IsHuman then
+            local idcard = sender.Character.Inventory.FindItemByIdentifier("idcard")
+
+            if idcard then
+                local component = idcard.GetComponentString("IdCard")
+
+                if component.OwnerJobId == "adminone" then
+                    ShowIntercomButton(sender, "azoe")
+                elseif component.OwnerJobId == "admintwo" then
+                    ShowIntercomButton(sender, "melt")
+                else
+                    HideIntercomButton(sender, "admin")
+                end
+            else
+                HideIntercomButton(sender, "admin")
+            end
         end
     end)
 
@@ -117,16 +162,16 @@ if SERVER then
                             end
                         end
 
-                        if distance <= 15000 then
+                        if distance <= 10000 then
                             Game.SendDirectChatMessage(messageBox, client)
                         end
                     end
                 end
             else
-                HideIntercomButton(sender, "azoe")
+                HideIntercomButton(sender, "admin")
             end
         else
-            HideIntercomButton(sender, "azoe")
+            HideIntercomButton(sender, "admin")
         end
     end)
 
@@ -198,10 +243,10 @@ if SERVER then
                     end
                 end
             else
-                HideIntercomButton(sender, "melt")
+                HideIntercomButton(sender, "admin")
             end
         else
-            HideIntercomButton(sender, "melt")
+            HideIntercomButton(sender, "admin")
         end
     end)
 
@@ -241,7 +286,7 @@ end
 
 if not CLIENT then return end
 
-local MessageType = "azoe"
+local MessageType = "admin"
 local isCreated = false
 local players = {}
 
@@ -293,13 +338,33 @@ Hook.Add("think", "CreateSpawnMenuAfterLoad", function()
         end
     end
 
+    -- Intercom button
     local button = GUI.Button(GUI.RectTransform(Vector2(0.12, 0.05), frame.RectTransform, GUI.Anchor.BottomLeft), "INTERCOM", GUI.Alignment.Center, "GUIButtonSmall")
     button.RectTransform.AbsoluteOffset = Point(15, 330)
     button.Visible = false
     button.OnClicked = function ()
         menu.Visible = not menu.Visible
         chatMenuContent.Visible = menu.Visible
+        Networking.Send(Networking.Start("checkID"))
     end
+    -- AdminHelp Button
+    local buttonAdmin = GUI.Button(GUI.RectTransform(Vector2(0.15, 0.05), frame.RectTransform, GUI.Anchor.BottomLeft), "ADMIN HELP", GUI.Alignment.Center, "GUIButtonSmall")
+    --Normal Color
+    buttonAdmin.TextColor = Color.IndianRed
+    buttonAdmin.OutlineColor = Color.Black
+    buttonAdmin.Color = Color.DimGray
+    --Hover color
+    buttonAdmin.HoverTextColor = Color.Red
+    buttonAdmin.HoverColor = Color.DarkGray
+
+    buttonAdmin.RectTransform.AbsoluteOffset = Point(1528, 995)
+    buttonAdmin.Visible = true
+    buttonAdmin.OnClicked = function ()
+        menu.Visible = not menu.Visible
+        chatMenuContent.Visible = menu.Visible
+        ChangeMessageType("admin")
+    end
+
     sendButton.OnClicked = function ()
         menu.Visible = not menu.Visible
         chatMenuContent.Visible = menu.Visible
@@ -324,8 +389,6 @@ Hook.Add("think", "CreateSpawnMenuAfterLoad", function()
         local team = message.ReadString()
 
         button.Visible = true
-        menu.Visible = false
-        chatMenuContent.Visible = menu.Visible
         ChangeMessageType(team)
     end)
 
@@ -333,8 +396,6 @@ Hook.Add("think", "CreateSpawnMenuAfterLoad", function()
         local team = message.ReadString()
 
         button.Visible = false
-        menu.Visible = false
-        chatMenuContent.Visible = menu.Visible
         ChangeMessageType(team)
     end)
 
@@ -435,11 +496,11 @@ Hook.Add("think", "CreateSpawnMenuAfterLoad", function()
         baseName.Color = Color(255, 255, 255, 0)
     
         makeFadeTitleText("Title", baseName)
-        for i=1, 6, 1 do
+        for i=1, 4, 1 do
             makeFadeText("FadeText", creditsMiniList)
         end
     
-        for i=1, 9, 1 do
+        for i=1, 7, 1 do
             makeTitleText("", Credits)
         end
         makeTitleText("Cast", Credits)
@@ -452,7 +513,7 @@ Hook.Add("think", "CreateSpawnMenuAfterLoad", function()
         makeAltText("Television - Developer", Credits)
         makeAltText("Dr. Javier - Map Maker", Credits)
         makeAltText("Evil Factory - Lua For Barotrauma Developer", Credits)
-        for i=1, 3, 1 do
+        for i=1, 2, 1 do
             makeTitleText("", Credits)
         end
         local someButton = GUI.Button(GUI.RectTransform(Vector2(1, 0.1), Credits.Content.RectTransform), "Close Credits", GUI.Alignment.Center, "GUIButtonSmall")
@@ -486,7 +547,6 @@ Hook.Add("think", "CreateSpawnMenuAfterLoad", function()
 
         Hook.Add("think", "CreditsThink", function()
             if scrolling and Timer.GetTime() > scrolltime then
-                print(Credits.BarScroll)
                 Credits.BarScroll = Credits.BarScroll + 0.0005 * (12 / #creditsList2)
                 scrolltime = Timer.GetTime() + 0.01
             end
