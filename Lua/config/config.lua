@@ -94,7 +94,7 @@ end
 ----- GAMEMODE -----
 config.GamemodeConfig = {
     Survival = {
-        PointshopCategories = {"deathspawn", "administrator2"},
+        PointshopCategories = {"deathspawn", "administrator2", "administrator"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
         EndGameDelaySeconds = 10,
@@ -210,6 +210,7 @@ config.PointShopConfig = {
     ItemCategories = {
         dofile(Traitormod.Path .. "/Lua/config/pointshop/deathspawn.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorAzoe.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorMelt.lua"),
         --dofile(Traitormod.Path .. "/Lua/config/pointshop/ships.lua"),
     }
 }

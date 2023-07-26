@@ -387,7 +387,6 @@ Hook.Patch("Barotrauma.Items.Components.Terminal", "ServerEventRead", function(i
     Hook.Call("traitormod.terminalWrite", item, client, output)
 end, Hook.HookMethodType.Before)
 
-
 Hook.Add("traitormod.terminalWrite", "Traitormod.PointItem", function (item, client, output)
     if output ~= "claim" then return end
 
@@ -429,8 +428,6 @@ dofile(Traitormod.Path .. "/Lua/traitormodmisc.lua")
 
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/gamemode.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/survival.lua"))
-Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/pvp.lua"))
-Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/submarineroyale.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/attackdefend.lua"))
 
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/objective.lua"))

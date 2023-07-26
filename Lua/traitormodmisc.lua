@@ -117,3 +117,89 @@ if Traitormod.Config.DeathLogBook then
         return true
     end)
 end
+
+Traitormod.AddStaticToMessage = function (msg, chance)
+    for i = 1, #msg do
+        local c = msg:sub(i,i)
+
+        if math.random(1, chance) == 1 then
+            msg = msg.gsub(msg, c, "-")
+        end
+    end
+
+    return msg
+end
+
+Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, sender, output)
+    if not item.HasTag("intercom") then return end
+    if not sender.Character then return end
+    if not sender.Character.IsHuman then return end
+    if output == (nil or "") then return end
+
+    local terminal = item.GetComponentString("Terminal")
+    local idcard = item.OwnInventory.GetItemAt(0)
+    local ShowMessage = "Message successfully sent."
+    local announcement = function (jobwaypoint, color)
+        local comms = Traitormod.GetRandomJobWaypoint(jobwaypoint)
+
+        for key, client in pairs(Client.ClientList) do
+            if client.Character then
+                local radio = false
+                local distance = Vector2.Distance(client.Character.WorldPosition, comms.WorldPosition)
+                local messageChat = ChatMessage.Create("INTERCOM", output, ChatMessageType.Default, nil, nil)
+                local messageBox = ChatMessage.Create("", "INTERCOM: "..output, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+                messageBox.Color = color
+
+                for item in client.Character.Inventory.AllItems do
+                    if item.HasTag("mobileradio") then
+                        local battery = item.OwnInventory.GetItemAt(0)
+                        if battery and battery.Condition > 0.1 then
+                            radio = true
+                            break
+                        end
+                    end
+                end
+
+                -- If the player doesn't have a radio then it only announces if they're near the station
+                if radio then
+                    if distance >= 25000 then
+                        output = Traitormod.AddStaticToMessage(output, math.random(3, 4))
+                        messageChat = ChatMessage.Create("???", output, ChatMessageType.Default, nil, nil)
+                        messageChat.Color = Color.White
+                    elseif distance >= 15000 then --and distance <= 15000 then
+                        output = Traitormod.AddStaticToMessage(output, math.random(5, 6))
+                        messageChat = ChatMessage.Create("INTERCOM", output, ChatMessageType.Default, nil, nil)
+                        messageChat.Color = Color.White
+                    else
+                        messageChat.Color = color
+                    end
+
+                    if distance <= 30000 then
+                        Game.SendDirectChatMessage(messageChat, client)
+                    end
+                end
+
+                if distance <= 10000 then
+                    Game.SendDirectChatMessage(messageBox, client)
+                end
+            end
+        end
+    end
+
+    if idcard then
+        if idcard.HasTag("azoe_admin") and item.HasTag("azoe") then
+            announcement("adminone", Color.DeepSkyBlue)
+        elseif idcard.HasTag("melt_admin") and item.HasTag("melt") then
+            announcement("admintwo", Color.Khaki)
+        else
+            ShowMessage = "ERR: ID card has invalid credentials."
+        end
+    else
+        ShowMessage = "ERR: No ID card detected."
+    end
+
+    Timer.Wait(function ()
+        terminal.ShowMessage = ShowMessage
+        terminal.SyncHistory()
+    end, 500)
+end)
