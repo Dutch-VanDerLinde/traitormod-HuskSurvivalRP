@@ -13,6 +13,7 @@ config.SendWelcomeMessage = true
 config.ChatMessageType = ChatMessageType.Private    -- Error = red | Private = green | Dead = blue | Radio = yellow
 
 config.Extensions = {
+    dofile(Traitormod.Path .. "/Lua/extensions/playerui.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/weaponnerfs.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/paralysisnerf.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/pressuremidjoin.lua"),
