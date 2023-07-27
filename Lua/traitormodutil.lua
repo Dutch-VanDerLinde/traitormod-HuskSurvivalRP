@@ -592,7 +592,7 @@ Traitormod.randomizeCharacterName = function (character)
             randomName = Traitormod.GetRandomName("female")
         end
 
-        if client.SteamID == "76561198408663756" then
+        if client.SteamID == "76561198408663756" and client.Name == "Dr. Javier" then
             name = nil
             randomName = "Dr. Javier"
         end
