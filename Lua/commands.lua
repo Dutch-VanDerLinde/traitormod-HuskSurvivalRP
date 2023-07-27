@@ -279,6 +279,10 @@ end)
 
 Traitormod.AddCommand("!spawn", function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+    if not Game.RoundStarted then 
+        Game.SendDirectChatMessage("", "The game hasn't started yet.", nil, ChatMessageType.Error, client)
+        return true
+    end
 
     local spawnClient = client
 

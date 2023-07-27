@@ -92,6 +92,66 @@ function gm:PreStart()
 
         Traitormod.GiveJobItems(character)
     end)
+
+    Hook.Patch("Barotrauma.Networking.GameServer", "AssignJobs", function (instance, ptable)
+        local gamemode = Traitormod.SelectedGamemode
+        local administrator1 = false
+        local administrator2 = false
+        if gamemode.RoleLock == nil then return end
+
+        local function GetRandomUserAdministrator()
+            local client = Client.ClientList[math.random(1, #Client.ClientList)]
+            if client.AssignedJob == ("adminone" or "admintwo") then
+                return GetRandomUserAdministrator(client) 
+            else
+                return client
+            end
+        end
+
+        for index, client in pairs(ptable["unassigned"]) do
+            local flag = false
+            local jobName = client.AssignedJob.Prefab.Identifier.ToString()
+            local playtimerequired = nil
+            for role, params in pairs(gamemode.RoleLock.LockedRoles) do
+                if jobName == role then
+                    if client.HasPermission(ClientPermissions.ConsoleCommands) then break end
+                    if gamemode.RoleLock.LockIf(client, params) then
+                        flag = true
+                        playtimerequired = params[1]
+                    end
+                    break
+                end
+            end
+            if flag then
+                Traitormod.SendMessage(client, string.format(
+                    Traitormod.Language.RoleLocked,
+                    client.AssignedJob.Prefab.Name.ToString(),
+                    Traitormod.FormatTime(playtimerequired),
+                    Traitormod.FormatTime(math.ceil(Traitormod.GetData(client, "Playtime") or 0))
+                ))
+                client.AssignedJob = Traitormod.MidRoundSpawn.GetJobVariant(gamemode.RoleLock.SubstituteRoles[math.random(1, #gamemode.RoleLock.SubstituteRoles)])
+            end
+
+            if client.AssignedJob.Prefab.Identifier.ToString() == "adminone" then
+                administrator1 = true
+            elseif client.AssignedJob.Prefab.Identifier.ToString() == "admintwo" then
+                administrator2 = true
+            end
+        end
+
+        -- If no administrators, default a random user to one
+        if not administrator1 then
+            local client = GetRandomUserAdministrator()
+            client.AssignedJob = Traitormod.MidRoundSpawn.GetJobVariant("adminone")
+            Traitormod.SendMessage(client, Traitormod.Language.ChosenAzoeAdmin)
+        end
+
+        if not administrator2 then
+            local client = GetRandomUserAdministrator()
+            client.AssignedJob = Traitormod.MidRoundSpawn.GetJobVariant("admintwo")
+            Traitormod.SendMessage(client, Traitormod.Language.ChosenMeltwaterAdmin)
+        end
+    end, Hook.HookMethodType.After)
 end
 
 function gm:AwardCrew()

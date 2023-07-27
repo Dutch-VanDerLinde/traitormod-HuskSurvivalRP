@@ -753,14 +753,9 @@ Traitormod.DoJobSet = function (character)
             "divingknife",
             "divingknife",
             "divingknife",
-            "huskstinger",
-            "huskstinger",
-            "huskstinger",
-            "huskstinger",
             "crowbar",
             "crowbar",
             "crowbar",
-            "scp_m9bayonet",
             "scp_m9bayonet",
             "scp_m9bayonet",
             "scp_improvmachete",
@@ -770,10 +765,10 @@ Traitormod.DoJobSet = function (character)
         local possibleLights = { -- Multiple of the same item to increase commonness
             "flashlight",
             "flashlight",
+            "flashlight",
             "thgflashlightheavy",
             "thgflashlightheavy",
             "thgcellcharger",
-            "thgtorch",
         }
 
         local randomMask = possibleMasks[math.random(1, #possibleMasks)]
@@ -782,16 +777,14 @@ Traitormod.DoJobSet = function (character)
         local randomLight = possibleLights[math.random(1, #possibleLights)]
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMask), character.Inventory, nil, nil, function(spawned)
             character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Head), true, false, character)
-            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), spawned.OwnInventory, math.random(28, 90))
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), spawned.OwnInventory, math.random(28, 81))
         end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomBag), character.Inventory, nil, nil, function(spawned)
             character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Bag), true, false, character)
         end)
-        if math.random(1, 5) ~= 5 then
-            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomLight), character.Inventory, nil, nil, function(spawned)
-                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))
-            end)
-        end
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomLight), character.Inventory, nil, nil, function(spawned)
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))
+        end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil, math.random(0, 2))
     end 
 end

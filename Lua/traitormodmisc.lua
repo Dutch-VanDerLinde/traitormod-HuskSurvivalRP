@@ -201,5 +201,16 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
     Timer.Wait(function ()
         terminal.ShowMessage = ShowMessage
         terminal.SyncHistory()
-    end, 500)
+    end, 250)
 end)
+
+Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, ptable)
+    local client = ptable["c"]
+    local item = instance.Item
+
+    if item.Prefab.Identifier == "admindeviceazoe" then
+        Traitormod.Pointshop.ShowCategoryItems(client, "administrator2")
+    elseif item.Prefab.Identifier == "admindevicemelt" then
+        Traitormod.Pointshop.ShowCategoryItems(client, "administrator")
+    end
+end, Hook.HookMethodType.After)

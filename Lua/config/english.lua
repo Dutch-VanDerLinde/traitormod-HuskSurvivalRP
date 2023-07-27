@@ -121,6 +121,10 @@ language.Death = "You lost a life. You have %s left before you lose points."
 language.NoLives = "You lost all your lives. As a result you lose some points."
 language.MaxLives = "You have the maximum amount of lives."
 
+language.RoleLocked = "You didn't meet the requirements to be selected as %s.\nThe requirements are:\n%s worth of playtime. Your playtime is %s."
+language.ChosenAzoeAdmin = "You have been chosen as the Azoe Region Administrator since no one was assigned as one."
+language.ChosenMeltwaterAdmin = "You have been chosen as the Meltwater Region Administrator since no one was assigned as one."
+
 language.Codewords = "Code Words: %s"
 language.CodeResponses = "Code Responses: %s"
 

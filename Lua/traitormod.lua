@@ -116,6 +116,8 @@ Traitormod.RoundStart = function()
     if Traitormod.SelectedGamemode then
         Traitormod.SelectedGamemode:Start()
     end
+
+    Submarine.MainSub.ApplyForce(Vector2(0, 100)) -- Apply force to submarine so it doesn't go near the geysers at the bottom of the map
 end
 
 Hook.Patch("Barotrauma.Networking.GameServer", "InitiateStartGame", function (instance, ptable)

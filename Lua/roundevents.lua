@@ -97,16 +97,35 @@ re.CheckRandomEvent = function (event)
     re.TriggerEvent(event.Name)
 end
 
-re.SendEventMessage = function (text, icon, color)
-    for key, value in pairs(Client.ClientList) do
-        local messageChat = ChatMessage.Create("", text, ChatMessageType.Default, nil, nil)
-        messageChat.Color = Color(200, 30, 241, 255)
-        Game.SendDirectChatMessage(messageChat, value)
+re.SendEventMessage = function (text, icon, flavortext)
+    text = "NOTICE: "..text
 
-        local messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
-        messageBox.IconStyle = icon
-        if color then messageBox.Color = color end
+    for key, value in pairs(Client.ClientList) do
+        local messageChat = ChatMessage.Create("", flavortext, ChatMessageType.Default, nil, nil)
+        messageChat.Color = Color(200, 30, 241, 255)
+        local messageBox = ChatMessage.Create("", flavortext, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+
+        if value.Character and not value.Character.IsDead and value.Character.IsHuman then
+            if value.Character.Inventory.FindItemByIdentifier("admindeviceazoe", true) then
+                messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
+                messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+                messageBox.IconStyle = icon
+                messageChat.Color = Color.DeepSkyBlue
+            elseif value.Character.Inventory.FindItemByIdentifier("admindevicemelt", true) then
+                messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
+                messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+                messageBox.IconStyle = icon
+                messageChat.Color = Color.Khaki
+            end
+        elseif not value.Character or value.Character.IsDead or not value.Character.IsHuman then
+            messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
+            messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+            messageBox.IconStyle = icon
+            messageChat.Color = Color.Khaki
+        end
+
         Game.SendDirectChatMessage(messageBox, value)
+        Game.SendDirectChatMessage(messageChat, value)
     end 
 end
 
