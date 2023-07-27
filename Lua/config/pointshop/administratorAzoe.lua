@@ -2,7 +2,7 @@ local category = {}
 
 category.Identifier = "administrator2"
 category.CanAccess = function(client)
-    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.HasJob("adminone") then
+    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.Inventory.FindItemByIdentifier("admindeviceazoe") then
         return true
     else
         return false
@@ -11,7 +11,6 @@ end
 
 local team = "Placeholder"
 local function SpawnCrate(client, items, color, description)
-    local team = Traitormod.Language.ToAzoe
     local messageChat = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.Default, nil, nil)
     local messageBox = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.ServerMessageBoxInGame, nil, nil)
     messageChat.Color = Color(66, 135, 235)

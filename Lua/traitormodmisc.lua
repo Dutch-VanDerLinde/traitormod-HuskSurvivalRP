@@ -209,8 +209,8 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
     local item = instance.Item
 
     if item.Prefab.Identifier == "admindeviceazoe" then
-        Traitormod.Pointshop.ShowCategoryItems(client, "administrator2")
+        Traitormod.Pointshop.ShowCategory(client)
     elseif item.Prefab.Identifier == "admindevicemelt" then
-        Traitormod.Pointshop.ShowCategoryItems(client, "administrator")
+        Traitormod.Pointshop.ShowCategory(client)
     end
 end, Hook.HookMethodType.After)

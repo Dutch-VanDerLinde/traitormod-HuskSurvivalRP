@@ -2,7 +2,7 @@ local category = {}
 
 category.Identifier = "administrator"
 category.CanAccess = function(client)
-    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.HasJob("admintwo") then
+    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.Inventory.FindItemByIdentifier("admindevicemelt") then
         return true
     else
         return false
@@ -19,10 +19,12 @@ local function SpawnCrate(client, items, color, description)
     Game.SendDirectChatMessage(messageBox, client)
 
     Timer.Wait(function ()
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("securemetalcrate"), client.Character.Inventory, nil, nil, function (item)
+        local spawn = Traitormod.GetRandomJobWaypoint("DeliverySpawnMelt")
+
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("securemetalcrate"), spawn.WorldPosition, nil, nil, function (item)
             item.Description = description
             item.set_InventoryIconColor(color)
-            item.SpriteColor = Color(color)
+            item.SpriteColor = color
 
             local colorsprite = item.SerializableProperties[Identifier("SpriteColor")]
             Networking.CreateEntityEvent(item, Item.ChangePropertyEventData(colorsprite, item))
@@ -36,7 +38,7 @@ local function SpawnCrate(client, items, color, description)
 
         messageChat = ChatMessage.Create("", Traitormod.Language.DeliveryArrival, ChatMessageType.Default, nil, nil)
         Game.SendDirectChatMessage(messageChat, client)
-    end, math.random(2, 4)*60000) -- convert minutes to milliseconds
+    end, math.random(2, 4)*60000)
 end
 
 Timer.Wait(function () 
@@ -46,24 +48,15 @@ end, 5000)
 category.Products = {
     {
         Identifier = "Medical Delivery",
-        Price = 2000,
+        Price = 1000,
         Limit = 2,
         PricePerLimit = 1000,
         Action = function (client, product, paidPrice)
             local description = string.format(Traitormod.Language.MedicalDeliveryCrate, team)
-            local color = Color(250, 80, 65)
+            local color = Color(250, 80, 65, 255)
             local items = {
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
-                "antidama1",
+                "antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1",
+
             }
 
             SpawnCrate(client, items, color, description)
