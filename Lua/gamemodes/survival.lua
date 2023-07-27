@@ -84,6 +84,8 @@ function gm:Start()
 end
 
 function gm:PreStart()
+    local administrator1 = false
+    local administrator2 = false
     Traitormod.Pointshop.Initialize(self.PointshopCategories or {})
 
     Hook.Add("character.giveJobItems", "Husk.Survival.giveJobItems", function(character, waypoint)
@@ -95,14 +97,13 @@ function gm:PreStart()
 
     Hook.Patch("Barotrauma.Networking.GameServer", "AssignJobs", function (instance, ptable)
         local gamemode = Traitormod.SelectedGamemode
-        local administrator1 = false
-        local administrator2 = false
         if gamemode.RoleLock == nil then return end
-
+ 
         local function GetRandomUserAdministrator()
             local client = Client.ClientList[math.random(1, #Client.ClientList)]
-            if client.AssignedJob == ("adminone" or "admintwo") then
-                return GetRandomUserAdministrator(client) 
+            if #Client.ClientList == 1 then return client end -- anti crash stuff
+            if client.AssignedJob.Prefab.Identifier.ToString() == ("adminone" or "admintwo") then
+                return GetRandomUserAdministrator()
             else
                 return client
             end

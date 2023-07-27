@@ -29,54 +29,6 @@ Traitormod.AddCommand("!helptraitor", function (client, args)
     return true
 end)
 
-Traitormod.AddCommand("!announce", function(client, args)
-    local feedback = nil
-
-    if client.Character == nil or client.Character.IsDead then
-        feedback = "You're dead."
-        Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
-        return true
-    end
-
-    if client.Character.IsUnconscious
-        or client.Character.IsRagdolled
-        or HF.HasAffliction(client.Character,"sym_unconsciousness",0.1)
-        or HF.HasAffliction(client.Character,"givein",0.1)
-        or HF.HasAffliction(client.Character,"anesthesia",15)
-        or HF.HasAffliction(client.Character,"paralysis",99)
-    then
-        feedback = "You're unconcious."
-        Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
-        return true
-    end
-
-    for item in client.Character.Inventory.AllItems do
-        if #args > 0 and item.Prefab.Identifier == "idcard" and item.GetComponentString("IdCard").OwnerJobId == "warden" and client.Character.TeamID ~= CharacterTeamType.Team2 then
-            local msg = ""
-            for word in args do
-                msg = msg .. " " .. word
-            end
-
-            for key, value in pairs(Client.ClientList) do
-               Traitormod.SendClientMessage("Warden's Announcement:"..msg, nil, Color.LightBlue, value)
-            end
-            return true
-        elseif client.Character and client.Character.TeamID == CharacterTeamType.Team2 and #args > 0 then
-            local msg = ""
-            for word in args do
-                msg = msg .. " " .. word
-            end
-                
-            Traitormod.RoundEvents.SendEventMessage("Separatist Transmission: "..msg, "GameModeIcon.sandbox", Color.Khaki)
-            return true
-        else
-            feedback = "You don't have the warden's ID."
-            Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
-            return true
-        end
-    end
-end)
-
 Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
     if client.Character == nil or client.Character.IsHuman then
         Traitormod.SendMessage(client, Traitormod.Language.CMDOnlyMonsters)
@@ -307,6 +259,75 @@ Traitormod.AddCommand("!spawn", function (client, args)
     return true
 end)
 
+Traitormod.AddCommand("!pdamelt", function (client, args)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+    if not Game.RoundStarted then return end
+
+    local feedback = ""
+    local msg = ""
+
+    if #args > 0 then
+        for word in args do
+            msg = msg .. " " .. word
+        end
+        feedback = string.format(Traitormod.Language.CMDPDAFeedback, msg, "Meltwater Region")
+    else
+        feedback = "Usage: !pda [Message]"
+    end
+
+    Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
+    if msg == "" then return true end
+    
+    Traitormod.RoundEvents.SendEventMessage(msg, nil, "melt")
+    return true
+end)
+
+Traitormod.AddCommand("!pdaazoe", function (client, args)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+    if not Game.RoundStarted then return end
+
+    local feedback = ""
+    local msg = ""
+
+    if #args > 0 then
+        for word in args do
+            msg = msg .. " " .. word
+        end
+        feedback = string.format(Traitormod.Language.CMDPDAFeedback, msg, "Azoe Region")
+    else
+        feedback = "Usage: !pda [Message]"
+    end
+
+    Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
+    if msg == "" then return true end
+    
+    Traitormod.RoundEvents.SendEventMessage(msg, nil, "azoe")
+    return true
+end)
+
+Traitormod.AddCommand("!pda", function (client, args)
+    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
+    if not Game.RoundStarted then return end
+
+    local feedback = ""
+    local msg = ""
+
+    if #args > 0 then
+        for word in args do
+            msg = msg .. " " .. word
+        end
+        feedback = string.format(Traitormod.Language.CMDPDAFeedback, msg, "Both Regions")
+    else
+        feedback = "Usage: !pda [Message]"
+    end
+
+    Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
+    if msg == "" then return true end
+
+    Traitormod.RoundEvents.SendEventMessage(msg, nil, "both")
+    return true
+end)
+
 Traitormod.AddCommand("!roundinfo", function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
 
@@ -334,21 +355,6 @@ Traitormod.AddCommand({"!allpoint", "!allpoints"}, function (client, args)
     end
 
     Traitormod.SendMessage(client, messageToSend)
-
-    return true
-end)
-
-Traitormod.AddCommand({"!intercom"}, function (client, args)
-    if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
-
-    if #args < 1 then
-        Traitormod.SendMessage(client, "Incorrect amount of arguments. usage: !announce [msg] - If you need to announce something with more than one word, surround it in quotations.")
-        return true
-    end
-
-    local text = table.remove(args, 1)
-
-    Traitormod.RoundEvents.SendEventMessage(text, nil, Color.LightGreen)
 
     return true
 end)

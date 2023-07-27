@@ -31,11 +31,30 @@
 
         if client then
             Timer.Wait(function ()
-                local CharacterString = client.Name.." as "..character.Name
+                local jobname = character.Info.Job.Name.ToString()
+                local truename = jobname
+                local idcard = character.Inventory.FindItemByIdentifier("idcard")
+                if idcard then
+                    if idcard.HasTag("azoe_admin") then
+                        truename = "Azoe Administrator"
+                    elseif idcard.HasTag("melt_admin") then
+                        truename = "Meltwater Administrator"
+                    elseif idcard.HasTag("azoe") then
+                        truename = "Azoe "..jobname
+                    elseif idcard.HasTag("melt") then
+                        truename = "Meltwater "..jobname
+                    elseif idcard.HasTag("researchdirector") then
+                        truename = "Institute Research Director"
+                    elseif idcard.HasTag("scientist") then
+                        truename = "Institute Scientist"
+                    end
+                end
+
+                local CharacterString = client.Name.." as "..truename.." "..character.Name
                 local message = Networking.Start("AddPlayerToCredits")
                 message.WriteString(CharacterString)
                 Networking.Send(message, client.Connection)
-            end, 4000)
+            end, 4100)
         end
     end)
 

@@ -11,7 +11,7 @@ end
 
 local team = "Placeholder"
 local function SpawnCrate(client, items, color, description)
-    local messageChat = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.Default, nil, nil)
+    local messageChat = ChatMessage.Create("ADMINISTRATOR PDA", Traitormod.Language.DeliverySuccess, ChatMessageType.Default, nil, nil)
     local messageBox = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.ServerMessageBoxInGame, nil, nil)
     messageChat.Color = Color(66, 135, 235)
     messageBox.Color = Color(66, 135, 235)
@@ -36,8 +36,13 @@ local function SpawnCrate(client, items, color, description)
             end
         end)
 
-        messageChat = ChatMessage.Create("", Traitormod.Language.DeliveryArrival, ChatMessageType.Default, nil, nil)
-        Game.SendDirectChatMessage(messageChat, client)
+        messageChat = ChatMessage.Create("ADMINISTRATOR PDA", Traitormod.Language.DeliveryArrival, ChatMessageType.Default, nil, nil)
+        messageChat.Color = Color.DeepSkyBlue
+        for key, client in pairs(Client.ClientList) do
+            if client.Character and client.Character.Inventory.FindItemByIdentifier("admindeviceazoe", true) then
+                Game.SendDirectChatMessage(messageChat, client)
+            end
+        end
     end, math.random(2, 4)*60000)
 end
 

@@ -97,35 +97,25 @@ re.CheckRandomEvent = function (event)
     re.TriggerEvent(event.Name)
 end
 
-re.SendEventMessage = function (text, icon, flavortext)
+re.SendEventMessage = function (text, icon, team)
     text = "NOTICE: "..text
 
     for key, value in pairs(Client.ClientList) do
-        local messageChat = ChatMessage.Create("", flavortext, ChatMessageType.Default, nil, nil)
-        messageChat.Color = Color(200, 30, 241, 255)
-        local messageBox = ChatMessage.Create("", flavortext, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+        local messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
+        local messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
+        messageBox.IconStyle = icon
 
         if value.Character and not value.Character.IsDead and value.Character.IsHuman then
-            if value.Character.Inventory.FindItemByIdentifier("admindeviceazoe", true) then
-                messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
-                messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
-                messageBox.IconStyle = icon
+            if value.Character.Inventory.FindItemByIdentifier("admindeviceazoe", true) and team == "both" or team == "azoe" then
                 messageChat.Color = Color.DeepSkyBlue
-            elseif value.Character.Inventory.FindItemByIdentifier("admindevicemelt", true) then
-                messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
-                messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
-                messageBox.IconStyle = icon
+                Game.SendDirectChatMessage(messageBox, value)
+                Game.SendDirectChatMessage(messageChat, value)
+            elseif value.Character.Inventory.FindItemByIdentifier("admindevicemelt", true) and team == "both" or team == "melt" then
                 messageChat.Color = Color.Khaki
+                Game.SendDirectChatMessage(messageBox, value)
+                Game.SendDirectChatMessage(messageChat, value)
             end
-        elseif not value.Character or value.Character.IsDead or not value.Character.IsHuman then
-            messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
-            messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
-            messageBox.IconStyle = icon
-            messageChat.Color = Color.Khaki
         end
-
-        Game.SendDirectChatMessage(messageBox, value)
-        Game.SendDirectChatMessage(messageChat, value)
     end 
 end
 

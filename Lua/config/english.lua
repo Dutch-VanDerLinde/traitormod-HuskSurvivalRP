@@ -369,6 +369,7 @@ language.CMDRoundTime = "This round has been going for %s."
 language.CMDPlaytime = "Your playtime is %s."
 language.CMDHuskChat = "%s (as %s)"
 language.CMDAliveNoPlayers = "There no alive human players currently."
+language.CMDPDAFeedback = "Sent '%s' to Administrator PDA %s."
 
 language.MaleNames = {"Liam","Noah","James","Oliver","Benjamin","Elijah","Lucas","Mason","Logan","Alexander","Ethan","Jacob","Michael","Daniel",
 "Henry","Jackson","Sebastian","Aiden","Matthew","Samuel","David","Joseph","Carter","Owen","Wyatt","John","Jack","Luke","Jayden","Dylan",

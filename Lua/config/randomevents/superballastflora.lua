@@ -7,7 +7,7 @@ event.MaxIntensity = 0.3
 event.ChancePerMinute = 0.015
 event.OnlyOncePerRound = true
 
-event.PumpsToInfect = 8
+event.PumpsToInfect = 6
 
 event.Start = function ()
     local pumps = {}
@@ -30,7 +30,7 @@ event.Start = function ()
     end
 
     local text = Traitormod.Language.SuperBallastFlora
-    Traitormod.RoundEvents.SendEventMessage(text, "EndRoundButton")
+    Traitormod.RoundEvents.SendEventMessage(text, "EndRoundButton", "both")
 
     event.End()
 end
