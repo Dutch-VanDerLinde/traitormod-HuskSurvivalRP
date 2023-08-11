@@ -1,12 +1,12 @@
 ﻿if SERVER then
+    local function escapeQuotes(str)
+        return str:gsub("\"", "\\\"")
+    end
     -- Admin message
     Networking.Receive("admin", function(message, sender)
         local adminmsg = message.ReadString()
         local finalmsg = nil
-        local discordWebHook = "https://discord.com/api/webhooks/1132681601235550248/Bv-aVamzlUk6NamJlnyXQjBDD3A_zMTNBI3fZdKJD0m-liucLGdTru_DjBBddPLaF861"
-        local function escapeQuotes(str)
-            return str:gsub("\"", "\\\"")
-        end
+        local discordWebHook = "https://discord.com/api/webhooks/1138861228341604473/Hvrt_BajroUrS60ePpHTT1KQyCNhTwsphdmRmW2VroKXuHLjxKwKRwfajiCZUc-ZtX2L"
         
         if sender.Character then
             finalmsg = "``User "..sender.Name.." as "..sender.Character.Name..":`` "..adminmsg
@@ -24,6 +24,20 @@
             end
         end
     end)
+
+    local function UpdatePlayerList(client)
+        local discordWebHook = "https://discord.com/api/webhooks/1138862181723668500/Kv-hzWLm9KM2-ZusZ2itu8FHSjN4fa2DK5WSlJju5QNW-WGKSb5C57ULxuRftUiwJjjS"
+        local totalclients = #Client.ClientList
+        local maxclients = Game.ServerSettings.MaxPlayers
+
+        local msg = client.Name.." has left the server.\nThe player count is now "..totalclients.."/"..maxclients.."."
+
+        local escapedMessage = escapeQuotes(msg)
+        Networking.RequestPostHTTP(discordWebHook, function(result) end, '{\"content\": \"'..escapedMessage..'\", \"username\": \"'..'Current Players (HUSK SURVIVAL)'..'\"}')
+    end
+
+    Hook.Add("client.connected", "PlayerListConnection", UpdatePlayerList)
+    Hook.Add("client.disconnected", "PlayerListDisconnection", UpdatePlayerList)
 
     -- Add character to credits
     Hook.Add("character.giveJobItems", "Player.UI.giveJobItems", function(character, waypoint)

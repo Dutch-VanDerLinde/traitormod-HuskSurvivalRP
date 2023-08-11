@@ -37,6 +37,18 @@ m.CrewHasJob = function(job)
     return false
 end
 
+m.CrewHasJobNumber = function(job)
+    local amount = 0
+    if #Client.ClientList > 1 then
+        for key, value in pairs(Client.ClientList) do
+            if value.Character and value.Character.HasJob(job) then
+                amount = amount + 1
+            end
+        end
+    end
+    return amount
+end
+
 m.GetJobVariant = function(jobId)
     local prefab = JobPrefab.Get(jobId)
     return JobVariant.__new(prefab, 0)
@@ -53,15 +65,35 @@ m.TryCreateClientCharacter = function(submarine, client)
     local jobPreference = client.JobPreferences[1]
 
     if jobPreference == nil then
-        -- if no jobPreference, set assistant
-        jobPreference = m.GetJobVariant("assistant")
-
-    elseif preventMultiCaptain and jobPreference.Prefab.Identifier == "captain" then
-        -- if crew has a captain, spawn as security
-        if m.CrewHasJob("captain") then
-            Traitormod.Log(client.Name .. " tried to mid-round spawn as second captain - assigning security instead.")
+        -- if no jobPreference, set cavedweller or citizen
+        local randomJob = ""
+        if math.random(1, 2) == 1 then
+            randomJob = "citizen"
+        else
+            randomJob = "cavedweller"
+        end
+        
+        jobPreference = m.GetJobVariant(randomJob)
+    elseif preventMultiCaptain and jobPreference.Prefab.Identifier == "adminone" then
+        -- if crew has a admin, spawn as cave dweller
+        if m.CrewHasJob("adminone") then
+            Traitormod.Log(client.Name .. " tried to mid-round spawn as second administrator - assigning cave dweller instead.")
             -- set jobPreference = security
-            jobPreference = m.GetJobVariant("securityofficer")
+            jobPreference = m.GetJobVariant("cavedweller")
+        end
+    elseif jobPreference.Prefab.Identifier == "husk_researchdirector" then
+        -- if crew has a director, spawn as scientist
+        if m.CrewHasJob("husk_researchdirector") then
+            Traitormod.Log(client.Name .. " tried to mid-round spawn as second research director - assigning scientist instead.")
+            -- set jobPreference = security
+            jobPreference = m.GetJobVariant("thal_scientist")
+        end
+    elseif jobPreference.Prefab.Identifier == "guardone" then
+        -- if crew has a director, spawn as scientist
+        if m.CrewHasJobNumber("guardone") >= 3 then
+            Traitormod.Log(client.Name .. " tried to mid-round spawn as fourth azoe security - assigning cave dweller instead.")
+            -- set jobPreference = security
+            jobPreference = m.GetJobVariant("cavedweller")
         end
     end
 

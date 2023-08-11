@@ -78,8 +78,36 @@ function gm:Start()
             {"armoredivingmask", 0.8, 2, 1},
             {"armoredivingmask", 1, 1, 1},
         },
+        engcab = {
+            -- Welding
+            {"weldingtool", 1, 1, 1},
+            {"weldingtool", 1, 1, math.random(1, 2)},
+            {"weldingtool", 0.5, 1, 1},
+            {"weldingtool", 0.35, 2, 1},
+            {"weldingfueltank", 0.5, 1, math.random(1, 3)},
+            {"weldingfueltank", 0.9, 2, math.random(1, 2)},
+            {"weldingfueltank", 1, 1, math.random(1, 2)},
+            {"thgelectrowelder", 0.32, 2, 1},
+            -- Electrical
+            {"ekutility_advancedheadset", 0.5, 1, 1},
+            {"batterycell", 0.85, 2, 1},
+            {"batterycell", 1, 1, math.random(1, 2)},
+            {"batterycell", 1, 1, 1},
+            {"flashlight", 0.5, 2, 1},
+            {"flashlight", 0.5, 1, 1},
+            {"thgflashlightheavy", 0.52, 1, 1},
+            -- Cutting
+            {"thgelectrocutter", 0.67, 1, 1},
+            {"plasmacutter", 1, 1, 1},
+            {"plasmacutter", 0.45, 2, 1},
+            {"plasmacutter", 0.8, 1, 1},
+            {"plasmacutter", 0.5, 1, math.random(1, 2)},
+            -- Other
+            {"crowbar", 0.5, 1, 1},
+            {"crowbar", 0.25, 1, 1},
+        },
     }
-
+    
     Traitormod.SpawnLootTables(loottable)
 end
 
@@ -135,22 +163,14 @@ function gm:PreStart()
 
             if client.AssignedJob.Prefab.Identifier.ToString() == "adminone" then
                 administrator1 = true
-            elseif client.AssignedJob.Prefab.Identifier.ToString() == "admintwo" then
-                administrator2 = true
             end
         end
-
+        
         -- If no administrators, default a random user to one
         if not administrator1 then
             local client = GetRandomUserAdministrator()
             client.AssignedJob = Traitormod.MidRoundSpawn.GetJobVariant("adminone")
             Traitormod.SendMessage(client, Traitormod.Language.ChosenAzoeAdmin)
-        end
-
-        if not administrator2 then
-            local client = GetRandomUserAdministrator()
-            client.AssignedJob = Traitormod.MidRoundSpawn.GetJobVariant("admintwo")
-            Traitormod.SendMessage(client, Traitormod.Language.ChosenMeltwaterAdmin)
         end
     end, Hook.HookMethodType.After)
 end
