@@ -3,6 +3,14 @@
 -- 4th value is the slot that the item equips in automatically.
 
 Traitormod.Loadouts = {
+    ["adminone"] = {
+        {"smgunique", 0, 1},
+    },
+
+    ["guardone"] = {
+        {"smgunique", 0, 1},
+    },
+
     ["cavedweller"] = {
         {"smgunique", 1, 0.09},
         {"smgmagazine", math.random(1, 3), 0.35},
@@ -20,12 +28,12 @@ Traitormod.Loadouts = {
         {"thgmultitool", 1, 0.5},
         {"huskstinger", 1, 0.48},
     },
-
-    ["guardone"] = {
-        {"smgunique", 0, 1},
-    },
 }
 Traitormod.Outfits = {
+    ["adminone"] = {
+        {"captainsuniform3", "captainscap3"},
+    },
+
     ["guardone"] = {
         {"divinginstructorgarments", "placeholdermask", "scp_softvest"},
     },

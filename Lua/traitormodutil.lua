@@ -688,6 +688,43 @@ Traitormod.GiveJobItems = function (character)
             end
         end
     end, 100)
+
+    Timer.Wait(function()
+        if client == nil then return end
+
+        local msg = "hi"
+        local color = Color.White
+
+        if job == "adminone" then
+            color = Color.DeepSkyBlue
+            msg = "You are the administrator of the Azoe Region!\nYou lead the entirety of the region. Give orders to your citizens, and allow new residents to get citizenships. The station will fall without your lead."
+        elseif job == "guardone" then
+            color = Color.LightSkyBlue
+            msg = "You are a security officer of the Azoe Region!\nYou answer directly to the administrator. Make sure citizens abide by the law. The administrator's word is final."
+        elseif job == "medicaldoctor" then
+            color = Color.IndianRed
+            msg = "You are the medical doctor of the Azoe Region!\nCommence surgeries, heal patients. Make sure the residents of the Azoe Region stay happy & healthy."
+        elseif job == "he-chef" then
+            color = Color.DarkOrange
+            msg = "You are the chef of the Azoe Region!\nCook food and make rations so that Azoe Region can thrive. You work directly with the botanist."
+        elseif job == "husk_researchdirector" then
+            color = Color.Aqua
+            msg = "You are the institute's research director!\n You command the institute's guards and scientists, make sure the shift goes smoothly in the institute's base. It is recommended to trade your experimental materials to the Azoe Region for money and other supplies, such as food."
+        elseif job == "thal_scientist" then
+            color = Color.Aquamarine
+            msg = "You are a scientist of the Centrum Institute!\n Make DNA mutations, experimental gear, and other science goodies. You answer directly to the research director."
+        elseif job == "husk_guard" then
+            color = Color.MediumAquamarine
+            msg = "You are the institute's guard!\n You answer directly to the research director. Make sure no threats prosper at the institute and all of their assets are kept safe."
+        end
+
+        local ChatMsg = ChatMessage.Create("Role Info", msg, ChatMessageType.Default, nil, nil)
+        local PopupMsg = ChatMessage.Create("Role Info", msg, ChatMessageType.MessageBox, nil, nil)
+        ChatMsg.Color = color
+        PopupMsg.Color = color
+        Game.SendDirectChatMessage(ChatMsg, client)
+        Game.SendDirectChatMessage(PopupMsg, client)
+    end, 1750)
 end
 
 Traitormod.SpawnLootTables = function (loottable)
@@ -781,6 +818,33 @@ Traitormod.DoJobSet = function (character)
         end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomBag), character.Inventory, nil, nil, function(spawned)
             character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Bag), true, false, character)
+
+            -- random materials
+            local randomItems = {
+                "carbon",
+                "copper",
+                "iron",
+                "lead",
+                "magnesium",
+                "silicon",
+                "titanium",
+                "scrap",
+                "zinc",
+                "organicfiber",
+                "opium",
+                "rubber",
+                "tin",
+                "aragonite",
+                "stannite",
+                "amblygonite",
+            }
+
+            for i = 1, math.random(3, 8), 1 do
+                local randomitem = randomItems[math.random(1, #randomItems)]
+                for i = 1, math.random(1, 3), 1 do
+                    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomitem), spawned.OwnInventory)
+                end
+            end
         end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomLight), character.Inventory, nil, nil, function(spawned)
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))

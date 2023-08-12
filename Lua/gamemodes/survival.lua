@@ -113,7 +113,6 @@ end
 
 function gm:PreStart()
     local administrator1 = false
-    local administrator2 = false
     Traitormod.Pointshop.Initialize(self.PointshopCategories or {})
 
     Hook.Add("character.giveJobItems", "Husk.Survival.giveJobItems", function(character, waypoint)
@@ -122,7 +121,7 @@ function gm:PreStart()
 
         Traitormod.GiveJobItems(character)
     end)
-
+    --[[
     Hook.Patch("Barotrauma.Networking.GameServer", "AssignJobs", function (instance, ptable)
         local gamemode = Traitormod.SelectedGamemode
         if gamemode.RoleLock == nil then return end
@@ -173,6 +172,7 @@ function gm:PreStart()
             Traitormod.SendMessage(client, Traitormod.Language.ChosenAzoeAdmin)
         end
     end, Hook.HookMethodType.After)
+    --]]
 end
 
 function gm:AwardCrew()
