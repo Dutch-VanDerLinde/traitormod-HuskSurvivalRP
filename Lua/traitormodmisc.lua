@@ -131,21 +131,20 @@ Traitormod.AddStaticToMessage = function (msg, chance)
 end
 
 Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, sender, output)
-    if not item.HasTag("intercom") then return end
-    if not sender.Character then return end
-    if not sender.Character.IsHuman then return end
-    if output == (nil or "") then return end
+    if not item.HasTag("intercom")
+        or not sender.Character
+        or not sender.Character.IsHuman
+        or output == (nil or "")
+    then
+        return 
+    end
 
-    local terminal = item.GetComponentString("Terminal")
     local idcard = item.OwnInventory.GetItemAt(0)
-    local ShowMessage = "Message successfully sent."
-    local announcement = function (jobwaypoint, color)
-        local comms = Traitormod.GetRandomJobWaypoint(jobwaypoint)
-
+    local announcement = function (color)
         for key, client in pairs(Client.ClientList) do
             if client.Character then
                 local radio = false
-                local distance = Vector2.Distance(client.Character.WorldPosition, comms.WorldPosition)
+                local distance = Vector2.Distance(client.Character.WorldPosition, item.WorldPosition)
                 local messageChat = ChatMessage.Create("INTERCOM", output, ChatMessageType.Default, nil, nil)
                 local messageBox = ChatMessage.Create("", "INTERCOM: "..output, ChatMessageType.ServerMessageBoxInGame, nil, nil)
                 messageBox.Color = color
@@ -179,7 +178,7 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                     end
                 end
 
-                if distance <= 10000 then
+                if distance <= 9000 then
                     Game.SendDirectChatMessage(messageBox, client)
                 end
             end
@@ -188,20 +187,9 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
 
     if idcard then
         if idcard.HasTag("azoe_admin") and item.HasTag("azoe") then
-            announcement("adminone", Color.DeepSkyBlue)
-        elseif idcard.HasTag("melt_admin") and item.HasTag("melt") then
-            announcement("admintwo", Color.Khaki)
-        else
-            ShowMessage = "ERR: ID card has invalid credentials."
+            announcement(Color.DeepSkyBlue)
         end
-    else
-        ShowMessage = "ERR: No ID card detected."
     end
-
-    Timer.Wait(function ()
-        terminal.ShowMessage = ShowMessage
-        terminal.SyncHistory()
-    end, 250)
 end)
 
 Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, ptable)
