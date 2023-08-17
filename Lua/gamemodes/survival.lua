@@ -62,7 +62,6 @@ function gm:Start()
             {"fiberseed", 0.2, 1, 1},
             {"rubberseed", 0.8, 2, math.random(1, 2)},
             {"thal_rustseed", 0.3, 2, 1},
-            {"thal_wheatseed", 0.4, 2, 1},
             {"saltvineseed", 0.9, 1, 1},
             {"bubbleberryvineseed", 0.55, 2, 1},
             {"creepingorangevineseed", 0.65, 2, 2},
@@ -73,10 +72,15 @@ function gm:Start()
             {"fertilizer", 1, 1, 1},
             {"fertilizer", 0.2, 1, 1},
         },
-        divingsuitcontainerhorizontal = {
+        azoesuitcab = {
             {"armoredivingmask_improved", 0.4, 1, math.random(1, 3)},
             {"armoredivingmask", 0.8, 2, 1},
             {"armoredivingmask", 1, 1, 1},
+        },
+        tcisuitcab = {
+            {"armoredivingmask_improved", 0.35, 1, math.random(1, 2)},
+            {"expeditionsuit_institute", 0.65, 1, 1},
+            {"armoredivingmask", 1, 1, 2},
         },
         engcab = {
             -- Welding
@@ -121,7 +125,7 @@ function gm:PreStart()
 
         Traitormod.GiveJobItems(character)
     end)
-    --[[
+
     Hook.Patch("Barotrauma.Networking.GameServer", "AssignJobs", function (instance, ptable)
         local gamemode = Traitormod.SelectedGamemode
         if gamemode.RoleLock == nil then return end
@@ -172,7 +176,6 @@ function gm:PreStart()
             Traitormod.SendMessage(client, Traitormod.Language.ChosenAzoeAdmin)
         end
     end, Hook.HookMethodType.After)
-    --]]
 end
 
 function gm:AwardCrew()

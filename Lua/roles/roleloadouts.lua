@@ -11,6 +11,16 @@ Traitormod.Loadouts = {
         {"smgunique", 0, 1},
     },
 
+    ["researchdirector"] = {
+        {"thal_geneticsign", 1, 1},
+        {"thal_hydrophonicsign", 1, 1},
+    },
+
+    ["thal_scientist"] = {
+        {"thal_geneticsign", 1, 0.5},
+        {"thal_hydrophonicsign", 1, 0.5},
+    },
+
     ["cavedweller"] = {
         {"smgunique", 1, 0.09},
         {"smgmagazine", math.random(1, 3), 0.35},
@@ -36,6 +46,17 @@ Traitormod.Outfits = {
 
     ["guardone"] = {
         {"divinginstructorgarments", "placeholdermask", "scp_softvest"},
+    },
+
+    ["researchdirector"] = {
+        {"researchdirectorclothes", "cyanberet"},
+    },
+
+    ["thal_scientist"] = {
+        {"thal_botanistsuit", "placeholdermask"},
+        {"thal_geneticistsuit", "placeholdermask"},
+        {"thal_geneticistsuit", "placeholdermask"},
+        {"thal_geneticistsuit", "scientistscannerhud"},
     },
 
     ["cavedweller"] = { -- Diving Mask is a placeholder for the random masks in giveitemjob function

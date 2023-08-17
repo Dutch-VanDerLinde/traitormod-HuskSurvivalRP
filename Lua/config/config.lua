@@ -112,10 +112,10 @@ config.GamemodeConfig = {
             -- If the client doesnt meet the playtime requirements, it wont be selected as that role || 5*60*60 = 5 hours
 
             LockedRoles = { 
-                ["adminone"] = {5*60*60},
-                ["guardone"] = {2.5*60*60},
-                ["husk_researchdirector"] = {3.5*60*60},
-                ["husk_guard"] = {1.5*60*60},
+                ["adminone"] = {4*60*60},
+                ["guardone"] = {2*60*60},
+                ["researchdirector"] = {3*60*60},
+                ["guardtci"] = {2*60*60},
             },
             SubstituteRoles = {"cavedweller", "citizen"}, -- A random one will be selected
         },

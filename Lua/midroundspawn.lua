@@ -83,7 +83,7 @@ m.TryCreateClientCharacter = function(submarine, client)
         end
     elseif jobPreference.Prefab.Identifier == "husk_researchdirector" then
         -- if crew has a director, spawn as scientist
-        if m.CrewHasJob("husk_researchdirector") then
+        if m.CrewHasJob("researchdirector") then
             Traitormod.Log(client.Name .. " tried to mid-round spawn as second research director - assigning scientist instead.")
             -- set jobPreference = security
             jobPreference = m.GetJobVariant("thal_scientist")
@@ -142,6 +142,7 @@ m.TryCreateClientCharacter = function(submarine, client)
         char.TeamID = submarine.TeamID
         crewManager.AddCharacter(char)
 
+        Traitormod.SendJobInfoMsg(client, tostring(char.JobIdentifier))
         client.SetClientCharacter(char)
 
         char.GiveJobItems(waypoint)
