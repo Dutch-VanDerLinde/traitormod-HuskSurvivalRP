@@ -92,7 +92,7 @@ end
 ----- GAMEMODE -----
 config.GamemodeConfig = {
     Survival = {
-        PointshopCategories = {"deathspawn", "administrator2", "administrator"},
+        PointshopCategories = {"deathspawn", "administrator2"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
         EndGameDelaySeconds = 10,
@@ -101,6 +101,7 @@ config.GamemodeConfig = {
 
         PointsGainedFromCrewMissionsCompleted = 1000,
         LivesGainedFromCrewMissionsCompleted = 1,
+        --[[
         RoleLock = {
             LockIf = function(client, params)
                 local time = params[1]
@@ -109,6 +110,7 @@ config.GamemodeConfig = {
             end
             ,
             -- If the client doesnt meet the playtime requirements, it wont be selected as that role || 5*60*60 = 5 hours
+
             LockedRoles = { 
                 ["adminone"] = {5*60*60},
                 ["guardone"] = {2.5*60*60},
@@ -117,6 +119,7 @@ config.GamemodeConfig = {
             },
             SubstituteRoles = {"cavedweller", "citizen"}, -- A random one will be selected
         },
+        --]]
     },
 }
 

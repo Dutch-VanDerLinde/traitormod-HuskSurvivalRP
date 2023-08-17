@@ -186,8 +186,10 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
     end
 
     if idcard then
-        if idcard.HasTag("azoe_admin") and item.HasTag("azoe") then
+        if idcard.GetComponentString("IdCard").OwnerJobId == "adminone" and item.HasTag("azoe") then
             announcement(Color.DeepSkyBlue)
+        elseif idcard.GetComponentString("IdCard").OwnerJobId == "researchdirector" and item.HasTag("tci") then
+            announcement(Color.Aqua)
         end
     end
 end)
