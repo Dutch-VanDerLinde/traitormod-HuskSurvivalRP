@@ -822,8 +822,35 @@ Traitormod.DoJobSet = function (character)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil, math.random(0, 2))
     end
 
-    local isAzoe = false
-    local isInstitute = false
+    if not character.HasJob("adminone")
+        or not character.HasJob("researchdirector")
+        or not character.HasJob("cavedweller")
+    then
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("husk_wallet"), character.Inventory, nil, nil, function(spawned)
+            local possiblemoney = {
+                "usdollar",
+                "usdollarfive",
+                "usdollarten",
+            }
+
+            for i = 1, math.random(2, 6), 1 do
+                local randombill = possiblemoney[math.random(1, #possiblemoney)]
+                if randombill == possiblemoney[3] and math.random(1, 3) ~= 1 then
+                    randombill = possiblemoney[1]
+                end
+
+                for i = 1, math.random(1, 3), 1 do
+                    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randombill), spawned.OwnInventory)
+                end
+            end
+
+            -- You always spawn with atleast 6 dollars
+            for i = 1, math.random(6, 10), 1 do
+                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(possiblemoney[1]), spawned.OwnInventory)
+            end
+        end)
+    end
+
     local headset = character.Inventory.GetItemInLimbSlot(InvSlotType.Headset)
     if not headset then return end
 
@@ -838,13 +865,17 @@ Traitormod.DoJobSet = function (character)
         component.Channel = Traitormod.AzoeRadioChannel
     end
 
+    headset.CreateServerEvent(component, component)
+    
+    local color = "‖color:gui.orange‖%s‖color:end‖"
+
     if character.HasJob("researchdirector") then
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil, function(spawned)
-            spawned.Description = string.format(Traitormod.Language.InstituteCodes, character.Name).."\nThe institute radio channel is: "..Traitormod.InstituteRadioChannel
+            spawned.Description = string.format(Traitormod.Language.InstituteCodes, character.Name).."\nThe institute radio channel is: "..string.format(color, Traitormod.InstituteRadioChannel)
         end)
     elseif character.HasJob("adminone") then
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminpaper"), character.Inventory, nil, nil, function(spawned)
-            spawned.Description = string.format(Traitormod.Language.AzoeCodes, character.Name).."\nThe azoe region radio channel is: "..Traitormod.AzoeRadioChannel
+            spawned.Description = string.format(Traitormod.Language.AzoeCodes, character.Name).."\nThe azoe region radio channel is: "..string.format(color, Traitormod.AzoeRadioChannel)
         end)
     end
 end
