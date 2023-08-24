@@ -21,6 +21,10 @@ Traitormod.Loadouts = {
         {"thal_hydrophonicsign", 1, 0.5},
     },
 
+    ["guardtci"] = {
+        {"smgunique", 0, 1},
+    },
+
     ["cavedweller"] = {
         {"smgunique", 1, 0.09},
         {"smgmagazine", math.random(1, 3), 0.35},
@@ -45,16 +49,20 @@ Traitormod.Outfits = {
     },
 
     ["guardone"] = {
-        {"divinginstructorgarments", "placeholdermask", "scp_softvest"},
+        "","",""
     },
 
     ["researchdirector"] = {
         {"researchdirectorclothes", "cyanberet"},
     },
 
+    ["guardtci"] = {
+        "","",""
+    },
+
     ["thal_scientist"] = {
         {"thal_botanistsuit", "placeholdermask"},
-        {"thal_geneticistsuit", "placeholdermask"},
+        {"thal_botanistsuit", "thal_botanistmask"},
         {"thal_geneticistsuit", "placeholdermask"},
         {"thal_geneticistsuit", "scientistscannerhud"},
     },

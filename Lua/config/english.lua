@@ -448,6 +448,9 @@ language.LastNames = {"Smith","Hall","Stewart","Price","Johnson","Allen","Sanche
 
 
 --administrator delivery stuff
+language.InstituteCodes = "This document is for %s, the latest research director. These codes should only be given to institute members."
+language.AzoeCodes = "This document is for %s, the newly appointed azoe region administrator. These codes should be given to trusted personnel only."
+
 language.ToAzoe = "There's a label on it, it says: 'To Azoe Region'"
 language.ToMeltwater = "There's a label on it, it says: 'To Meltwater Region'"
 language.DeliverySuccess = "Thank you for purchasing. Your supplies will be delivered to you shortly. ETA: 3 minutes"

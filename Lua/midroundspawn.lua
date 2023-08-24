@@ -142,7 +142,6 @@ m.TryCreateClientCharacter = function(submarine, client)
         char.TeamID = submarine.TeamID
         crewManager.AddCharacter(char)
 
-        Traitormod.SendJobInfoMsg(client, tostring(char.JobIdentifier))
         client.SetClientCharacter(char)
 
         char.GiveJobItems(waypoint)

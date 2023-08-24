@@ -176,6 +176,9 @@ function gm:PreStart()
             Traitormod.SendMessage(client, Traitormod.Language.ChosenAzoeAdmin)
         end
     end, Hook.HookMethodType.After)
+
+    Traitormod.AzoeRadioChannel = math.random(250, 9000) + math.random(1, 10)
+    Traitormod.InstituteRadioChannel = math.random(500, 9000) + math.random(1, 100)
 end
 
 function gm:AwardCrew()
@@ -325,6 +328,8 @@ function gm:Think()
         --]]
         Timer.Wait(function ()
             Game.EndGame()
+            Traitormod.InstituteRadioChannel = nil
+            Traitormod.AzoeRadioChannel = nil
         end, delay * 1000)
 
         self.Ending = true

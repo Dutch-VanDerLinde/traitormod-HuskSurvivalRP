@@ -8,6 +8,9 @@ Traitormod.Languages = Traitormod.Config.Languages
 Traitormod.DefaultLanguage = Traitormod.Languages[1]
 Traitormod.Language = Traitormod.DefaultLanguage
 
+Traitormod.AzoeRadioChannel = nil
+Traitormod.InstituteRadioChannel = nil
+
 --[[
 for key, value in pairs(Traitormod.Languages) do
     if Traitormod.Config.Language == value.Name then
@@ -632,13 +635,16 @@ Traitormod.GiveJobItems = function (character)
     local clothes = ItemPrefab.GetItemPrefab(randomitemset[1])
     local hat = ItemPrefab.GetItemPrefab(randomitemset[2])
     local wearable = ItemPrefab.GetItemPrefab(randomitemset[3])
-    Entity.Spawner.AddEntityToRemoveQueue(defaultclothes)
-    Entity.Spawner.AddItemToSpawnQueue(clothes, character.Inventory, nil, nil, function(spawned)
-        local slot = character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
-        character.Inventory.TryPutItem(spawned, slot, true, false, character)
-    end)
 
-    if hat then
+    if clothes and clothes ~= "" then
+        Entity.Spawner.AddEntityToRemoveQueue(defaultclothes)
+        Entity.Spawner.AddItemToSpawnQueue(clothes, character.Inventory, nil, nil, function(spawned)
+            local slot = character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
+            character.Inventory.TryPutItem(spawned, slot, true, false, character)
+        end)
+    end
+
+    if hat and hat ~= "" then
         Entity.Spawner.AddEntityToRemoveQueue(defaulthat)
         Entity.Spawner.AddItemToSpawnQueue(hat, character.Inventory, nil, nil, function(spawned)
             local slot = character.Inventory.FindLimbSlot(InvSlotType.Head)
@@ -646,7 +652,7 @@ Traitormod.GiveJobItems = function (character)
         end)
     end
 
-    if wearable then
+    if wearable and wearable ~= "" then
         Entity.Spawner.AddItemToSpawnQueue(wearable, character.Inventory, nil, nil, function(spawned)
             local slot = character.Inventory.FindLimbSlot(InvSlotType.OuterClothes)
             character.Inventory.TryPutItem(spawned, slot, true, false, character)
@@ -814,9 +820,32 @@ Traitormod.DoJobSet = function (character)
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))
         end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil, math.random(0, 2))
-    elseif character.HasJob("guardone") or character.HasJob("guardtci") then
-        local clothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("scp_m9bayonet"), clothes.Inventory, nil, nil)
+    end
+
+    local isAzoe = false
+    local isInstitute = false
+    local headset = character.Inventory.GetItemInLimbSlot(InvSlotType.Headset)
+    if not headset then return end
+
+    local component = headset.GetComponentString("WifiComponent")
+
+    if character.HasJob("researchdirector")
+        or character.HasJob("thal_scientist")
+        or character.HasJob("guardtci")
+    then
+        component.Channel = Traitormod.InstituteRadioChannel
+    elseif not character.HasJob("cavedweller") then
+        component.Channel = Traitormod.AzoeRadioChannel
+    end
+
+    if character.HasJob("researchdirector") then
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil, function(spawned)
+            spawned.Description = string.format(Traitormod.Language.InstituteCodes, character.Name).."\nThe institute radio channel is: "..Traitormod.InstituteRadioChannel
+        end)
+    elseif character.HasJob("adminone") then
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminpaper"), character.Inventory, nil, nil, function(spawned)
+            spawned.Description = string.format(Traitormod.Language.AzoeCodes, character.Name).."\nThe azoe region radio channel is: "..Traitormod.AzoeRadioChannel
+        end)
     end
 end
 
@@ -841,13 +870,13 @@ Traitormod.SendJobInfoMsg = function (client, job)
             msg = "You are the chef of the Azoe Region!\nCook food and make rations so that Azoe Region can thrive. You work directly with the botanist."
         elseif job == "researchdirector" then
             color = Color.Aqua
-            msg = "You are the institute's research director!\n You command the institute's guards and scientists, make sure the shift goes smoothly in the institute's base. It is recommended to trade your experimental materials to the Azoe Region for money and other supplies, such as food."
+            msg = "You are the institute's research director!\nYou command the institute's guards and scientists, make sure the shift goes smoothly in the institute's base. It is recommended to trade your experimental materials to the Azoe Region for money and other supplies, such as food."
         elseif job == "thal_scientist" then
             color = Color.Aquamarine
-            msg = "You are a scientist of the Centrum Institute!\n Make DNA mutations, experimental gear, and other science goodies. You answer directly to the research director."
+            msg = "You are a scientist of the Centrum Institute!\nMake DNA mutations, experimental gear, and other science goodies. You answer directly to the research director."
         elseif job == "guardtci" then
             color = Color.MediumAquamarine
-            msg = "You are the institute's guard!\n You answer directly to the research director. Make sure no threats prosper at the institute and all of their assets are kept safe."
+            msg = "You are the institute's guard!\nYou answer directly to the research director. Make sure no threats prosper at the institute and all of their assets are kept safe."
         end
 
         local ChatMsg = ChatMessage.Create("Role Info", msg, ChatMessageType.Default, nil, nil)
