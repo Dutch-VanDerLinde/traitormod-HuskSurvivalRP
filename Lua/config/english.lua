@@ -206,6 +206,9 @@ language.PirateCrew = "Attention! A pirate ship has been spotted in these waters
 language.PirateCrewYou = "You are part of this submarine's pirate crew! Defend the submarine from any filthy coalitions trying to get what is yours!"
 language.PirateCrewSuccess = "The pirates have succumbed, the crew has received a reward of %s points."
 
+language.CloneOGClient = "You have been cloned successfully! You remember everything before you went unconscious."
+language.CloneRandom = "You are a clone of %s! You don't remember anything, strangely. Who are these people?"
+
 language.ShadyMissionPart1 = "You pickup a weird radio transmission, it sounds like they are looking for someone to do a job for them."
 language.ShadyMissionPart2 = "\"Oh hello there! We are looking for someone to do a simple task for us. We are willing to pay up to 3000 points for it. Interested?\""
 language.ShadyMissionPart2Answer = "Sure! What's it?"
@@ -240,6 +243,8 @@ language.Rounds = "General Round stats"
 
 language.Yes = "Yes"
 language.No = "No"
+
+language.BeingCloned = "You are being cloned. Return to your body?"
 
 language.PointshopInGame = "You must be in game to use the Pointshop."
 language.PointshopCannotBeUsed = "This product cannot be used at the moment."
@@ -303,7 +308,13 @@ language.Pointshop = {
     spawnasmudraptor = "Spawn as Mudraptor",
     spawnasmantis = "Spawn as Mantis",
     spawnashusk = "Spawn as Husk",
+    spawnashuskpucs = "Spawn as Husk (PUCS)",
     spawnashuskedhuman = "Spawn as Husked Human",
+    spawnasmutanthuskarmored = "Spawn as Mutated Husk Human (Armored)",
+    spawnasmutanthusk = "Spawn as Mutated Husk Human",
+    spawnashuskedhumanold = "Spawn as Husked Human (Rotting)",
+    spawnasraptorhusk = "Spawn as Husked Mudraptor",
+    spawnasraptorhuskarmored = "Spawn as Husked Mudraptor (Armored)",
     spawnasbonethresher = "Spawn as Bone Thresher",
     spawnastigerthresher = "Spawn as Tiger Thresher",
     spawnaslegacymoloch = "Spawn as Legacy Moloch",

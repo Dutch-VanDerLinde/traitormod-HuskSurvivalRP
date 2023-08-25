@@ -204,3 +204,121 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
         Traitormod.Pointshop.ShowCategory(client)
     end
 end, Hook.HookMethodType.After)
+
+-- Incubator Logic
+Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, deltaTime, item, targets, worldPosition)
+    local data = item.OwnInventory.GetItemAt(0)
+    local possibledisorders = {
+        "thal_disorderseizure",
+        "thal_disorderhypo",
+        "thal_disorderacid",
+        "thal_disordermumble",
+        "thal_disorderdeath",
+        "thal_disorderbuff",
+        "thal_disorderhusk",
+        "thal_disorderstupid",
+        "thal_disorderweapon",
+        "thal_disorderrad",
+        "thal_disorderbloodloss",
+        "thal_disorderacid",
+        "thal_disorderairloss",
+    }
+    local possibleLimbs = {
+        LimbType.LeftLeg,
+        LimbType.RightLeg,
+        LimbType.RightArm,
+        LimbType.LeftArm,
+        LimbType.Head
+    }
+    if data and not data.NonInteractable then
+        local condition = data.Condition
+        local prop = data.SerializableProperties[Identifier("NonInteractable")]
+        data.NonInteractable = true
+        Networking.CreateEntityEvent(data, Item.ChangePropertyEventData(prop, data))
+
+        local tags = HF.SplitString(data.Tags,",")
+        local clientname = nil
+        for tag in tags do
+            if HF.StartsWith(tag,"name") then
+                local split = HF.SplitString(tag,":")
+                if split[2] ~= nil then clientname = split[2] end
+            end
+        end
+        local client = HF.ClientFromName(clientname)
+        if not client then return end
+
+        if not client.Character or not client.Character.IsHuman or client.Character.IsDead then
+            local textPromptUtils = require("textpromptutils")
+            local options = {Traitormod.Language.Yes, Traitormod.Language.No}
+            textPromptUtils.Prompt("You are being cloned! Return to your body?", options, client, function(option, client2)
+                if option == 1 then
+                    client2.SetClientCharacter(nil)
+                else
+                    Traitormod.Log(client.Name .. " denied returning to the spectator chat")
+                end
+            end)
+
+            Traitormod.SendMessage(client, "You are being cloned! If your current character is alive, you won't gain control of the clone.")
+        end
+
+        Timer.Wait(function ()
+            local traumatic = 0
+            local surgical = 0
+            local randomdisorder = possibledisorders[math.random(1, #possibledisorders)]
+            local char = Character.Create(client.CharacterInfo, item.WorldPosition, client.CharacterInfo.Name, 0, true, false)
+            char.TeamID = CharacterTeamType.FriendlyNPC
+            HF.RemoveItem(data)
+
+            Timer.Wait(function ()
+                if not client.Character or client.Character.IsDead and not char.IsDead then
+                    client.SetClientCharacter(char)
+                    Traitormod.LostLivesThisRound[client.SteamID] = false
+
+                    Traitormod.SendMessageCharacter(char, Traitormod.Language.CloneOGClient, "InfoFrameTabButton.Mission")
+                elseif not char.IsDead then
+                    Traitormod.GhostRoles.Ask(char.Name.." (Cloned)", function (ghostclient)
+                        Traitormod.LostLivesThisRound[ghostclient.SteamID] = false
+                        ghostclient.SetClientCharacter(char)
+
+                        Traitormod.SendMessageCharacter(char, string.format(Traitormod.Language.CloneRandom, char.Name), "InfoFrameTabButton.Mission")
+                    end, char)
+                end
+            end, 1500)
+
+            if condition < 50 and condition > 20 then
+                if math.random(1, 4) == 1 then
+                    table.remove(possibleLimbs, 5)
+                    if math.random(1, 4) == 1 then
+                        traumatic = 100
+                    else
+                        surgical = 100
+                    end
+                    NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
+                    if math.random(1, 4) == 1 then
+                        HF.AddAffliction(char,randomdisorder,2)
+                    end
+                end
+            elseif condition <= 20 and condition >= 1 then
+                if math.random(1, 2) == 1 then table.remove(possibleLimbs, 5) end
+                if math.random(1, 3) == 1 then
+                    traumatic = 100
+                else
+                    surgical = 100
+                end
+                NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
+                if math.random(1, 2) == 1 then
+                    HF.AddAffliction(char,randomdisorder,2)
+                end
+            elseif condition < 1 then
+                if math.random(1, 2) == 1 then
+                    traumatic = 100
+                else
+                    surgical = 100
+                end
+                NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
+                NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
+                HF.AddAffliction(char,randomdisorder,2)
+            end
+        end, 30000)
+    end
+end)
