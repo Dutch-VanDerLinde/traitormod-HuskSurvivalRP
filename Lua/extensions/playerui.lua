@@ -50,22 +50,22 @@
 
         if client then
             Timer.Wait(function ()
-                local jobname = character.Info.Job.Name.ToString()
+                local jobid = character.Info.Job.Identifier
                 local truename = jobname
                 local idcard = character.Inventory.FindItemByIdentifier("idcard")
                 if idcard then
                     if idcard.HasTag("azoe_admin") then
                         truename = "Azoe Administrator"
-                    elseif idcard.HasTag("melt_admin") then
-                        truename = "Meltwater Administrator"
+                    elseif idcard.HasTag("azoe_gov") then
+                        truename = "Azoe Security Officer"
                     elseif idcard.HasTag("azoe") then
-                        truename = "Azoe "..jobname
-                    elseif idcard.HasTag("melt") then
-                        truename = "Meltwater "..jobname
-                    elseif idcard.HasTag("researchdirector") then
-                        truename = "Institute Research Director"
-                    elseif idcard.HasTag("scientist") then
+                        truename = "Azoe "..character.Info.Job.Name.ToString()
+                    elseif jobid == "researchdirector" then
+                        truename = "Research Director"
+                    elseif jobid == "thal_scientist" then
                         truename = "Institute Scientist"
+                    elseif jobid == "guardtci" then
+                        truename = "Institute Security Officer"
                     end
                 end
 
