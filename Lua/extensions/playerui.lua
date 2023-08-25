@@ -25,19 +25,24 @@
         end
     end)
 
-    local function UpdatePlayerList(client)
+    local function UpdatePlayerList(client, joinedleft)
         local discordWebHook = "https://discord.com/api/webhooks/1138862181723668500/Kv-hzWLm9KM2-ZusZ2itu8FHSjN4fa2DK5WSlJju5QNW-WGKSb5C57ULxuRftUiwJjjS"
         local totalclients = #Client.ClientList
         local maxclients = Game.ServerSettings.MaxPlayers
 
-        local msg = client.Name.." has left the server.\nThe player count is now "..totalclients.."/"..maxclients.."."
+        local msg = client.Name.." has "..joinedleft.." the server.\nThe player count is now "..totalclients.."/"..maxclients.."."
 
         local escapedMessage = escapeQuotes(msg)
         Networking.RequestPostHTTP(discordWebHook, function(result) end, '{\"content\": \"'..escapedMessage..'\", \"username\": \"'..'Current Players (HUSK SURVIVAL)'..'\"}')
     end
 
-    Hook.Add("client.connected", "PlayerListConnection", UpdatePlayerList)
-    Hook.Add("client.disconnected", "PlayerListDisconnection", UpdatePlayerList)
+    Hook.Add("client.connected", "PlayerListConnection", function (client)
+        UpdatePlayerList(client, "joined")
+    end)
+
+    Hook.Add("client.disconnected", "PlayerListDisconnection", function (client)
+        UpdatePlayerList(client, "left")
+    end)
 
     -- Add character to credits
     Hook.Add("character.giveJobItems", "Player.UI.giveJobItems", function(character, waypoint)
