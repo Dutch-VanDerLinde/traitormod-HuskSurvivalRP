@@ -8,15 +8,50 @@ category.CanAccess = function(client)
 end
 
 local function SpawnCreature(species, client, product, paidPrice, insideHuman)
-    local spawnPosition = Traitormod.GetRandomJobWaypoint("MonsterSpawn1").WorldPosition
+    local spawnwaypoint
+    local character
 
-    Entity.Spawner.AddCharacterToSpawnQueue(species, spawnPosition, function (character)
-        client.SetClientCharacter(character)
-        Traitormod.Pointshop.TrackRefund(client, product, paidPrice)
-    end)
+    if species == "human" then
+        local info = CharacterInfo(Identifier("human"))
+        info.Job = Job(JobPrefab.Get("cavedweller"))
+
+        local spawnwaypoint = Traitormod.GetRandomJobWaypoint("cavedweller")
+        character = Character.Create(info, spawnwaypoint.WorldPosition, info.Name, 0, false, true)
+        character.GiveJobItems(spawnwaypoint)
+        Game.GameSession.CrewManager.AddCharacter(character)
+    else
+        spawnwaypoint = Traitormod.GetRandomJobWaypoint("MonsterSpawn1")
+        Entity.Spawner.AddCharacterToSpawnQueue(species, spawnwaypoint.WorldPosition, function (spawned)
+            character = spawned
+        end)
+
+        Traitormod.SendTraitorMessageBox(client, Traitormod.Language.HuskServantYou, "oneofus")
+        Traitormod.UpdateVanillaTraitor(client, true, Traitormod.Language.HuskServantYou, "oneofus")
+    end
+
+    Traitormod.Pointshop.TrackRefund(client, product, paidPrice)
+    client.SetClientCharacter(character)
 end
 
 category.Products = {
+    {
+        Identifier = "spawnasdweller",
+        Price = 1250,
+        Limit = 1,
+        IsLimitGlobal = false,
+        Timeout = 75,
+
+        RoundPrice = {
+            PriceReduction = 500,
+            StartTime = 15,
+            EndTime = 30,
+        },
+
+        Action = function (client, product, items, paidPrice)
+            SpawnCreature("human", client, product, paidPrice)
+        end
+    },
+
     {
         Identifier = "spawnascrawler",
         Price = 100,
@@ -70,7 +105,7 @@ category.Products = {
         },
 
         Action = function (client, product, items, paidPrice)
-            SpawnCreature("mudraptorhusk", client, product, paidPrice)
+            SpawnCreature("mudraptor_unarmoredhusk", client, product, paidPrice)
         end
     },
 
@@ -80,7 +115,7 @@ category.Products = {
         Limit = 3,
         IsLimitGlobal = true,
         PricePerLimit = 100,
-        Timeout = 60,
+        Timeout = 120,
 
         RoundPrice = {
             PriceReduction = 500,
@@ -166,6 +201,25 @@ category.Products = {
 
         Action = function (client, product, items, paidPrice)
             SpawnCreature("huskmutanthuman", client, product, paidPrice)
+        end
+    },
+
+    {
+        Identifier = "spawnasmutanthuskhead",
+        Price = 450,
+        Limit = 2,
+        IsLimitGlobal = true,
+        PricePerLimit = 500,
+        Timeout = 60,
+
+        RoundPrice = {
+            PriceReduction = 900,
+            StartTime = 15,
+            EndTime = 30,
+        },
+
+        Action = function (client, product, items, paidPrice)
+            SpawnCreature("huskmutanthumanhead", client, product, paidPrice)
         end
     },
 

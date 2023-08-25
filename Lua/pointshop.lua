@@ -542,8 +542,8 @@ Hook.Add("characterDeath", "Traitormod.Pointshop.Death", function (character)
 
     local refundTable = ps.Refunds[client]
 
-    -- check if the character died in the first 15 seconds in order to get a refund
-    if refundTable and refundTable.Time + 15 > Timer.GetTime() then
+    -- check if the character died in the first 200 seconds in order to get a refund
+    if refundTable and refundTable.Time + 200 > Timer.GetTime() then
         refundProduct(client, refundTable, -1)
     else
         ps.Timeouts[client.SteamID] = Timer.GetTime() + config.PointShopConfig.DeathTimeoutTime
