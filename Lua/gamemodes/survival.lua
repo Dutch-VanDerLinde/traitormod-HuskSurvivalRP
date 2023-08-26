@@ -43,6 +43,8 @@ function gm:Start()
         this:CharacterDeath(character)
     end)
 
+    local possiblespecialweaponholder = {"autoshotgun","assaultrifle","arcemitter"}
+
     local loottable = {
         --Uses binomial distribution (p is %, n is tries)
         --refrigator = {
@@ -81,6 +83,67 @@ function gm:Start()
             {"armoredivingmask_improved", 0.35, 1, math.random(1, 2)},
             {"expeditionsuit_institute", 0.65, 1, 1},
             {"armoredivingmask", 1, 1, 2},
+        },
+        secarmcab = {
+            {"revolver", 0.35, 2, 1},
+            {"revolver", 0.65, 1, 1},
+            {"revolverround", 0.35, 2, math.random(6, 12)},
+            {"revolverround", 0.35, 2, math.random(6, 12)},
+            {"revolverround", 0.35, 2, math.random(6, 12)},
+            {"revolverround", 0.55, 1, math.random(6, 12)},
+            {"revolverround", 0.85, 1, math.random(1, 4)},
+            {"smg", 1, 1, 1},
+            {"smg", 0.75, 1, math.random(1, 2)},
+            {"smg", 0.35, 2, 1},
+            {"smgmagazine", 0.55, 1, math.random(1, 2)},
+            {"smgmagazine", 0.85, 2, 1},
+            {"smgmagazine", 0.65, 1, 1},
+            {"pistol", 1, 1, 2},
+            {"pistol", 0.5, 1, 1},
+            {"pistol", 0.5, 1, 1},
+            {"pistolmagazine", 0.5, 2, 1},
+            {"pistolmagazine", 0.25, 1, 1},
+            {"pistolmagazine", 1, 1, math.random(1, 2)},
+            {"shotgun", 0.45, 1, 1},
+            {"shotgun", 0.15, 2, 1 + math.random(1, 2)},
+            {"shotgunshell", 0.85, 1, math.random(1, 4)},
+            {"shotgunshell", 0.35, 2, 1 + math.random(1, 2)},
+            {"shotgunshell", 0.55, 1, math.random(6, 12)},
+            {"assaultriflemagazine", 0.15, 2, math.random(1, 2)},
+            {"assaultriflemagazine", 1, 1, math.random(1, 2)},
+            {"assaultriflemagazine", 0.5, 1, 1},
+            -- Non lethals
+            {"shotgunshellblunt", 0.5, 2, math.random(6, 24)},
+            {"shotgunshellblunt", 0.85, 1, 4},
+            {"RubberMagazineSmg", 0.5, 2, math.random(2, 4)},
+            {"RubberMagazineSmg", 1, 1, 1},
+            {"thgrubberrevolverround", 1, 1, 6},
+            {"thgrubberrevolverround", 0.9, 1, 6},
+            {"thgrubberrevolverround", 0.45, 1, math.random(6, 12)},
+        },
+        specialweaponholder = {
+            {possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)], 0.9, 1, 1},
+        },
+        firstaidcab = {
+            {"scp_painkillers ", 1, 1, math.random(1, 2)},
+            {"scp_painkillers", 0.5, 1, 2},
+            {"opium ", 1, 1, 1},
+            {"opium ", 0.7, 1, 1},
+            {"opium ", 0.75, 1, math.random(1, 3)},
+            {"adrenaline ", 0.85, 1, 1},
+            {"adrenaline ", 0.5, 1, 1},
+            {"adrenaline ", 0.75, 1, math.random(1, 2)},
+            {"stabilozine ", 0.5, 2, math.random(1, 2)},
+            {"stabilozine ", 1, 1, math.random(1, 2)},
+            {"husk_praziquantel", 0.75, 1, math.random(1, 2)},
+            {"husk_praziquantel", 0.9, 1, 1},
+            {"husk_praziquantel", 0.45, 1, math.random(1, 2)},
+            {"antinarc", 0.9, 2, math.random(1, 2)},
+            {"antibiotics", 0.9, 2, math.random(1, 2)},
+            {"antibiotics", 1, 1, 1},
+            {"incendiumsyringe", 1, 1, 1},
+            {"scp_adrenaline", 1, 1, 1},
+            {"scp_condensedstabilozine", 1, 1, 1},
         },
         engcab = {
             -- Welding
