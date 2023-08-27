@@ -457,7 +457,7 @@ ps.TrackRefund = function (client, product, paidPrice)
     ps.Refunds[client] = { Product = product, Time = Timer.GetTime(), Price = paidPrice }
 end
 
-Traitormod.AddCommand({"!pointshop", "!pointsshop", "!ps", "!shop"}, function (client, args)
+Traitormod.AddCommand({"!pointshop", "!pointsshop", "!ps", "!shop", "!deathspawn"}, function (client, args)
     if #ps.ActiveCategories == 0 then
         textPromptUtils.Prompt(Traitormod.Language.PointshopNotAvailable, {}, client, function (id, client) end, "gambler")
         return true    

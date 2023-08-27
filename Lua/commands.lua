@@ -150,7 +150,7 @@ Traitormod.AddCommand("!toggletraitor", function (client, args)
     return true
 end)
 
-Traitormod.AddCommand({"!point", "!points"}, function (client, args)
+Traitormod.AddCommand({"!point", "!points", "!money"}, function (client, args)
     Traitormod.SendMessage(client, Traitormod.GetDataInfo(client, true))
 
     return true

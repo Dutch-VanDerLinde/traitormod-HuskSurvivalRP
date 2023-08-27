@@ -73,9 +73,11 @@ Traitormod.Outfits = {
         {"caveclothes1green", "placeholdermask", "cavejacketbrown"},
         {"caveclothes2", "placeholdermask", "cavejacketbrown"},
         {"caveclothes3", "placeholdermask", "cavejacketbrown"},
+        {"prisonerclothes", "placeholdermask", "cavejacketbrown"},
         -- Black Coat
         {"caveclothes1", "placeholdermask", "cavejacketblack"},
         {"caveclothes2", "placeholdermask", "cavejacketblack"},
+        {"prisonerclothes", "placeholdermask", "cavejacketblack"},
         -- Expedition Suit
         {"caveclothes3", "placeholdermask", "armoredivingmask"},
     },
