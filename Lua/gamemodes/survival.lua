@@ -56,6 +56,10 @@ function gm:Start()
             {"banana", 0.4, 2, math.random(1, 2)},
             {"he-cookedthresherfilet", 0.4, 1, 1},
             {"he-cookedcrawlerfilet", 0.75, math.random(1, 2), 2},
+            {"he-cookedcrawlerfilet", 0.75, math.random(1, 2), 2},
+            {"he-water", 1, math.random(1, 2), 2},
+            {"he-water", 0.25, 1, math.random(1, 2)},
+            {"he-water", 0.32, 2, 1},
         },
         seed = {
             {"aquaticpoppyseed", 0.2, 2, 1},
@@ -81,8 +85,9 @@ function gm:Start()
         },
         tcisuitcab = {
             {"armoredivingmask_improved", 0.35, 1, math.random(1, 2)},
-            {"expeditionsuit_institute", 0.65, 1, 1},
-            {"armoredivingmask", 1, 1, 2},
+            {"armoredivingmask_improved", 1, 1, 1},
+            {"expeditionsuit_institute", 0.45, 1, 1},
+            {"armoredivingmask", 1, 1, 1},
         },
         secarmcab = {
             {"revolver", 0.35, 2, 1},
