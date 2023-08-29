@@ -17,8 +17,10 @@ Traitormod.Loadouts = {
     },
 
     ["thal_scientist"] = {
-        {"thal_geneticsign", 1, 0.5},
         {"thal_hydrophonicsign", 1, 0.5},
+        {"thal_geneticsign", 1, 0.5},
+        {"thal_pen", 1, 1},
+        {"thal_memo", 1, 1},
     },
 
     ["guardtci"] = {
