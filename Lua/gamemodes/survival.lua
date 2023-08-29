@@ -125,6 +125,18 @@ function gm:Start()
             {"thgrubberrevolverround", 1, 1, 6},
             {"thgrubberrevolverround", 0.9, 1, 6},
             {"thgrubberrevolverround", 0.45, 1, math.random(6, 12)},
+            -- Grenades
+            {"stungrenade", 1, 1, 3},
+            {"stungrenade", 0.5, math.random(1, 2), 1},
+            {"stungrenade", 0.2, math.random(1, 2), 1},
+            {"fraggrenade", 1, 1, math.random(1, 3)},
+            {"fraggrenade", 0.5, 1, 1},
+            {"incendiumgrenade", 1, 1, 1},
+            {"incendiumgrenade", 0.65, math.random(1, 2), math.random(1, 2)},
+            {"chemgrenade ", 0.85, 1, math.random(2, 5)},
+            {"chemgrenade ", 1, 1, 1},
+            {"chemgrenade ", 1, 1, 1},
+            {"empgrenade ", 1, 1, math.random(1, 2)},
         },
         specialweaponholder = {
             {possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)], 0.9, 1, 1},
