@@ -69,6 +69,11 @@ Traitormod.Outfits = {
         {"thal_geneticistsuit", "scientistscannerhud"},
     },
 
+    ["he-chef"] = {
+        {"he-chefsuniform1", "he-chefscap1"},
+        {"he-chefsuniform2", "he-chefscap2"},
+    },
+
     ["cavedweller"] = { -- Diving Mask is a placeholder for the random masks in giveitemjob function
         -- Brown Jackets
         {"caveclothes1", "placeholdermask", "cavejacketbrown"},

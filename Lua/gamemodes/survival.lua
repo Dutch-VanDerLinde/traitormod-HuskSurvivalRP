@@ -139,7 +139,7 @@ function gm:Start()
             {"empgrenade ", 1, 1, math.random(1, 2)},
         },
         specialweaponholder = {
-            {possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)], 0.9, 1, 1},
+            {possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)], 1, 1, 1},
         },
         firstaidcab = {
             {"scp_painkillers ", 1, 1, math.random(1, 2)},

@@ -820,6 +820,21 @@ Traitormod.DoJobSet = function (character)
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))
         end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil, math.random(0, 2))
+    elseif character.HasJob("citizen") then
+        local possibleRadios = {
+            "headset",
+            "ek_security_radio",
+            "ek_citizen_radio",
+        }
+
+        local randomRadio = possibleRadios[math.random(1, #possibleRadios)]
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomRadio), character.Inventory, nil, nil, function(spawned)
+            character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Headset), true, false, character)
+
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(75, 100), nil, function(batcell)
+                spawned.OwnInventory.TryPutItem(batcell, 0, true, false, character)
+            end)
+        end)
     end
 
     if character.HasJob("cavedweller") then return end
@@ -855,7 +870,7 @@ Traitormod.DoJobSet = function (character)
         end
     end)
 
-    local headset = character.Inventory.GetItemInLimbSlot(InvSlotType.Headset)
+    local headset character.Inventory.FindItemByTag("mobileradio", true)
     if not headset then return end
 
     local component = headset.GetComponentString("WifiComponent")
