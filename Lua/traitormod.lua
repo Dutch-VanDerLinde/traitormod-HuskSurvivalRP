@@ -447,6 +447,7 @@ Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/s
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/growmudraptors.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/assassinatepressure.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/stealidcard.lua"))
+Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/killany.lua"))
 
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/killmonsters.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/crew/killsmallmonsters.lua"))
@@ -469,6 +470,10 @@ Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/traitor.lua
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/husk.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/miner.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/technician.lua"))
+
+-- Cave Dweller Roles
+Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/CaveDweller/bandit.lua"))
+
 
 if Traitormod.Config.Extensions then
     for key, extension in pairs(Traitormod.Config.Extensions) do

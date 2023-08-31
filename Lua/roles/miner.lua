@@ -65,6 +65,24 @@ function role:Start()
     for key, item in pairs(self.RoleGear) do
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
     end
+
+    --Give id card tags
+    local ogidcard = self.Character.Inventory.FindItemByIdentifier("idcard", true)
+    Entity.Spawner.AddEntityToRemoveQueue(ogidcard)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), self.Character.WorldPosition, nil, nil, function (id)
+        id.AddTag("name:"..self.Character.Name)
+        id.AddTag("job:citizen")
+        id.AddTag("miner")
+        id.AddTag("azoe")
+        id.Description = "They are an Azoe Linea miner."
+        local IdCardComponent = id.GetComponentString("IdCard")
+        IdCardComponent.OwnerJobId = "citizen"
+        IdCardComponent.OwnerName = self.Character.Name
+        id.CreateServerEvent(IdCardComponent, IdCardComponent)
+        -- Place in IdCard slot
+        local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Card)
+        self.Character.Inventory.TryPutItem(id, slot, true, false, self.Character)
+    end)
 end
 
 
