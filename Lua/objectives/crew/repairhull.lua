@@ -1,8 +1,8 @@
 local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "RepairHull"
-objective.AmountPoints = 400
-objective.Amount = 2000
+objective.AmountPoints = 500
+objective.Amount = 1000
 
 function objective:Start(target)
     self.Progress = 0

@@ -674,7 +674,6 @@ Traitormod.GiveJobItems = function (character)
     end
 
     Traitormod.SendJobInfoMsg(client, job)
-    Traitormod.DoJobSet(character)
 
     Timer.Wait(function()
         for item in jobLoadout do
@@ -695,6 +694,8 @@ Traitormod.GiveJobItems = function (character)
             end
         end
     end, 100)
+
+    Traitormod.DoJobSet(character)
 end
 
 Traitormod.SpawnLootTables = function (loottable)
@@ -861,7 +862,7 @@ Traitormod.DoJobSet = function (character)
         for i = 1, math.random(6, 10), 1 do
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(possiblemoney[1]), spawned.OwnInventory)
         end
-        
+
         -- Administrators spawn with extra money
         if character.HasJob("adminone") or character.HasJob("researchdirector") then
             for i = 1, math.random(1, 2) do
@@ -870,33 +871,36 @@ Traitormod.DoJobSet = function (character)
         end
     end)
 
-    local headset character.Inventory.FindItemByTag("mobileradio", true)
-    if not headset then return end
+    -- Headset Radio channels
+    Timer.Wait(function ()
+        local headset = character.Inventory.FindItemByTag("mobileradio", true)
+        if not headset then return end
 
-    local component = headset.GetComponentString("WifiComponent")
+        local component = headset.GetComponentString("WifiComponent")
 
-    if character.HasJob("researchdirector")
-        or character.HasJob("thal_scientist")
-        or character.HasJob("guardtci")
-    then
-        component.Channel = Traitormod.InstituteRadioChannel
-    elseif not character.HasJob("cavedweller") then
-        component.Channel = Traitormod.AzoeRadioChannel
-    end
+        if character.HasJob("researchdirector")
+            or character.HasJob("thal_scientist")
+            or character.HasJob("guardtci")
+        then
+            component.Channel = Traitormod.InstituteRadioChannel
+        else
+            component.Channel = Traitormod.AzoeRadioChannel
+        end
 
-    headset.CreateServerEvent(component, component)
-    
-    local color = "‖color:gui.orange‖%s‖color:end‖"
+        headset.CreateServerEvent(component, component)
 
-    if character.HasJob("researchdirector") then
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil, function(spawned)
-            spawned.Description = string.format(Traitormod.Language.InstituteCodes, character.Name).."\nThe institute radio channel is: "..string.format(color, Traitormod.InstituteRadioChannel)
-        end)
-    elseif character.HasJob("adminone") then
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminpaper"), character.Inventory, nil, nil, function(spawned)
-            spawned.Description = string.format(Traitormod.Language.AzoeCodes, character.Name).."\nThe azoe region radio channel is: "..string.format(color, Traitormod.AzoeRadioChannel)
-        end)
-    end
+        local color = "‖color:gui.orange‖%s‖color:end‖"
+
+        if character.HasJob("researchdirector") then
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil, function(spawned)
+                spawned.Description = string.format(Traitormod.Language.InstituteCodes, character.Name).."\nThe institute radio channel is: "..string.format(color, Traitormod.InstituteRadioChannel)
+            end)
+        elseif character.HasJob("adminone") then
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminpaper"), character.Inventory, nil, nil, function(spawned)
+                spawned.Description = string.format(Traitormod.Language.AzoeCodes, character.Name).."\nThe azoe region radio channel is: "..string.format(color, Traitormod.AzoeRadioChannel)
+            end)
+        end
+    end, 200)
 end
 
 Traitormod.SendJobInfoMsg = function (client, job)
@@ -928,6 +932,8 @@ Traitormod.SendJobInfoMsg = function (client, job)
             color = Color.MediumAquamarine
             msg = "You are the institute's guard!\nYou answer directly to the research director. Make sure no threats prosper at the institute and all of their assets are kept safe."
         end
+
+        if msg == "hi" then return end
 
         local ChatMsg = ChatMessage.Create("Role Info", msg, ChatMessageType.Default, nil, nil)
         local PopupMsg = ChatMessage.Create("Role Info", msg, ChatMessageType.MessageBox, nil, nil)

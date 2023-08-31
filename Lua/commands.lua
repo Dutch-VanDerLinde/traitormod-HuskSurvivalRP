@@ -36,7 +36,7 @@ Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
     end
 
     if #args < 1 then
-        Traitormod.SendMessage(client, "Usage: !hc or !huskchat message")
+        Traitormod.SendMessage(client, "Usage: !hc or !huskchat [message]")
         return true
     end
 
@@ -51,6 +51,39 @@ Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
             local chatMessage = ChatMessage.Create(formatedname, msg, ChatMessageType.Default)
             chatMessage.Color = Color(60,107,195,255)
             Game.SendDirectChatMessage(chatMessage, loopclient)
+        end
+    end
+
+    return true
+end)
+
+Traitormod.AddCommand({"!ooc", "!looc"}, function (client, args)
+    if client.Character == nil or client.Character.IsDead then
+        Traitormod.SendMessage(client, Traitormod.Language.CMDAliveToUse)
+        return true
+    end
+
+    if #args < 1 then
+        Traitormod.SendMessage(client, "Usage: !ooc [message]")
+        return true
+    end
+
+    local msg = ""
+    for word in args do
+        msg = msg .. " " .. word
+    end
+
+    local formatedname = string.format(Traitormod.Language.CMDOOCChat, client.Name, client.Character.Name)
+    local chatMessage = ChatMessage.Create(formatedname, msg, ChatMessageType.Default)
+    chatMessage.Color = Color(0,255,255,255)
+
+    for _, loopclient in pairs(Client.ClientList) do
+        local loopchar = loopclient.Character
+        if loopchar and not loopchar.IsDead and loopchar.IsHuman then
+            local distance = Vector2.Distance(loopchar.WorldPosition, client.Character.WorldPosition)
+            if distance <= 1100 then
+                Game.SendDirectChatMessage(chatMessage, loopclient)
+            end
         end
     end
 

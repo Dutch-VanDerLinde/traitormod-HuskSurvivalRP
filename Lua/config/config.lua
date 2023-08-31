@@ -124,15 +124,12 @@ config.GamemodeConfig = {
 }
 
 config.RoleConfig = {
-    Crew = {
-        AvailableObjectives = {
-            ["captain"] = {"KillLargeMonsters", "FinishRoundFast", "SecurityTeamSurvival"},
-            ["engineer"] = {"RepairElectrical", "RepairMechanical", "KillSmallMonsters"},
-            ["mechanic"] = {"RepairMechanical", "RepairHull", "KillSmallMonsters"},
-            ["securityofficer"] = {"KillLargeMonsters", "KillSmallMonsters"},
-            ["medicaldoctor"] = {"HealCharacters", "KillSmallMonsters"},
-            ["assistant"] = {"RepairElectrical", "RepairMechanical", "KillPets"},
-        }
+    Technician = {
+        AvailableObjectives = {"RepairElectrical", "RepairMechanical", "RepairHull"}
+    },
+
+    Miner = {
+        AvailableObjectives = {"RepairElectrical", "RepairMechanical", "DeconstructMinerals"},
     },
 
     Husk = {

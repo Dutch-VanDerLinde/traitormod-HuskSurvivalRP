@@ -3,8 +3,7 @@ local objective = Traitormod.RoleManager.Objectives.Objective:new()
 objective.Name = "FinishAllObjectives"
 objective.Text = Traitormod.Language.ObjectiveFinishAllObjectives
 objective.EndRoundObjective = false
-objective.AmountPoints = 0
-objective.AmountLives = 1
+objective.AmountPoints = 450
 
 function objective:Start()
     return true

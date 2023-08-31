@@ -1,11 +1,11 @@
 local role = Traitormod.RoleManager.Roles.Role:new()
-role.Name = "Crew"
+role.Name = "Technician"
 role.Antagonist = false
+role.RoleClothes = {"orangejumpsuit2", "bluejumpsuit2", "bluejumpsuit1"}
+role.RoleGear = {"screwdriver","wrench","weldingtool","weldingfueltank","repairpack"}
 
 function role:Start()
-    local job = self.Character.Info.Job.Prefab.Identifier.Value
-    
-    local availableObjectives = self.AvailableObjectives[job]
+    local availableObjectives = self.AvailableObjectives
 
     if not availableObjectives or #availableObjectives == 0 then
         return
@@ -42,7 +42,23 @@ function role:Start()
     local text = self:Greet()
     local client = Traitormod.FindClientCharacter(self.Character)
     if client then
-        Traitormod.SendChatMessage(client, text, Color.Green)
+        Traitormod.SendChatMessage(client, text, Color(161, 206, 45, 255))
+    end
+
+    self.Character.Info.SetSkillLevel("mechanical", math.random(35, 40))
+    self.Character.Info.SetSkillLevel("electrical", math.random(35, 40))
+    -- Delete Original clothes
+    local originalclothes = self.Character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
+    Entity.Spawner.AddEntityToRemoveQueue(originalclothes)
+    -- Clothes spawn
+    local selectedClothes = ItemPrefab.GetItemPrefab(self.RoleClothes[math.random(1, #self.RoleClothes)])
+    Entity.Spawner.AddItemToSpawnQueue(selectedClothes, self.Character.Inventory, nil, nil, function(spawned)
+        local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
+        self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
+    end)
+    -- Gear spawn
+    for key, item in pairs(self.RoleGear) do
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
     end
 end
 
@@ -70,7 +86,7 @@ function role:Greet()
     local objectives = self:ObjectivesToString()
 
     local sb = Traitormod.StringBuilder:new()
-    sb(Traitormod.Language.CrewMember)
+    sb(Traitormod.Language.AzoeTechnician)
     sb(objectives)
 
     return sb:concat()

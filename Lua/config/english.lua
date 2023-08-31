@@ -1,20 +1,22 @@
 local language = {}
 language.Name = "English"
 
-language.TipText = "Pro Tip: "
+language.TipText = "Survival Tip: "
 language.Tips = {
-    "You can use !pointshop to spawn as creatures when you are dead.",
-    "Traitors have access to a special traitor shop. Use !pointshop to open it.",
+    "Want to suggest new content for husk survival? Join the Neurotraumatic RP discord!\ndiscord.gg/SqeTDM9KSP",
     "You can use !role to get information about your current role status.",
     "You can use !help to get a list of all available commands.",
     "You can use !write to write text to a logbook that spawns when you die.",
-    "Captain and security guards can never be traitors.",
+    "Be careful around cave dwellers.",
     "Ghost roles might become available when you are dead, you can use !ghostrole to claim them.",
-    "Typing !kill in chat as a ghost role simply returns it to the list of available ghost roles, rather than killing it.",
-    "Dying in the first 15 seconds as a creature refunds the price of it fully.",
+    "You can use !deathspawn to respawn as a creature.",
+    "Dying in the first 200 seconds as a bought creature refunds the price of it fully.",
+    "Have an OOC dispute you want to deal with? Use !ooc to send a message to the OOC chat!",
+    "The round will automatically end once all humans die.",
+    "If your original character died, do not worry! You can still be cloned at the institute. Better hope that someone brings you there..",
 }
 
-language.Help = "\n!help - shows this help message\n!helptraitor - shows all traitor commands\n!helpadmin - lists all admin commands\n!traitor - show traitor information\n!deathspawn - opens the deathspawn shop\n!money - show your money and lives\n!alive - list alive players (only while dead)\n!locatesub - shows you the distance and direction of the submarine, only for monsters\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!roundtime - shows the current round time"
+language.Help = "\n!help - shows this help message\n!helpadmin - lists all admin commands\n!role - show role info\n!deathspawn - opens the deathspawn shop\n!money - show your money and lives\n!alive - list alive players (only while dead)\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!playtime - shows how long you've played on the server\n!roundtime - shows the current round time\n!ooc [message] - sends a message to ooc chat"
 language.HelpTraitor = "\n!toggletraitor - toggles if the player can be selected as traitor\n!tc [msg] - sends a message to all traitors\n!tannounce [msg] - sends a traitor announcement for traitors\n!tdm [Name] [msg] - sends a anonymous msg to given player"
 language.HelpAdmin = "\n!traitoralive - check if all traitors died\n!roundinfo - show round information (spoiler!)\n!allpoints - shows money amounts of all connected clients\n!addpoint [Client] [+/-Amount] - add money to a client\n!addlife [Client] [+/-Amount] - add life(s) to a client\n!revive [Client] - revives a given client character\n!void [Character Name] - sends a character to the void\n!unvoid [Character Name] - brings a character back from the void\n!vote [text] [option1] [option2] [...] - starts a vote on the server\n!giveghostrole [text] [character] - assigns a character with the specified name as a ghost role"
 
@@ -48,6 +50,8 @@ language.MainObjectivesOther = "Their main objectives were:"
 language.SecondaryObjectivesOther = "Their secondary objectives were:"
 
 language.CrewMember = "You are crew member of the submarine.\n\nYou have been assigned the following bonus objectives.\n\n"
+language.AzoeMiner = "You are a miner of the Azoe Region. Your job is to mine/find materials and fabricate items for the survival of the Azoe Region.\n\nYou have been assigned the following bonus objectives.\n\n"
+language.AzoeTechnician = "You are a technician of the Azoe Region. Your job is to operate the reactor, fix devices, and create new electrical/mechanical contraptions.\n\nYou have been assigned the following bonus objectives.\n\n"
 
 language.SoloAntagonist = "You are the only antagonist."
 language.Partners = "Partners: %s"
@@ -93,7 +97,7 @@ language.Gamemode = "Gamemode: %s"
 language.RandomEvents = "Random Events: %s"
 language.ObjectiveCompleted = "Objective completed: %s"
 language.ObjectiveFailed = "Objective failed: %s"
-language.CharacterDeath = "Your character %s has died. You are no longer allowed to information from that character. A new name has been given."
+language.CharacterDeath = "Your character %s has died. You are no longer allowed to use information from that character. A new name has been given."
 
 language.CrewWins = "The humans have survived."
 language.TraitorHandcuffed = "The crew handcuffed the traitor %s."
@@ -156,8 +160,9 @@ language.ObjectiveStealID = "Steal the %s's ID for %s seconds."
 language.ObjectiveKidnap = "Handcuff %s for %s seconds."
 language.ObjectivePoisonCaptain = "Poison %s with %s."
 language.ObjectiveWreckGift = "Grab the gift"
+language.ObjectiveDestroyMinerals = "Deconstruct %s minerals."
 
-language.ObjectiveFinishAllObjectives = "Finish all objectives and gain 1 live."
+language.ObjectiveFinishAllObjectives = "Finish all objectives."
 language.ObjectiveFinishRoundFast = "Finish the round in less than 20 minutes."
 language.ObjectiveHealCharacters = "Do (%s/%s) points of healing."
 language.ObjectiveKillMonsters = "Kill (%s/%s) %s."
@@ -381,6 +386,7 @@ language.CMDLocateSub = "Submarine is %sm away from you, at %s."
 language.CMDRoundTime = "This round has been going for %s."
 language.CMDPlaytime = "Your playtime is %s."
 language.CMDHuskChat = "%s (as %s)"
+language.CMDOOCChat = "[OOC] %s (as %s)"
 language.CMDAliveNoPlayers = "There no alive human players currently."
 language.CMDPDAFeedback = "Sent '%s' to Administrator PDA %s."
 
