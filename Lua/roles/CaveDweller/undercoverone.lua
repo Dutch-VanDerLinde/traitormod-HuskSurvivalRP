@@ -1,16 +1,17 @@
 local role = Traitormod.RoleManager.Roles.Antagonist:new()
 
-role.Name = "CaveDwellerBandit"
+role.Name = "InstituteUndercover"
 role.IsAntagonist = true
 role.StartSound = "traitormod_undercoverstart"
 
 function role:Start()
-    Traitormod.Stats.AddCharacterStat("Bandit", self.Character, 1)
-    self.Character.TeamID = CharacterTeamType.Team2
+    Traitormod.Stats.AddCharacterStat("Undercover", self.Character, 1)
 
+    --[[
     local killobjective = Traitormod.RoleManager.Objectives.KillAny:new()
     killobjective:Init(self.Character)
     self:AssignObjective(killobjective)
+    --]]
 
     local pool = {}
     for key, value in pairs(self.SubObjectives) do pool[key] = value end
@@ -64,7 +65,7 @@ function role:Start()
     local text = self:Greet()
     local client = Traitormod.FindClientCharacter(self.Character)
     if client then
-        Traitormod.SendTraitorMessageBox(client, text)
+        Traitormod.SendBoxMessage(client, text, "FactionLogo.Insitute", Color.Aquamarine)
         Traitormod.UpdateVanillaTraitor(client, true, text)
     end
 end
@@ -84,7 +85,7 @@ function role:ObjectivesToString()
 
     for _, objective in pairs(self.Objectives) do
         -- Assassinate objectives are primary
-        local buf = objective.Name == "KillAny" and primary or secondary
+        local buf = objective.Name == "AssassinateAzoe" and primary or secondary
 
         if objective:IsCompleted() or objective.Awarded then
             buf:append(" > ", objective.Text, Traitormod.Language.Completed)
@@ -101,8 +102,8 @@ end
 
 function role:Greet()
     local partners = Traitormod.StringBuilder:new()
-    local bandits = Traitormod.RoleManager.FindBandits()
-    for _, character in pairs(bandits) do
+    local agents = Traitormod.RoleManager.FindUndercovers()
+    for _, character in pairs(agents) do
         if character ~= self.Character then
             partners('"%s" ', character.Name)
         end
@@ -111,14 +112,14 @@ function role:Greet()
     local primary, secondary = self:ObjectivesToString()
 
     local sb = Traitormod.StringBuilder:new()
-    sb("%s\n\n", Traitormod.Language.CaveDwellerBanditYou)
+    sb("%s\n\n", Traitormod.Language.CaveDwellerUndercoverYou)
     sb("%s\n", Traitormod.Language.MainObjectivesYou)
     sb(primary)
     sb("\n\n%s\n", Traitormod.Language.SecondaryObjectivesYou)
     sb(secondary)
     sb("\n\n")
-    if #bandits < 2 then
-        sb(Traitormod.Language.SoloBandit)
+    if #agents < 2 then
+        sb(Traitormod.Language.SoloAgent)
     else
         sb(Traitormod.Language.BanditNoticePartners)
         sb("\n")
@@ -131,7 +132,7 @@ end
 function role:OtherGreet()
     local sb = Traitormod.StringBuilder:new()
     local primary, secondary = self:ObjectivesToString()
-    sb(Traitormod.Language.BanditOther, self.Character.Name)
+    sb(Traitormod.Language.UndercoverOther, self.Character.Name)
     sb("\n%s\n", Traitormod.Language.MainObjectivesOther)
     sb(primary)
     sb("\n%s\n", Traitormod.Language.SecondaryObjectivesOther)

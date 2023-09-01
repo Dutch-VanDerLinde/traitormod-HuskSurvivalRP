@@ -158,6 +158,25 @@ Traitormod.SendMessage = function (client, text, icon)
     Game.SendDirectChatMessage("", text, nil, Traitormod.Config.ChatMessageType, client)
 end
 
+Traitormod.SendBoxMessage = function (client, text, icon, color)
+    if not client or not text or text == "" or not color then
+        return
+    end
+    text = tostring(text)
+
+    local chatMessage = ChatMessage.Create("", text, ChatMessageType.Default)
+    local MessageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame)
+    chatMessage.Color = color
+    MessageBox.Color = color
+
+    if icon then
+        MessageBox.IconStyle = icon
+    end
+
+    Game.SendDirectChatMessage(chatMessage, client)
+    Game.SendDirectChatMessage(MessageBox, client)
+end
+
 Traitormod.SendChatMessage = function (client, text, color)
     if not client or not text or text == "" then
         return
@@ -889,15 +908,25 @@ Traitormod.DoJobSet = function (character)
 
         headset.CreateServerEvent(component, component)
 
-        local color = "‖color:gui.orange‖%s‖color:end‖"
+        local colororange = "‖color:gui.orange‖%s‖color:end‖"
+        local colorired = "‖color:gui.green‖%s‖color:end‖"
 
         if character.HasJob("researchdirector") then
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil, function(spawned)
-                spawned.Description = string.format(Traitormod.Language.InstituteCodes, character.Name).."\nThe institute radio channel is: "..string.format(color, Traitormod.InstituteRadioChannel)
+                local sb = Traitormod.StringBuilder:new()
+                sb(Traitormod.Language.InstituteCodes, character.Name)
+                sb("\n\nThe institute radio channel is: %s", string.format(colororange, Traitormod.InstituteRadioChannel))
+                sb("\nThe undercover agent codewords are: %s", string.format(colorired, "hello"))
+
+                spawned.Description = sb:concat()
             end)
         elseif character.HasJob("adminone") then
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminpaper"), character.Inventory, nil, nil, function(spawned)
-                spawned.Description = string.format(Traitormod.Language.AzoeCodes, character.Name).."\nThe azoe region radio channel is: "..string.format(color, Traitormod.AzoeRadioChannel)
+                local sb = Traitormod.StringBuilder:new()
+                sb(Traitormod.Language.AzoeCodes, character.Name)
+                sb("\n\nThe azoe region radio channel is: %s", string.format(colororange, Traitormod.AzoeRadioChannel))
+
+                spawned.Description = sb:concat()
             end)
         end
     end, 200)

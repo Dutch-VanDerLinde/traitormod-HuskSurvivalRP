@@ -108,10 +108,10 @@ Traitormod.Outfits = {
     medicaldoctor = {
         {"doctorsuniform2"},
         {"doctorsuniform2"},
-        {"doctorsuniform2"},
+        {"doctorsuniform2", "surgicalmask"},
         {"doctorsuniform1"},
-        {"doctorsuniform1"},
+        {"doctorsuniform1", "surgicalmask"},
         {"surgeonclothes"},
-        {"surgeonclothes"},
+        {"surgeonclothes", "surgicalmask"},
     },
 }

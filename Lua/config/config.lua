@@ -157,8 +157,26 @@ config.RoleConfig = {
         PointsPerAssassination = 100,
     },
 
+    -- Cave Dweller Roles
+
     CaveDwellerBandit = {
         SubObjectives = {"StealCaptainID", "KillAny", "Kidnap", "DestroyCaly"},
+        MinSubObjectives = 2,
+        MaxSubObjectives = 3,
+
+        NextObjectiveDelayMin = 5,
+        NextObjectiveDelayMax = 10,
+
+        TraitorBroadcast = false,           -- bandits can broadcast to other bandits using !tc
+        TraitorBroadcastHearable = true,  -- if true, !tc will be hearable in the vicinity via local chat
+
+        SelectBotsAsTargets = true,
+        SelectPiratesAsTargets = false,
+        SelectUniqueTargets = true,     -- every traitor target can only be chosen once per traitor (respawn+false -> no end)
+    },
+
+    InstituteUndercover = {
+        SubObjectives = {"StealCaptainID", "AssassinateAzoe", "Kidnap", "DestroyCaly"},
         MinSubObjectives = 2,
         MaxSubObjectives = 3,
 

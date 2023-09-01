@@ -54,7 +54,9 @@ language.BanditOther = "Bandit %s."
 language.SoloBandit = "You are the only bandit."
 language.BanditNoticePartners = "Find your partners for a higher chance of survival."
 
-language.CaveDwellerUndercover = "You are an undercover agent working for the Centrum Institute.\n\nYour job is to spy on the Azoe Region. Make sure they're not against us.\n\n"
+language.CaveDwellerUndercoverYou = "You are an undercover agent working for the Centrum Institute.\n\nGood day, agent. This is your research director speaking. Your job is to spy on the Azoe Region. Make sure they're not against us."
+language.UndercoverOther = "Institute Agent %s."
+language.SoloAgent = "You are the only institute agent."
 
 language.AzoeMiner = "You are a miner of the Azoe Region. Your job is to mine/find materials and fabricate items for the survival of the Azoe Region.\n\nYou have been assigned the following bonus objectives.\n\n"
 language.AzoeTechnician = "You are a technician of the Azoe Region. Your job is to operate the reactor, fix devices, and create new electrical/mechanical contraptions.\n\nYou have been assigned the following bonus objectives.\n\n"
@@ -151,6 +153,7 @@ language.NoObjectivesYet = "No targets yet..."
 
 language.ObjectiveKillAny = "Kill someone that isn't a bandit."
 language.ObjectiveAssassinate = "Assassinate %s."
+language.ObjectiveAssassinateAzoe = "Assassinate %s. They are an enemy of the institute."
 language.ObjectiveAssassinateDrunk = "Assassinate %s while drunk"
 language.ObjectiveAssassinatePressure = "Crush %s with high pressure"
 language.ObjectiveBananaSlip = "Slip %s on bananas (%s/%s) times."

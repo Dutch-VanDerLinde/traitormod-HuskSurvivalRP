@@ -140,7 +140,7 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
     end
 
     local idcard = item.OwnInventory.GetItemAt(0)
-    local announcement = function (color)
+    local announcement = function (color, icon)
         for key, client in pairs(Client.ClientList) do
             if client.Character then
                 local radio = false
@@ -148,6 +148,7 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                 local messageChat = ChatMessage.Create("INTERCOM", output, ChatMessageType.Default, nil, nil)
                 local messageBox = ChatMessage.Create("", "INTERCOM: "..output, ChatMessageType.ServerMessageBoxInGame, nil, nil)
                 messageBox.Color = color
+                messageBox.IconStyle = icon
 
                 for item in client.Character.Inventory.AllItems do
                     if item.HasTag("mobileradio") then
@@ -187,9 +188,9 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
 
     if idcard then
         if idcard.GetComponentString("IdCard").OwnerJobId == "adminone" and item.HasTag("azoe") then
-            announcement(Color.DeepSkyBlue)
+            announcement(Color.DeepSkyBlue, "FactionLogo.AzoeRegion")
         elseif idcard.GetComponentString("IdCard").OwnerJobId == "researchdirector" and item.HasTag("tci") then
-            announcement(Color.Aqua)
+            announcement(Color.Aqua, "FactionLogo.Insitute")
         end
     end
 end)

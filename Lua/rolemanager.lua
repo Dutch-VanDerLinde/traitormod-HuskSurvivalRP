@@ -182,6 +182,18 @@ rm.FindBandits = function()
     return characters
 end
 
+rm.FindUndercovers = function()
+    local characters = {}
+
+    for character, role in pairs(rm.RoundRoles) do
+        if role.Name == "InstituteUndercover" then
+            table.insert(characters, character)
+        end
+    end
+
+    return characters
+end
+
 rm.GetRole = function(character)
     if character == nil then return nil end
 

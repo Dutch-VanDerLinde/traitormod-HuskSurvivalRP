@@ -4,6 +4,7 @@ dofile(Traitormod.Path .. "/Lua/roles/roleloadouts.lua")
 Game.OverrideTraitors(true)
 Game.EnableControlHusk(true)
 Game.NetLobbyScreen.LevelSeed = "DownDown" -- So the map is on a better seed suited for Husk Survival
+Game.ExecuteCommand("disablecrewai") -- Disable human ai (It's laggy as hell)
 
 if Traitormod.Config.RagdollOnDisconnect ~= nil then
     Game.DisableDisconnectCharacter(not Traitormod.Config.RagdollOnDisconnect)
@@ -434,6 +435,7 @@ Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/attackdefend.lu
 
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/objective.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/assassinate.lua"))
+Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/assassinateAzoe.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/kidnap.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/poisoncaptain.lua"))
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/stealcaptainid.lua"))
@@ -474,6 +476,7 @@ Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/technician.
 
 -- Cave Dweller Roles
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/CaveDweller/bandit.lua"))
+Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/CaveDweller/undercoverone.lua"))
 
 
 if Traitormod.Config.Extensions then
