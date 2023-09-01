@@ -49,7 +49,7 @@ language.SecondaryObjectivesYou = "Your secondary objectives are:"
 language.MainObjectivesOther = "Their main objectives were:"
 language.SecondaryObjectivesOther = "Their secondary objectives were:"
 
-language.CaveDwellerBanditYou = "You are a cave dweller bandit!\n\nYour job is to loot structure, and people. You are hostile to everyone except for your partners!\n\n"
+language.CaveDwellerBanditYou = "You are a cave dweller bandit!\n\nYour job is to loot structure, and people. You are hostile to everyone except for your partners!"
 language.BanditOther = "Bandit %s."
 language.SoloBandit = "You are the only bandit."
 language.BanditNoticePartners = "Find your partners for a higher chance of survival."
@@ -176,6 +176,10 @@ language.ObjectiveRepairHull = "Repair (%s/%s) damage from the hull."
 language.ObjectiveSecurityTeamSurvival = "Make sure at least one member of the security team survives."
 
 language.ObjectiveText = "Assassinate the crew in order to complete your mission."
+
+language.HeistNextTarget = "Better stay low until I can get a new heist in order.."
+language.HeistNewObjective = "Your next heist target is %s."
+language.HeistLoopComplete = "I stole all I could.. Doesn't look look there will be any heist targets for a while."
 
 language.AssassinationNextTarget = "Stay low until further instructions."
 language.AssassinationNewObjective = "Your next assassination target is %s."

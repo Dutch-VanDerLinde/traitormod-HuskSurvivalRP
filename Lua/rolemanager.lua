@@ -88,6 +88,14 @@ rm.AssignRole = function(character, newRole)
 
     newRole:Init(character)
     newRole:Start()
+
+    if newRole.StartSound then
+        HF.AddAffliction(character,newRole.StartSound,2)
+
+        Timer.Wait(function ()
+            HF.AddAffliction(character,newRole.StartSound,-2)
+        end, 1000)
+    end
 end
 
 rm.TransferRole = function(character, oldRole)

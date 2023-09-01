@@ -2,68 +2,10 @@ local role = Traitormod.RoleManager.Roles.Antagonist:new()
 
 role.Name = "CaveDwellerBandit"
 role.IsAntagonist = true
-
-role.MaxStealTargets = 3
-role.PossibleStealTargets = {
-    "admindeviceazoe",
-    "adminpaper",
-    "institutepaper",
-    "husk_wallet",
-    "expeditionsuit_institute",
-    "scientistscannerhud",
-}
-
-function role:StealLoop(first)
-    if not Game.RoundStarted then return end
-    if self.RoundNumber ~= Traitormod.RoundNumber then return end
-
-    local this = self
-    local num = self:CompletedObjectives("Heist")
-
-    local client = Traitormod.FindClientCharacter(self.Character)
-    if not client then return end
-
-    if num >= self.MaxStealTargets then
-        Traitormod.SendMessage(client, Traitormod.Language.HeistLoopComplete)
-        return
-    end
-
-    local heist = Traitormod.RoleManager.Objectives.Heist:new()
-    heist:Init(self.Character)
-
-    local objectToSteal = table.remove(self.PossibleStealTargets, math.random(1, #self.PossibleStealTargets))
-
-    if not self.Character.IsDead and heist:Start(objectToSteal) then
-        self:AssignObjective(heist)
-
-        heist.AmountPoints = heist.AmountPoints + (num * 50)
-
-        heist.OnAwarded = function()
-            Traitormod.SendMessage(client, Traitormod.Language.HeistNextTarget, "")
-            Traitormod.Stats.AddClientStat("TraitorMainObjectives", client, 1)
-
-            local delay = math.random(this.NextObjectiveDelayMin, this.NextObjectiveDelayMax) * 1000
-            Timer.Wait(function()
-                this:StealLoop()
-            end, delay)
-        end
-
-        if not first then
-            local ItemToStealPrefab = ItemPrefab.GetItemPrefab(objectToSteal)
-            Traitormod.SendMessage(client, string.format(Traitormod.Language.HeistNewObjective, tostring(ItemToStealPrefab.Name)),
-                "GameModeIcon.pvp")
-            Traitormod.UpdateVanillaTraitor(client, true, self:Greet())
-        end
-    else
-        Timer.Wait(function()
-            this:StealLoop()
-        end, 5000)
-    end
-end
+role.StartSound = "traitormod_undercoverstart"
 
 function role:Start()
     Traitormod.Stats.AddCharacterStat("Bandit", self.Character, 1)
-    self:StealLoop(true)
     self.Character.TeamID = CharacterTeamType.Team2
 
     local killobjective = Traitormod.RoleManager.Objectives.KillAny:new()
@@ -142,7 +84,7 @@ function role:ObjectivesToString()
 
     for _, objective in pairs(self.Objectives) do
         -- Assassinate objectives are primary
-        local buf = objective.Name == "Heist" and primary or secondary
+        local buf = objective.Name == "KillAny" and primary or secondary
 
         if objective:IsCompleted() or objective.Awarded then
             buf:append(" > ", objective.Text, Traitormod.Language.Completed)
@@ -195,6 +137,28 @@ function role:OtherGreet()
     sb("\n%s\n", Traitormod.Language.SecondaryObjectivesOther)
     sb(secondary)
     return sb:concat()
+end
+
+function role:FilterTarget(objective, character)
+    if not self.SelectBotsAsTargets and character.IsBot then return false end
+
+    if objective.Name == "Assassinate" and self.SelectUniqueTargets then
+        for key, value in pairs(Traitormod.RoleManager.FindCharactersByRole("CaveDwellerBandit")) do
+            local targetRole = Traitormod.RoleManager.GetRole(value)
+
+            for key, obj in pairs(targetRole.Objectives) do
+                if obj.Name == "Assassinate" and obj.Target == character then
+                    return false
+                end
+            end
+        end
+    end
+
+    if character.TeamID ~= CharacterTeamType.Team1 and not self.SelectPiratesAsTargets then
+        return false
+    end
+
+    return Traitormod.RoleManager.Roles.Antagonist.FilterTarget(self, objective, character)
 end
 
 return role

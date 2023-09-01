@@ -2,9 +2,9 @@ local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "KillAny"
 objective.AmountPoints = 450
+objective.Text = Traitormod.Language.ObjectiveKillAny
 
 function objective:Start()
-    self.Text = Traitormod.Language.ObjectiveKillAny
     self.Completed = false
 
     return true

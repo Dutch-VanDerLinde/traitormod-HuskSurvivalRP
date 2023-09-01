@@ -158,9 +158,12 @@ config.RoleConfig = {
     },
 
     CaveDwellerBandit = {
-        SubObjectives = {"StealCaptainID", "Survive", "Kidnap", "PoisonCaptain"},
+        SubObjectives = {"StealCaptainID", "KillAny", "Kidnap", "DestroyCaly"},
         MinSubObjectives = 2,
         MaxSubObjectives = 3,
+
+        NextObjectiveDelayMin = 5,
+        NextObjectiveDelayMax = 10,
 
         TraitorBroadcast = false,           -- bandits can broadcast to other bandits using !tc
         TraitorBroadcastHearable = true,  -- if true, !tc will be hearable in the vicinity via local chat

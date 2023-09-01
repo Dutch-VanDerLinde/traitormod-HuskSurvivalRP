@@ -64,7 +64,7 @@ function role:Start()
     --Give id card tags
     local ogidcard = self.Character.Inventory.FindItemByIdentifier("idcard", true)
     Entity.Spawner.AddEntityToRemoveQueue(ogidcard)
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), self.Character.WorldPosition, nil, nil, function (id)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), self.Character.Inventory, nil, nil, function (id)
         id.AddTag("name:"..self.Character.Name)
         id.AddTag("job:citizen")
         id.AddTag("technician")
