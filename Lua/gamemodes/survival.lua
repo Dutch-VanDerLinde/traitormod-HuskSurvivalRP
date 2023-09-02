@@ -191,12 +191,11 @@ function gm:Start()
             {"crowbar", 0.25, 1, 1},
         },
     }
-    
+
     Traitormod.SpawnLootTables(loottable)
 end
 
 function gm:PreStart()
-    local administrator1 = false
     Traitormod.Pointshop.Initialize(self.PointshopCategories or {})
 
     Hook.Add("character.giveJobItems", "Husk.Survival.giveJobItems", function(character, waypoint)
@@ -209,16 +208,6 @@ function gm:PreStart()
     Hook.Patch("Barotrauma.Networking.GameServer", "AssignJobs", function (instance, ptable)
         local gamemode = Traitormod.SelectedGamemode
         if gamemode.RoleLock == nil then return end
- 
-        local function GetRandomUserAdministrator()
-            local client = Client.ClientList[math.random(1, #Client.ClientList)]
-            if #Client.ClientList == 1 then return client end -- anti crash stuff
-            if client.AssignedJob.Prefab.Identifier.ToString() == ("adminone" or "admintwo") then
-                return GetRandomUserAdministrator()
-            else
-                return client
-            end
-        end
 
         for index, client in pairs(ptable["unassigned"]) do
             local flag = false
@@ -243,22 +232,11 @@ function gm:PreStart()
                 ))
                 client.AssignedJob = Traitormod.MidRoundSpawn.GetJobVariant(gamemode.RoleLock.SubstituteRoles[math.random(1, #gamemode.RoleLock.SubstituteRoles)])
             end
-
-            if client.AssignedJob.Prefab.Identifier.ToString() == "adminone" then
-                administrator1 = true
-            end
-        end
-        
-        -- If no administrators, default a random user to one
-        if not administrator1 then
-            local client = GetRandomUserAdministrator()
-            client.AssignedJob = Traitormod.MidRoundSpawn.GetJobVariant("adminone")
-            Traitormod.SendMessage(client, Traitormod.Language.ChosenAzoeAdmin)
         end
     end, Hook.HookMethodType.After)
 
-    Traitormod.AzoeRadioChannel = math.random(250, 9000) + math.random(1, 10)
-    Traitormod.InstituteRadioChannel = math.random(500, 9000) + math.random(1, 100)
+    Traitormod.AzoeRadioChannel = math.random(250, 9000) + math.random(1, 100)
+    Traitormod.InstituteRadioChannel = math.random(500, 9000) + math.random(100, 200)
 end
 
 function gm:AwardCrew()
@@ -336,7 +314,8 @@ function gm:TraitorResults()
         end
 
         if role.IsAntagonist then
-            sb("%s %s", role.Name, character.Name)
+            local name = role.DisplayName or role.Name
+            sb("%s %s", name, character.Name)
             sb("\n")
 
             local objectives = 0
@@ -368,9 +347,11 @@ function gm:TraitorResults()
 end
 
 function gm:End()
+    --[[
     for key, character in pairs(Traitormod.RoleManager.FindAntagonists()) do
         self:CheckHandcuffedTraitors(character)
     end
+    --]]
 
     gm:AwardCrew()
 

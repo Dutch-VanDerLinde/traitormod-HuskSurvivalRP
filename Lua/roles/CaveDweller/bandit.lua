@@ -1,6 +1,7 @@
 local role = Traitormod.RoleManager.Roles.Antagonist:new()
 
 role.Name = "CaveDwellerBandit"
+role.DisplayName = "Cave Dweller Bandit"
 role.IsAntagonist = true
 
 role.MaxStealTargets = 3

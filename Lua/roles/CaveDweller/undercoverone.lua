@@ -1,6 +1,7 @@
 local role = Traitormod.RoleManager.Roles.Antagonist:new()
 
 role.Name = "InstituteUndercover"
+role.DisplayName = "Undercover Institute Agent"
 role.IsAntagonist = true
 role.StartSound = "traitormod_undercoverstart"
 
