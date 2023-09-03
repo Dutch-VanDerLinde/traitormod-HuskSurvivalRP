@@ -323,3 +323,71 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
         end, 30000)
     end
 end)
+
+Traitormod.Laugh = function (character)
+    local laugh = "laugh_human"
+
+    if character.SpeciesName == "Cyborg" then
+
+    end
+
+    HF.AddAffliction(character,laugh,2)
+end
+
+Traitormod.FlaggedRP_Phrases = {
+    ["brb"] = "be right back",
+    ["afk"] = "",
+    ["ez"] = "easy",
+    [":)"] = "",
+    ["wtf"] = "what the fuck",
+    ["WTF"] = "WHAT THE FUCK",
+    ["thx"] = "thanks",
+    --Laughs
+    ["lmao"] = {Traitormod.Laugh, "(laughs)"},
+    ["LMAO"] = {Traitormod.Laugh, "(laughs)"},
+    ["Lmao"] = {Traitormod.Laugh, "(laughs)"},
+    ["lol"] = {Traitormod.Laugh, "(laughs)"},
+    ["lo"] = {Traitormod.Laugh, "(laughs)"},
+    ["LOL"] = {Traitormod.Laugh, "(laughs)"},
+    ["xd"] = {Traitormod.Laugh, "(laughs)"},
+    ["xD"] = {Traitormod.Laugh, "(laughs)"},
+    ["XD"] = {Traitormod.Laugh, "(laughs)"},
+    ["*laughs"] = {Traitormod.Laugh, "(laughs)"},
+    ["laughs"] = {Traitormod.Laugh, "(laughs)"},
+    ["*laughs*"] = {Traitormod.Laugh, "(laughs)"},
+}
+
+-- To prevent people from using non-realistic phrases, it also auto capitalizes the first letter of the sentence
+Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(instance, ptable)
+    local client = ptable["senderClient"]
+    local character
+    local message = ptable["message"]
+
+    if not client.Character or client.Character.IsHusk or not Traitormod.Config.EnableRPChat then
+        return
+    else
+        character = client.Character
+    end
+
+    if character and not character.IsDead and not character.IsHusk then
+        -- Original = flagged phrase, such as "wtf" | replacement = the word to replace it, such as "what the fuck"
+        for original, replacement in pairs(Traitormod.FlaggedRP_Phrases) do
+            if type(replacement) == "table" and message:find("%f[%a]" .. original .. "%f[%A]") then
+                local func = replacement[1]
+                func(character)
+                replacement = replacement[2]
+            end
+
+            message = string.gsub(message, "%f[%a]" .. original .. "%f[%A]", replacement)
+        end
+
+        local uppercaseletter = string.upper(message:sub(1, 1))
+        message = uppercaseletter..message:sub(2, #message)
+
+        if #message <= 1 then
+            message = "..?"
+        end
+    end
+
+    ptable["message"] = message
+end, Hook.HookMethodType.Before)
