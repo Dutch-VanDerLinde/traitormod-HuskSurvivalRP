@@ -131,6 +131,15 @@ Traitormod.AddStaticToMessage = function (msg, chance)
 end
 
 Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, sender, output)
+    local idcard = item.OwnInventory.GetItemAt(0)
+
+    if not idcard then
+        local messageChat = ChatMessage.Create("Intercom", "Invalid credentials.", ChatMessageType.Default, nil, nil)
+        messageChat.Color = Color.Red
+        Game.SendDirectChatMessage(messageChat, sender)
+        return
+    end
+
     if not item.HasTag("intercom")
         or not sender.Character
         or not sender.Character.IsHuman
@@ -139,23 +148,14 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
         return
     end
 
-    local idcard = item.OwnInventory.GetItemAt(0)
     local sendername = idcard.GetComponentString("IdCard").OwnerName
     local senderjobname = JobPrefab.Get(idcard.GetComponentString("IdCard").OwnerJobId).Name.ToString()
-
-    local sb = Traitormod.StringBuilder:new()
-    sb(output)
-    sb("\n\n")
-    sb(Traitormod.Language.IntercomSentBy, sendername, senderjobname)
-
-    output = sb:concat()
 
     local announcement = function (color, icon)
         for key, client in pairs(Client.ClientList) do
             if client.Character then
                 local radio = false
                 local distance = Vector2.Distance(client.Character.WorldPosition, item.WorldPosition)
-                local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
 
                 for item in client.Character.Inventory.AllItems do
                     if item.HasTag("mobileradio") then
@@ -171,13 +171,19 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                 if radio then
                     if distance >= 9500 then
                         output = Traitormod.AddStaticToMessage(output, math.random(3, 5))
-                        messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
-                        messageChat.Color = Color.White
-                    else
-                        messageChat.Color = color
                     end
 
+                    local sb = Traitormod.StringBuilder:new()
+                    sb("\"%s\"", output)
+                    sb("\n\n")
+                    sb(Traitormod.Language.IntercomSentBy, sendername, senderjobname)
+
+                    output = sb:concat()
+
                     if distance <= 17500 then
+                        local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
+                        messageChat.Color = color
+
                         Game.SendDirectChatMessage(messageChat, client)
                     end
                 end
@@ -326,10 +332,6 @@ end)
 Traitormod.Laugh = function (character)
     local laugh = "laugh_human"
 
-    if character.SpeciesName == "Cyborg" then
-
-    end
-
     HF.AddAffliction(character,laugh,2)
 end
 
@@ -362,7 +364,7 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
     local character
     local message = ptable["message"]
 
-    if not client.Character or client.Character.IsHusk or not Traitormod.Config.EnableRPChat then
+    if not client or not client.Character or client.Character.IsHusk or not Traitormod.Config.EnableRPChat then
         return
     else
         character = client.Character
