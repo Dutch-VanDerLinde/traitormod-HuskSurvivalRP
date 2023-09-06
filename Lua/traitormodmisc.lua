@@ -136,19 +136,26 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
         or not sender.Character.IsHuman
         or output == (nil or "")
     then
-        return 
+        return
     end
 
     local idcard = item.OwnInventory.GetItemAt(0)
+    local sendername = idcard.GetComponentString("IdCard").OwnerName
+    local senderjobname = JobPrefab.Get(idcard.GetComponentString("IdCard").OwnerJobId).Name.ToString()
+
+    local sb = Traitormod.StringBuilder:new()
+    sb(output)
+    sb("\n\n")
+    sb(Traitormod.Language.IntercomSentBy, sendername, senderjobname)
+
+    output = sb:concat()
+
     local announcement = function (color, icon)
         for key, client in pairs(Client.ClientList) do
             if client.Character then
                 local radio = false
                 local distance = Vector2.Distance(client.Character.WorldPosition, item.WorldPosition)
-                local messageChat = ChatMessage.Create("INTERCOM", output, ChatMessageType.Default, nil, nil)
-                local messageBox = ChatMessage.Create("", "INTERCOM: "..output, ChatMessageType.ServerMessageBoxInGame, nil, nil)
-                messageBox.Color = color
-                messageBox.IconStyle = icon
+                local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
 
                 for item in client.Character.Inventory.AllItems do
                     if item.HasTag("mobileradio") then
@@ -160,27 +167,19 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                     end
                 end
 
-                -- If the player doesn't have a radio then it only announces if they're near the station
+                -- If the player doesn't have a radio then it doesn't announce
                 if radio then
-                    if distance >= 25000 then
-                        output = Traitormod.AddStaticToMessage(output, math.random(3, 4))
-                        messageChat = ChatMessage.Create("???", output, ChatMessageType.Default, nil, nil)
-                        messageChat.Color = Color.White
-                    elseif distance >= 15000 then --and distance <= 15000 then
-                        output = Traitormod.AddStaticToMessage(output, math.random(5, 6))
-                        messageChat = ChatMessage.Create("INTERCOM", output, ChatMessageType.Default, nil, nil)
+                    if distance >= 9500 then
+                        output = Traitormod.AddStaticToMessage(output, math.random(3, 5))
+                        messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
                         messageChat.Color = Color.White
                     else
                         messageChat.Color = color
                     end
 
-                    if distance <= 30000 then
+                    if distance <= 17500 then
                         Game.SendDirectChatMessage(messageChat, client)
                     end
-                end
-
-                if distance <= 9000 then
-                    Game.SendDirectChatMessage(messageBox, client)
                 end
             end
         end

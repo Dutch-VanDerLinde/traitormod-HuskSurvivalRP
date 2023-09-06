@@ -489,4 +489,7 @@ language.DeliveryArrival = "Your delivery has arrived! It is in the cargo bay of
 
 language.MedicalDeliveryCrate = "A crate full of medical supplies. %s"
 
+
+language.IntercomSentBy = "Sent by %s (%s)."
+
 return language
