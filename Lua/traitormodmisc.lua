@@ -174,9 +174,10 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                     end
 
                     local sb = Traitormod.StringBuilder:new()
+                    local sentbytext = string.format(Traitormod.Language.IntercomSentBy, sendername, senderjobname)
                     sb("\"%s\"", output)
                     sb("\n\n")
-                    sb(Traitormod.Language.IntercomSentBy, sendername, senderjobname)
+                    sb("‖color:{213,180,19}‖%s‖color:end‖", sentbytext)
 
                     output = sb:concat()
 
