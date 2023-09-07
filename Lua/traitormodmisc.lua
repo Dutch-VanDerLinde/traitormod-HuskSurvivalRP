@@ -133,6 +133,13 @@ end
 Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, sender, output)
     local idcard = item.OwnInventory.GetItemAt(0)
 
+    if item.Condition < 100 then
+        local messageChat = ChatMessage.Create("Intercom", "Cooldown active. Please wait.", ChatMessageType.Default, nil, nil)
+        messageChat.Color = Color.Red
+        Game.SendDirectChatMessage(messageChat, sender)
+        return
+    end
+
     if not idcard then
         local messageChat = ChatMessage.Create("Intercom", "Invalid credentials.", ChatMessageType.Default, nil, nil)
         messageChat.Color = Color.Red
@@ -149,17 +156,20 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
     end
 
     local sendername = idcard.GetComponentString("IdCard").OwnerName
-    local senderjobname = JobPrefab.Get(idcard.GetComponentString("IdCard").OwnerJobId).Name.ToString()
 
-    local announcement = function (color, icon)
+    local announcement = function (color, jobname)
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("husksfx_intercomstart"), item.WorldPosition)
+        item.Condition = 0
+        Timer.Wait(function () item.Condition = 100 end, 2 * 60000) -- 2 minute cooldown
+
         for key, client in pairs(Client.ClientList) do
             if client.Character then
                 local radio = false
                 local distance = Vector2.Distance(client.Character.WorldPosition, item.WorldPosition)
 
-                for item in client.Character.Inventory.AllItems do
-                    if item.HasTag("mobileradio") then
-                        local battery = item.OwnInventory.GetItemAt(0)
+                for headset in client.Character.Inventory.AllItems do
+                    if headset.HasTag("mobileradio") then
+                        local battery = headset.OwnInventory.GetItemAt(0)
                         if battery and battery.Condition > 0.1 then
                             radio = true
                             break
@@ -174,18 +184,17 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                     end
 
                     local sb = Traitormod.StringBuilder:new()
-                    local sentbytext = string.format(Traitormod.Language.IntercomSentBy, sendername, senderjobname)
-                    sb("\"%s\"", output)
+                    sb(color, string.format("\"%s\"", output))
                     sb("\n\n")
-                    sb("‖color:{213,180,19}‖%s‖color:end‖", sentbytext)
+                    sb("‖color:#D5B413‖%s‖color:end‖", string.format(Traitormod.Language.IntercomSentBy, sendername, jobname))
 
                     output = sb:concat()
 
                     if distance <= 17500 then
-                        local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
-                        messageChat.Color = color
-
-                        Game.SendDirectChatMessage(messageChat, client)
+                        Timer.Wait(function ()
+                            local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
+                            Game.SendDirectChatMessage(messageChat, client)
+                        end, 1700)
                     end
                 end
             end
@@ -194,9 +203,9 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
 
     if idcard then
         if idcard.GetComponentString("IdCard").OwnerJobId == "adminone" and item.HasTag("azoe") then
-            announcement(Color.DeepSkyBlue, "FactionLogo.AzoeRegion")
+            announcement("‖color:#00B4F1‖%s‖color:end‖", "Administrator")
         elseif idcard.GetComponentString("IdCard").OwnerJobId == "researchdirector" and item.HasTag("tci") then
-            announcement(Color.Aqua, "FactionLogo.Insitute")
+            announcement("‖color:#01FFFC‖%s‖color:end‖", "Research Director")
         end
     end
 end)
