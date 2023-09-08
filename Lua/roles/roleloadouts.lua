@@ -58,60 +58,38 @@ Traitormod.Loadouts = {
     },
 }
 Traitormod.Outfits = {
-    adminone = {
-        {"captainsuniform3", "captainscap3"},
-    },
-
-    guardone = {
-        "","",""
-    },
-
     researchdirector = {
-        {"researchdirectorclothes", "cyanberet"},
+        clothes = {"researchdirectorclothes"}
     },
 
-    guardtci = {
-        "","",""
-    },
+    guardtci = {},
 
     thal_scientist = {
-        {"thal_botanistsuit"},
-        {"thal_botanistsuit", "thal_botanistmask"},
-        {"thal_geneticistsuit"},
-        {"thal_geneticistsuit", "scientistscannerhud"},
+        clothes = {"thal_botanistsuit", "thal_geneticistsuit"}
     },
 
     ["he-chef"] = {
-        {"he-chefsuniform1", "he-chefscap1"},
-        {"he-chefsuniform2", "he-chefscap2"},
+        clothes = {"he-chefsuniform2", "he-chefsuniform1"},
+        randomwearables = {"he-chefscap2", "he-chefscap1"}
     },
 
-    citizen = {
-        "","",""
+    citizen = {},
+
+    cavedweller = {
+        clothes = {"caveclothes1", "caveclothes1green", "caveclothes2", "caveclothes3", "prisonerclothes"},
     },
 
-    cavedweller = { -- Diving Mask is a placeholder for the random masks in giveitemjob function
-        -- Brown Jackets
-        {"caveclothes1", "placeholdermask", "cavejacketbrown"},
-        {"caveclothes1green", "placeholdermask", "cavejacketbrown"},
-        {"caveclothes2", "placeholdermask", "cavejacketbrown"},
-        {"caveclothes3", "placeholdermask", "cavejacketbrown"},
-        {"prisonerclothes", "placeholdermask", "cavejacketbrown"},
-        -- Black Coat
-        {"caveclothes1", "placeholdermask", "cavejacketblack"},
-        {"caveclothes2", "placeholdermask", "cavejacketblack"},
-        {"prisonerclothes", "placeholdermask", "cavejacketblack"},
-        -- Expedition Suit
-        {"caveclothes3", "placeholdermask", "armoredivingmask"},
+    adminone = {
+        wearables = {"captainscap3"}
     },
 
     medicaldoctor = {
-        {"doctorsuniform2", "placeholdermask"},
-        {"doctorsuniform2", "placeholdermask"},
-        {"doctorsuniform2", "surgicalmask"},
-        {"doctorsuniform1", "placeholdermask"},
-        {"doctorsuniform1", "surgicalmask"},
-        {"surgeonclothes", "placeholdermask"},
-        {"surgeonclothes", "surgicalmask"},
+        clothes = {"doctorsuniform2", "doctorsuniform1", "surgeonclothes"},
+        wearables = {"surgicalmask"}
+    },
+
+    guardone = {
+        wearables = {"scp_softvest"},
+        randomwearables = {"sgt_fieldcap", "scp_simplehelmet"}
     },
 }

@@ -648,33 +648,31 @@ Traitormod.GiveJobItems = function (character)
     local jobLoadout = Traitormod.Loadouts[job]
     local outfitLoadout = Traitormod.Outfits[job]
     if not (jobLoadout or outfitLoadout) then Traitormod.Log(character.Name.." was not able to load items. Their job has no item loadout!") return end
-    local randomitemset = outfitLoadout[math.random(1, #outfitLoadout)]
-    local defaultclothes = character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes)
-    local defaulthat = character.Inventory.GetItemInLimbSlot(InvSlotType.Head)
-    local clothes = ItemPrefab.GetItemPrefab(randomitemset[1])
-    local hat = ItemPrefab.GetItemPrefab(randomitemset[2])
-    local wearable = ItemPrefab.GetItemPrefab(randomitemset[3])
 
-    if clothes and clothes ~= "" then
-        Entity.Spawner.AddEntityToRemoveQueue(defaultclothes)
-        Entity.Spawner.AddItemToSpawnQueue(clothes, character.Inventory, nil, nil, function(spawned)
-            local slot = character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
-            character.Inventory.TryPutItem(spawned, slot, true, false, character)
+    if outfitLoadout["clothes"] then
+        local randomclothes = outfitLoadout["clothes"][math.random(1, #outfitLoadout["clothes"])]
+        Entity.Spawner.AddEntityToRemoveQueue(character.Inventory.GetItemInLimbSlot(InvSlotType.InnerClothes))
+
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomclothes), character.Inventory, nil, nil, function(spawned)
+            character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.InnerClothes})
         end)
     end
 
-    if hat and hat ~= "" then
-        Entity.Spawner.AddEntityToRemoveQueue(defaulthat)
-        Entity.Spawner.AddItemToSpawnQueue(hat, character.Inventory, nil, nil, function(spawned)
-            local slot = character.Inventory.FindLimbSlot(InvSlotType.Head)
-            character.Inventory.TryPutItem(spawned, slot, true, false, character)
-        end)
+    if outfitLoadout["wearables"] then
+        for item in outfitLoadout["wearables"] do
+            local object = ItemPrefab.GetItemPrefab(item)
+
+            Entity.Spawner.AddItemToSpawnQueue(object, character.Inventory, nil, nil, function(spawned)
+                character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.OuterClothes,InvSlotType.HealthInterface,InvSlotType.Bag,InvSlotType.Head})
+            end)
+        end
     end
 
-    if wearable and wearable ~= "" then
-        Entity.Spawner.AddItemToSpawnQueue(wearable, character.Inventory, nil, nil, function(spawned)
-            local slot = character.Inventory.FindLimbSlot(InvSlotType.OuterClothes)
-            character.Inventory.TryPutItem(spawned, slot, true, false, character)
+    if outfitLoadout["randomwearables"] then
+        local randomwearable = outfitLoadout["randomwearables"][math.random(1, #outfitLoadout["randomwearables"])]
+
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomwearable), character.Inventory, nil, nil, function(spawned)
+            character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.OuterClothes,InvSlotType.HealthInterface,InvSlotType.Bag,InvSlotType.Head})
         end)
     end
 
@@ -754,12 +752,8 @@ end
 Traitormod.DoJobSet = function (character)
     if character.HasJob("cavedweller") then
         Entity.Spawner.AddEntityToRemoveQueue(character.Inventory.GetItemInLimbSlot(InvSlotType.Head))
-        local possibleMasks = {
-            "divingmaskbeanie",
-            "divingmask",
-            "advanceddivingmask",
-            "advanceddivingmaskbeanie",
-        }
+        local possibleHats = {"bluebeanie","oldseadoghat","sgt_fieldcap",}
+        local possibleCoats = {"cavejacketbrown","cavejacketbrown","cavejacketbrown","cavejacketblack","cavejacketblack","armoredivingmask"}
         local possibleBags = { -- Multiple of the same item to increase commonness
             "toolbelt",
             "toolbelt",
@@ -798,14 +792,14 @@ Traitormod.DoJobSet = function (character)
             "thgcellcharger",
         }
 
-        local randomMask = possibleMasks[math.random(1, #possibleMasks)]
+        local randomHat = possibleHats[math.random(1, #possibleHats)]
+        local randomCoat = possibleCoats[math.random(1, #possibleCoats)]
         local randomBag = possibleBags[math.random(1, #possibleBags)]
         local randomMelee = possibleMelee[math.random(1, #possibleMelee)]
         local randomLight = possibleLights[math.random(1, #possibleLights)]
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMask), character.Inventory, nil, nil, function(spawned)
-            character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Head), true, false, character)
-            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), spawned.OwnInventory, math.random(28, 81))
-        end)
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"), character.Inventory.GetItemInLimbSlot(InvSlotType.HealthInterface).OwnInventory, math.random(28, 81))
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomHat), character.Inventory, nil, nil, function(spawned) character.Inventory.TryPutItemWithAutoEquipCheck(spawned, nil, {InvSlotType.Head}) end)
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomCoat), character.Inventory, nil, nil, function(spawned) character.Inventory.TryPutItemWithAutoEquipCheck(spawned, nil, {InvSlotType.OuterClothes}) end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomBag), character.Inventory, nil, nil, function(spawned)
             character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Bag), true, false, character)
 
