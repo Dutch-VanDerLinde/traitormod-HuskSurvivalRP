@@ -89,7 +89,6 @@ Traitormod.Accents.archaicaffliction = {
     ["bike horn"] = "honker",
     ["pen"] = "quill",
     ["good"] = "well",
-    ["space"] = "void",
     ["I'm"] = "I am",
     ["administrator"] = "lord",
     ["research director"] = "lord",
