@@ -458,3 +458,4 @@ Traitormod.Accents = {}
 
 dofile(Traitormod.Path .. "/Lua/Accents/owo.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/misc.lua")
+dofile(Traitormod.Path .. "/Lua/Accents/archaic.lua")
