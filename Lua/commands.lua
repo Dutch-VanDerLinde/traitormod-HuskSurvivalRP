@@ -292,7 +292,7 @@ Traitormod.AddCommand("!spawn", function (client, args)
     return true
 end)
 
-Traitormod.AddCommand("!pdamelt", function (client, args)
+Traitormod.AddCommand("!pdatci", function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
     if not Game.RoundStarted then return end
 
@@ -303,15 +303,15 @@ Traitormod.AddCommand("!pdamelt", function (client, args)
         for word in args do
             msg = msg .. " " .. word
         end
-        feedback = string.format(Traitormod.Language.CMDPDAFeedback, msg, "Meltwater Region")
+        feedback = string.format(Traitormod.Language.CMDPDAFeedback, msg, "Centrum Institute")
     else
         feedback = "Usage: !pda [Message]"
     end
 
     Game.SendDirectChatMessage("", feedback, nil, Traitormod.Config.ChatMessageType, client)
     if msg == "" then return true end
-    
-    Traitormod.RoundEvents.SendEventMessage(msg, nil, "melt")
+
+    Traitormod.RoundEvents.SendEventMessage(msg, nil, "tci")
     return true
 end)
 

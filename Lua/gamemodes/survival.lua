@@ -237,6 +237,9 @@ function gm:PreStart()
 
     Traitormod.AzoeRadioChannel = math.random(250, 9000) + math.random(1, 100)
     Traitormod.InstituteRadioChannel = math.random(500, 9000) + math.random(100, 200)
+
+    Traitormod.AmountMiners = 0
+    Traitormod.AmountTechnicians = 0
 end
 
 function gm:AwardCrew()

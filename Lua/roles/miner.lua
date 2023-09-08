@@ -57,7 +57,7 @@ function role:Start()
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
     end)
     --Toolbelt spawn
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("toolbelt"), self.Character.Inventory, nil, nil, function(spawned)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("scp_fieldpack"), self.Character.Inventory, nil, nil, function(spawned)
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
     end)

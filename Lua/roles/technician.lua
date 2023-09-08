@@ -56,6 +56,11 @@ function role:Start()
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
     end)
+    --Toolbelt spawn
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("toolbelt"), self.Character.Inventory, nil, nil, function(spawned)
+        local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
+        self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
+    end)
     -- Gear spawn
     for key, item in pairs(self.RoleGear) do
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)

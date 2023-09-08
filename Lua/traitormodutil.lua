@@ -11,6 +11,9 @@ Traitormod.Language = Traitormod.DefaultLanguage
 Traitormod.AzoeRadioChannel = nil
 Traitormod.InstituteRadioChannel = nil
 
+Traitormod.AmountMiners = 0
+Traitormod.AmountTechnicians = 0
+
 --[[
 for key, value in pairs(Traitormod.Languages) do
     if Traitormod.Config.Language == value.Name then
@@ -28,6 +31,12 @@ end
 --]]
 
 local json = dofile(Traitormod.Path .. "/Lua/json.lua")
+
+Traitormod.AmountCitizens = function (amountPlayers)
+    if amountPlayers > 18 and math.random() < 0.25 then return 3 end
+    if amountPlayers > 12 then return 2 end
+    return 1
+end
 
 Traitormod.LoadRemoteData = function (client, loaded)
     local data = {
@@ -713,6 +722,7 @@ Traitormod.GiveJobItems = function (character)
     end, 100)
 
     Traitormod.DoJobSet(character)
+    Traitormod.GiveTraits(character)
 end
 
 Traitormod.SpawnLootTables = function (loottable)
@@ -849,6 +859,17 @@ Traitormod.DoJobSet = function (character)
                 spawned.OwnInventory.TryPutItem(batcell, 0, true, false, character)
             end)
         end)
+
+        local role = Traitormod.RoleManager.Roles["Technician"]
+
+        if 2 > Traitormod.AmountMiners then
+            role = Traitormod.RoleManager.Roles["Miner"]
+            Traitormod.AmountMiners = Traitormod.AmountMiners + 1
+        elseif 2 > Traitormod.AmountTechnicians then
+            Traitormod.AmountTechnicians = Traitormod.AmountTechnicians + 1
+        end
+
+        Traitormod.RoleManager.AssignRole(character, role:new())
     end
 
     if character.HasJob("cavedweller") then return end
@@ -965,4 +986,19 @@ Traitormod.SendJobInfoMsg = function (client, job)
         Game.SendDirectChatMessage(ChatMsg, client)
         Game.SendDirectChatMessage(PopupMsg, client)
     end, 1750)
+end
+
+Traitormod.GiveTraits = function (character)
+    local traits = {
+        "archaicaffliction",
+        --"mobsteraccent",
+        "pirateaccent",
+        "scottishaffliction"
+    }
+
+    local randomtrait = traits[math.random(#traits)]
+
+    if math.random(1, 10) == 1 then
+        HF.SetAffliction(character, randomtrait, 1)
+    end
 end

@@ -6,7 +6,6 @@ Traitormod.AddHuskBeacon = function (item, time)
     huskBeacons[item] = time
 end
 
-
 local peopleInOutpost = 0
 local ghostRoleNumber = 1
 Hook.Add("think", "Traitormod.MiscThink", function ()
@@ -194,7 +193,7 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                         Timer.Wait(function ()
                             local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
                             Game.SendDirectChatMessage(messageChat, client)
-                        end, 1700)
+                        end, 500)
                     end
                 end
             end
@@ -342,17 +341,21 @@ end)
 Traitormod.Laugh = function (character)
     local laugh = "laugh_human"
 
-    HF.AddAffliction(character,laugh,2)
+    if not HF.HasAffliction(character,"sym_unconsciousness",1) then
+        HF.AddAffliction(character,laugh,2)
+    end
 end
 
 Traitormod.FlaggedRP_Phrases = {
     ["brb"] = "be right back",
     ["afk"] = "",
     ["ez"] = "easy",
-    [":)"] = "",
+    ["Ez"] = "easy",
     ["wtf"] = "what the fuck",
-    ["WTF"] = "WHAT THE FUCK",
+    ["Wtf"] = "what the fuck",
+    ["wtF"] = "what the FUCK",
     ["thx"] = "thanks",
+    ["ty"] = "thank you",
     --Laughs
     ["lmao"] = {Traitormod.Laugh, "*laughs*"},
     ["LMAO"] = {Traitormod.Laugh, "*laughs*"},
@@ -366,7 +369,29 @@ Traitormod.FlaggedRP_Phrases = {
     ["*laughs"] = {Traitormod.Laugh, "*laughs*"},
     ["laughs"] = {Traitormod.Laugh, "*laughs*"},
     ["*laughs*"] = {Traitormod.Laugh, "*laughs*"},
+    --1984
+    ["1987"] = "1983",
+    ["1984"] = "1984",
+    ["sex"] = "1984",
+    ["admins"] = "gods",
+    ["rdm"] = "",
 }
+-- Create a new table for uppercase variants
+local uppercaseReplacements = {}
+for word, replacement in pairs(Traitormod.FlaggedRP_Phrases) do
+    if not type(replacement) == "table" then
+        if replacement == "" then
+            uppercaseReplacements[word:upper()] = ""
+        else
+            uppercaseReplacements[word:upper()] = replacement:upper()
+        end
+    end
+end
+
+-- Merge the two tables
+for word, replacement in pairs(uppercaseReplacements) do
+    Traitormod.FlaggedRP_Phrases[word] = replacement
+end
 
 -- To prevent people from using non-realistic phrases, it also auto capitalizes the first letter of the sentence
 Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(instance, ptable)
@@ -392,6 +417,31 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
             message = string.gsub(message, "%f[%a]" .. original .. "%f[%A]", replacement)
         end
 
+        -- Loop through all afflictions, if you have one that matches an accent table, then replace the words.
+        local afflictionlist = character.CharacterHealth.GetAllAfflictions()
+        for aff in afflictionlist do
+            local prefab = aff.Prefab
+            local identifier = tostring(prefab.Identifier)
+            if not prefab.LimbSpecific then
+                local accenttable = Traitormod.Accents[identifier]
+                if accenttable then -- if found an accent, then replace the words of the message
+                    message = Traitormod.Accents.replaceWords(message, accenttable)
+                    break
+                end
+            end
+        end
+
+        -- If drunk, then slur string
+        if HF.HasAffliction(character,"drunk",60) then
+            local strength = HF.GetAfflictionStrength(character, "drunk")
+            message = Traitormod.Accents.drunk(message, strength)
+        end
+
+        -- If losing blood, then stutter string
+        if HF.HasAffliction(character,"bloodloss",50) or HF.HasAffliction(character,"hypothermia",45) then
+            message = Traitormod.Accents.stutter(message)
+        end
+
         local uppercaseletter = string.upper(message:sub(1, 1))
         message = uppercaseletter..message:sub(2, #message)
 
@@ -402,3 +452,9 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
 
     ptable["message"] = message
 end, Hook.HookMethodType.Before)
+
+-- accents
+Traitormod.Accents = {}
+
+dofile(Traitormod.Path .. "/Lua/Accents/owo.lua")
+dofile(Traitormod.Path .. "/Lua/Accents/misc.lua")
