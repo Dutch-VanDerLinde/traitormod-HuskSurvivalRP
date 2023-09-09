@@ -36,7 +36,7 @@ Traitormod.Accents.archaicaffliction = {
     ["altar"] = "chantry",
     ["salesman"] = "chapman",
     ["shopkeeper"] = "chapman",
-    ["ore"] = "chapman",
+    ["mineral"] = "ore",
     ["cheat"] = "cozen",
     ["ilk"] = "consort",
     ["crown"] = "coronal",
@@ -70,6 +70,7 @@ Traitormod.Accents.archaicaffliction = {
     ["sec off"] = "guardsman",
     ["bar"] = "tavern",
     ["hi"] = "greetings",
+    ["hello"] = "salutations",
     ["heya"] = "greetings",
     ["yeah"] = "indeed",
     ["yup"] = "indeed",
@@ -90,6 +91,7 @@ Traitormod.Accents.archaicaffliction = {
     ["pen"] = "quill",
     ["good"] = "well",
     ["I'm"] = "I am",
+    ["below"] = "beneath",
     ["administrator"] = "lord",
     ["research director"] = "lord",
     ["chapel"] = "church",
@@ -106,12 +108,79 @@ Traitormod.Accents.archaicaffliction = {
     ["please"] = "i request of thee",
     ["pop"] = "drink",
     ["wants"] = "wishes",
+    ["liquor"] = "booze",
+    ["crate"] = "chest",
+    ["do"] = "doth",
+    ["saw"] = "observed",
+    ["delicious"] = "exquisite",
+    ["think"] = "believe",
+    ["help"] = "assist",
+    ["i am thirsty"] = "i require a drink",
+    ["flashlight"] = "torch",
+    ["old"] = "olden",
+    ["bad"] = "unpleasant",
+    ["move"] = "relocate",
+    ["fate"] = "doom",
+    ["ask"] = "request",
+    ["myself"] = "mineself",
+    ["going on"] = "happening",
+    ["can"] = "may",
+    ["why"] = "for what reason",
+    ["hey"] = "pardon me",
+    ["you suck"] = "man",
+    ["thou are foul"] = "man",
+    ["soda"] = "drink",
+    ["how"] = "in what way",
+    ["i request of thee"] = "man",
+    ["want"] = "man",
+    ["wish for"] = "man",
+    ["refuse"] = "shun",
+    ["frown"] = "glower",
+    ["evil"] = "ill",
+    ["sharp"] = "keen",
+    ["corner"] = "nook",
+    ["faint"] = "swoon",
+    ["forsee"] = "forbode",
+    ["desolate"] = "forlorn",
+    ["before"] = "ere",
+    ["ruin"] = "defile",
+    ["coward"] = "craven",
+    ["probably"] = "belike",
+    ["burden"] = "fardel",
+    ["partnership"] = "consort",
+    ["swindler"] = "cog",
+    ["cheater"] = "cog",
+    ["madenning"] = "bemadding",
+    ["request"] = "bespeak",
+    ["taken place"] = "befall'n",
+    ["was"] = "have been",
+    ["obligated"] = "allegiant",
+    ["upon"] = "unto",
+    ["onto"] = "unto",
+    ["under that"] = "thereunder",
+    ["by what"] = "whereby",
+    ["this"] = "thee",
+    ["wonderful"] = "wonderous",
+    ["have"] = "hath",
+    ["yours"] = "thine",
+    ["you"] = "thou",
+    ["consider"] = "deem",
+    ["so far"] = "as of this date",
+    ["shall"] = "shalt",
+    ["yes"] = "aye",
+    ["from this point onwards"] = "hereinafter",
+    ["gloom"] = "drear",
+    ["rush"] = "make haste",
+    ["after that"] = "thereafter",
 }
 
 -- Create a new table for uppercase variants
 local uppercaseReplacements = {}
 for word, replacement in pairs(Traitormod.Accents.archaicaffliction) do
     uppercaseReplacements[word:upper()] = replacement:upper()
+    -- first letter capital
+    local firstcapital = string.upper(word:sub(1, 1)) .. word:sub(2, #word)
+    uppercaseReplacements[firstcapital] = replacement
 end
 
 -- Merge the two tables
@@ -120,14 +189,9 @@ for word, replacement in pairs(uppercaseReplacements) do
 end
 
 Traitormod.Accents.replaceWords = function(input, replacements)
-    local output = input
-    for word, replacement in pairs(replacements) do
-        local pattern = word:gsub("(%a+)", function(w)
-            return w:lower() == word:lower() and w or w:gsub("%a", "?")
-        end)
-        output = output:gsub(pattern, function(match)
-            return match:lower() == word:lower() and replacement or match
-        end)
+    for original, replacement in pairs(replacements) do
+        input = string.gsub(input, "%f[%a]" .. original .. "%f[%A]", replacement)
     end
-    return output
+
+    return input
 end

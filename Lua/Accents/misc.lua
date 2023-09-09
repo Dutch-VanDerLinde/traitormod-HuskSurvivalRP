@@ -26,7 +26,7 @@ Traitormod.Accents.stutter = function (message)
 end
 
 -- Slurred/drunk system
-Traitormod.Accents.drunk = function(message, drunkedness)
+Traitormod.Accents.drunkslur = function(message, drunkedness)
     -- Ensure that drunkedness is within the 1-100 range
     drunkedness = math.max(1, math.min(100, drunkedness))
 

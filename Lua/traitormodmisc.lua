@@ -2,13 +2,13 @@ local timer = Timer.GetTime()
 
 local huskBeacons = {}
 
-Traitormod.AddHuskBeacon = function (item, time)
+Traitormod.AddHuskBeacon = function(item, time)
     huskBeacons[item] = time
 end
 
 local peopleInOutpost = 0
 local ghostRoleNumber = 1
-Hook.Add("think", "Traitormod.MiscThink", function ()
+Hook.Add("think", "Traitormod.MiscThink", function()
     if timer > Timer.GetTime() then return end
     if not Game.RoundStarted then return end
 
@@ -35,7 +35,7 @@ Hook.Add("think", "Traitormod.MiscThink", function ()
             local client = Traitormod.FindClientCharacter(character)
             if not Traitormod.GhostRoles.IsGhostRole(character) and not client then
                 if Traitormod.Config.GhostRoleConfig.MiscGhostRoles[character.SpeciesName.Value] then
-                    Traitormod.GhostRoles.Ask(character.Name .. " " .. ghostRoleNumber, function (client)
+                    Traitormod.GhostRoles.Ask(character.Name .. " " .. ghostRoleNumber, function(client)
                         client.SetClientCharacter(character)
                     end, character)
                     ghostRoleNumber = ghostRoleNumber + 1
@@ -66,7 +66,7 @@ Hook.Add("think", "Traitormod.MiscThink", function ()
     end
 end)
 
-Hook.Add("roundEnd", "Traitormod.MiscEnd", function ()
+Hook.Add("roundEnd", "Traitormod.MiscEnd", function()
     peopleInOutpost = 0
     ghostRoleNumber = 1
     huskBeacons = {}
@@ -75,28 +75,29 @@ end)
 if Traitormod.Config.DeathLogBook then
     local messages = {}
 
-    Hook.Add("roundEnd", "Traitormod.DeathLogBook", function ()
+    Hook.Add("roundEnd", "Traitormod.DeathLogBook", function()
         messages = {}
     end)
 
-    Hook.Add("character.death", "Traitormod.DeathLogBook", function (character)
+    Hook.Add("character.death", "Traitormod.DeathLogBook", function(character)
         if messages[character] == nil then return end
 
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("logbook"), character.Inventory, nil, nil, function(item)
-            local terminal = item.GetComponentString("Terminal")
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("logbook"), character.Inventory, nil, nil,
+            function(item)
+                local terminal = item.GetComponentString("Terminal")
 
-            local text = ""
-            for key, value in pairs(messages[character]) do
-                text = text .. value .. "\n"
-            end
+                local text = ""
+                for key, value in pairs(messages[character]) do
+                    text = text .. value .. "\n"
+                end
 
-            terminal.TextColor = Color.MidnightBlue
-            terminal.ShowMessage = text
-            terminal.SyncHistory()
-        end)
+                terminal.TextColor = Color.MidnightBlue
+                terminal.ShowMessage = text
+                terminal.SyncHistory()
+            end)
     end)
 
-    Traitormod.AddCommand("!write", function (client, args)
+    Traitormod.AddCommand("!write", function(client, args)
         if client.Character == nil or client.Character.IsDead or client.Character.SpeechImpediment > 0 or not client.Character.IsHuman then
             Traitormod.SendChatMessage(client, "You are unable to write to your death logbook.", Color.Red)
             return true
@@ -117,9 +118,9 @@ if Traitormod.Config.DeathLogBook then
     end)
 end
 
-Traitormod.AddStaticToMessage = function (msg, chance)
+Traitormod.AddStaticToMessage = function(msg, chance)
     for i = 1, #msg do
-        local c = msg:sub(i,i)
+        local c = msg:sub(i, i)
 
         if math.random(1, chance) == 1 then
             msg = msg.gsub(msg, c, "-")
@@ -129,11 +130,12 @@ Traitormod.AddStaticToMessage = function (msg, chance)
     return msg
 end
 
-Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, sender, output)
+Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function(item, sender, output)
     local idcard = item.OwnInventory.GetItemAt(0)
 
     if item.Condition < 100 then
-        local messageChat = ChatMessage.Create("Intercom", "Cooldown active. Please wait.", ChatMessageType.Default, nil, nil)
+        local messageChat = ChatMessage.Create("Intercom", "Cooldown active. Please wait.", ChatMessageType.Default, nil,
+            nil)
         messageChat.Color = Color.Red
         Game.SendDirectChatMessage(messageChat, sender)
         return
@@ -156,10 +158,10 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
 
     local sendername = idcard.GetComponentString("IdCard").OwnerName
 
-    local announcement = function (color, jobname)
+    local announcement = function(color, jobname)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("husksfx_intercomstart"), item.WorldPosition)
         item.Condition = 0
-        Timer.Wait(function () item.Condition = 100 end, 2 * 60000) -- 2 minute cooldown
+        Timer.Wait(function() item.Condition = 100 end, 2 * 60000)  -- 2 minute cooldown
 
         for key, client in pairs(Client.ClientList) do
             if client.Character then
@@ -185,12 +187,13 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function (item, se
                     local sb = Traitormod.StringBuilder:new()
                     sb(color, string.format("\"%s\"", output))
                     sb("\n\n")
-                    sb("‖color:#D5B413‖%s‖color:end‖", string.format(Traitormod.Language.IntercomSentBy, sendername, jobname))
+                    sb("‖color:#D5B413‖%s‖color:end‖",
+                        string.format(Traitormod.Language.IntercomSentBy, sendername, jobname))
 
                     output = sb:concat()
 
                     if distance <= 17500 then
-                        Timer.Wait(function ()
+                        Timer.Wait(function()
                             local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
                             Game.SendDirectChatMessage(messageChat, client)
                         end, 500)
@@ -251,11 +254,11 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
         data.NonInteractable = true
         Networking.CreateEntityEvent(data, Item.ChangePropertyEventData(prop, data))
 
-        local tags = HF.SplitString(data.Tags,",")
+        local tags = HF.SplitString(data.Tags, ",")
         local clientname = nil
         for tag in tags do
-            if HF.StartsWith(tag,"name") then
-                local split = HF.SplitString(tag,":")
+            if HF.StartsWith(tag, "name") then
+                local split = HF.SplitString(tag, ":")
                 if split[2] ~= nil then clientname = split[2] end
             end
         end
@@ -264,38 +267,42 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
 
         if not client.Character or not client.Character.IsHuman or client.Character.IsDead then
             local textPromptUtils = require("textpromptutils")
-            local options = {Traitormod.Language.Yes, Traitormod.Language.No}
-            textPromptUtils.Prompt("You are being cloned! Return to your body?", options, client, function(option, client2)
-                if option == 1 then
-                    client2.SetClientCharacter(nil)
-                else
-                    Traitormod.Log(client.Name .. " denied returning to the spectator chat")
-                end
-            end)
+            local options = { Traitormod.Language.Yes, Traitormod.Language.No }
+            textPromptUtils.Prompt("You are being cloned! Return to your body?", options, client,
+                function(option, client2)
+                    if option == 1 then
+                        client2.SetClientCharacter(nil)
+                    else
+                        Traitormod.Log(client.Name .. " denied returning to the spectator chat")
+                    end
+                end)
 
-            Traitormod.SendMessage(client, "You are being cloned! If your current character is alive, you won't gain control of the clone.")
+            Traitormod.SendMessage(client,
+                "You are being cloned! If your current character is alive, you won't gain control of the clone.")
         end
 
-        Timer.Wait(function ()
+        Timer.Wait(function()
             local traumatic = 0
             local surgical = 0
             local randomdisorder = possibledisorders[math.random(1, #possibledisorders)]
-            local char = Character.Create(client.CharacterInfo, item.WorldPosition, client.CharacterInfo.Name, 0, true, false)
+            local char = Character.Create(client.CharacterInfo, item.WorldPosition, client.CharacterInfo.Name, 0, true,
+                false)
             char.TeamID = CharacterTeamType.FriendlyNPC
             HF.RemoveItem(data)
 
-            Timer.Wait(function ()
+            Timer.Wait(function()
                 if not client.Character or client.Character.IsDead and not char.IsDead then
                     client.SetClientCharacter(char)
                     Traitormod.LostLivesThisRound[client.SteamID] = false
 
                     Traitormod.SendMessageCharacter(char, Traitormod.Language.CloneOGClient, "InfoFrameTabButton.Mission")
                 elseif not char.IsDead then
-                    Traitormod.GhostRoles.Ask(char.Name.." (Cloned)", function (ghostclient)
+                    Traitormod.GhostRoles.Ask(char.Name .. " (Cloned)", function(ghostclient)
                         Traitormod.LostLivesThisRound[ghostclient.SteamID] = false
                         ghostclient.SetClientCharacter(char)
 
-                        Traitormod.SendMessageCharacter(char, string.format(Traitormod.Language.CloneRandom, char.Name), "InfoFrameTabButton.Mission")
+                        Traitormod.SendMessageCharacter(char, string.format(Traitormod.Language.CloneRandom, char.Name),
+                            "InfoFrameTabButton.Mission")
                     end, char)
                 end
             end, 1500)
@@ -308,9 +315,9 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
                     else
                         surgical = 100
                     end
-                    NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
+                    NT.SurgicallyAmputateLimb(char, possibleLimbs[math.random(1, #possibleLimbs)], surgical, traumatic)
                     if math.random(1, 4) == 1 then
-                        HF.AddAffliction(char,randomdisorder,2)
+                        HF.AddAffliction(char, randomdisorder, 2)
                     end
                 end
             elseif condition <= 20 and condition >= 1 then
@@ -320,9 +327,9 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
                 else
                     surgical = 100
                 end
-                NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
+                NT.SurgicallyAmputateLimb(char, possibleLimbs[math.random(1, #possibleLimbs)], surgical, traumatic)
                 if math.random(1, 2) == 1 then
-                    HF.AddAffliction(char,randomdisorder,2)
+                    HF.AddAffliction(char, randomdisorder, 2)
                 end
             elseif condition < 1 then
                 if math.random(1, 2) == 1 then
@@ -330,19 +337,19 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
                 else
                     surgical = 100
                 end
-                NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
-                NT.SurgicallyAmputateLimb(char,possibleLimbs[math.random(1, #possibleLimbs)],surgical,traumatic)
-                HF.AddAffliction(char,randomdisorder,2)
+                NT.SurgicallyAmputateLimb(char, possibleLimbs[math.random(1, #possibleLimbs)], surgical, traumatic)
+                NT.SurgicallyAmputateLimb(char, possibleLimbs[math.random(1, #possibleLimbs)], surgical, traumatic)
+                HF.AddAffliction(char, randomdisorder, 2)
             end
         end, 30000)
     end
 end)
 
-Traitormod.Laugh = function (character)
+Traitormod.Laugh = function(character)
     local laugh = "laugh_human"
 
-    if not HF.HasAffliction(character,"sym_unconsciousness",1) then
-        HF.AddAffliction(character,laugh,2)
+    if not HF.HasAffliction(character, "sym_unconsciousness", 1) then
+        HF.AddAffliction(character, laugh, 2)
     end
 end
 
@@ -356,19 +363,20 @@ Traitormod.FlaggedRP_Phrases = {
     ["wtF"] = "what the FUCK",
     ["thx"] = "thanks",
     ["ty"] = "thank you",
+    ["i"] = "I",
     --Laughs
-    ["lmao"] = {Traitormod.Laugh, "*laughs*"},
-    ["LMAO"] = {Traitormod.Laugh, "*laughs*"},
-    ["Lmao"] = {Traitormod.Laugh, "*laughs*"},
-    ["lol"] = {Traitormod.Laugh, "*laughs*"},
-    ["lo"] = {Traitormod.Laugh, "*laughs*"},
-    ["LOL"] = {Traitormod.Laugh, "*laughs*"},
-    ["xd"] = {Traitormod.Laugh, "*laughs*"},
-    ["xD"] = {Traitormod.Laugh, "*laughs*"},
-    ["XD"] = {Traitormod.Laugh, "*laughs*"},
-    ["*laughs"] = {Traitormod.Laugh, "*laughs*"},
-    ["laughs"] = {Traitormod.Laugh, "*laughs*"},
-    ["*laughs*"] = {Traitormod.Laugh, "*laughs*"},
+    ["lmao"] = { Traitormod.Laugh, "*laughs*" },
+    ["LMAO"] = { Traitormod.Laugh, "*laughs*" },
+    ["Lmao"] = { Traitormod.Laugh, "*laughs*" },
+    ["lol"] = { Traitormod.Laugh, "*laughs*" },
+    ["lo"] = { Traitormod.Laugh, "*laughs*" },
+    ["LOL"] = { Traitormod.Laugh, "*laughs*" },
+    ["xd"] = { Traitormod.Laugh, "*laughs*" },
+    ["xD"] = { Traitormod.Laugh, "*laughs*" },
+    ["XD"] = { Traitormod.Laugh, "*laughs*" },
+    ["*laughs"] = { Traitormod.Laugh, "*laughs*" },
+    ["laughs"] = { Traitormod.Laugh, "*laughs*" },
+    ["*laughs*"] = { Traitormod.Laugh, "*laughs*" },
     --1984
     ["1987"] = "1983",
     ["1984"] = "1984",
@@ -379,11 +387,14 @@ Traitormod.FlaggedRP_Phrases = {
 -- Create a new table for uppercase variants
 local uppercaseReplacements = {}
 for word, replacement in pairs(Traitormod.FlaggedRP_Phrases) do
-    if not type(replacement) == "table" then
+    if type(replacement) == "string" then
         if replacement == "" then
             uppercaseReplacements[word:upper()] = ""
         else
             uppercaseReplacements[word:upper()] = replacement:upper()
+            -- first letter capital
+            local firstcapital = string.upper(word:sub(1, 1)) .. word:sub(2, #word)
+            uppercaseReplacements[firstcapital] = replacement
         end
     end
 end
@@ -431,23 +442,23 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
             end
         end
 
+        if HF.HasAffliction(character, "tortureaccent", 1) then
+            message = Traitormod.Accents.OwO(message)
+        end
+
         -- If drunk, then slur string
-        if HF.HasAffliction(character,"drunk",60) then
+        if HF.HasAffliction(character, "drunk", 45) then
             local strength = HF.GetAfflictionStrength(character, "drunk")
-            message = Traitormod.Accents.drunk(message, strength)
+            message = Traitormod.Accents.drunkslur(message, strength)
         end
 
         -- If losing blood, then stutter string
-        if HF.HasAffliction(character,"bloodloss",50) or HF.HasAffliction(character,"hypothermia",45) then
+        if HF.HasAffliction(character, "bloodloss", 50) or HF.HasAffliction(character, "hypothermia", 45) then
             message = Traitormod.Accents.stutter(message)
         end
 
         local uppercaseletter = string.upper(message:sub(1, 1))
-        message = uppercaseletter..message:sub(2, #message)
-
-        if #message <= 1 then
-            message = "..?"
-        end
+        message = uppercaseletter .. message:sub(2, #message)
     end
 
     ptable["message"] = message
