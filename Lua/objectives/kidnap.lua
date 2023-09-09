@@ -1,7 +1,8 @@
 local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "Kidnap"
-objective.AmountPoints = 2500
+objective.AmountPoints = 4500
+objective.InstitutePosition = Traitormod.GetRandomJobWaypoint("DeliverySpawnTci").WorldPosition
 
 function objective:Start(target)
     self.Target = target
@@ -11,23 +12,13 @@ function objective:Start(target)
     end
 
     self.TargetName = Traitormod.GetJobString(target) .. " " .. target.Name
+    self.Text = string.format(Traitormod.Language.ObjectiveKidnap, self.TargetName)
 
-    self.Text = string.format(Traitormod.Language.ObjectiveKidnap, self.TargetName,
-    self.Seconds)
-
-    self.SecondsLeft = self.Seconds
 
     return true
 end
 
 function objective:IsCompleted()
-    if self.SecondsLeft <= 0 then
-        self.Text = string.format(Traitormod.Language.ObjectiveKidnap, self.TargetName,
-        self.Seconds)
-
-        return true
-    end
-
     local char = self.Target
 
     if char == nil or char.IsDead then return false end
@@ -35,21 +26,26 @@ function objective:IsCompleted()
     local item = char.Inventory.GetItemInLimbSlot(InvSlotType.RightHand)
 
     if item ~= nil and item.Prefab.Identifier == "handcuffs" then
-        if self.lastTimer == nil then
-            self.lastTimer = Timer.GetTime()
+        local distance = Vector2.Distance(char.WorldPosition, self.InstitutePosition)
+
+        if distance < 6000 then
+            return true
         end
-
-        self.SecondsLeft = math.max(0, self.SecondsLeft - (Timer.GetTime() - self.lastTimer))
-
-        self.Text = string.format(Traitormod.Language.ObjectiveKidnap, self.TargetName, math.floor(self.SecondsLeft))
-
-        self.lastTimer = Timer.GetTime()
-
-    else
-        self.lastTimer = Timer.GetTime()
     end
 
     return false
+end
+
+function objective:TargetPreference(character)
+    if character.HasJob("guardtci")
+        or character.HasJob("thal_scientist")
+        or character.HasJob("researchdirector")
+        or character.HasJob("cavedweller")
+    then
+        return false
+    end
+
+    return true
 end
 
 return objective

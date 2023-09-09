@@ -20,6 +20,7 @@ function objective:TargetPreference(character)
     if character.HasJob("guardtci")
         or character.HasJob("thal_scientist")
         or character.HasJob("researchdirector")
+        or character.HasJob("cavedweller")
     then
         return false
     end

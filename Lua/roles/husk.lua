@@ -13,23 +13,10 @@ function role:Start()
 end
 
 function role:Greet()
-    local partners = Traitormod.StringBuilder:new()
-    local traitors = Traitormod.RoleManager.FindAntagonists()
-    for _, character in pairs(traitors) do
-        if character ~= self.Character then
-            local client = Traitormod.FindClientCharacter(character)
-            if client then
-                partners('"%s" ', client.Name)
-            end
-        end
-    end
-    partners = partners:concat(" ")
-
     local sb = Traitormod.StringBuilder:new()
     sb(Traitormod.Language.HuskServantYou)
 
     sb("\n\n")
-    sb(Traitormod.Language.HuskFellows, partners)
 
     if self.TraitorBroadcast then
         sb("\n\n%s", Traitormod.Language.HuskServantTcTip)

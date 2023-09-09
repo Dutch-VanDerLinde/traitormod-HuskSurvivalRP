@@ -31,7 +31,7 @@ config.Codewords = {
 
 config.AmountCodeWords = 2
 
-config.DamageResistance = 0.5
+config.DamageResistance = 0.25
 config.OptionalTraitors = true        -- players can use !toggletraitor
 config.RagdollOnDisconnect = false
 config.EnableControlHusk = true     -- EXPERIMENTAL: enable to control husked character after death
@@ -178,9 +178,7 @@ config.RoleConfig = {
     },
 
     InstituteUndercover = {
-        SubObjectives = {"StealCaptainID", "AssassinateAzoe", "Kidnap", "DestroyCaly"},
-        MinSubObjectives = 2,
-        MaxSubObjectives = 3,
+        AvailableObjectives = {"StealCaptainID", "AssassinateAzoe", "Kidnap", "StealAzoeIDCard"},
 
         NextObjectiveDelayMin = 5,
         NextObjectiveDelayMax = 10,

@@ -62,7 +62,9 @@ Traitormod.Outfits = {
         clothes = {"researchdirectorclothes"}
     },
 
-    guardtci = {},
+    guardtci = {
+        wearables = {"scp_riotvest"}
+    },
 
     thal_scientist = {
         clothes = {"thal_botanistsuit", "thal_geneticistsuit"}

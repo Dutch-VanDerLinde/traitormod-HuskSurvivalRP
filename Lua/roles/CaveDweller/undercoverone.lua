@@ -8,50 +8,24 @@ role.StartSound = "traitormod_undercoverstart"
 function role:Start()
     Traitormod.Stats.AddCharacterStat("Undercover", self.Character, 1)
 
-    --[[
-    local killobjective = Traitormod.RoleManager.Objectives.KillAny:new()
-    killobjective:Init(self.Character)
-    self:AssignObjective(killobjective)
-    --]]
+    local availableObjectives = self.AvailableObjectives
+
+    if not availableObjectives or #availableObjectives == 0 then
+        return
+    end
 
     local pool = {}
-    for key, value in pairs(self.SubObjectives) do pool[key] = value end
+    for key, value in pairs(availableObjectives) do pool[key] = value end
 
-    local toRemove = {}
-    for key, value in pairs(pool) do
-        local objective = Traitormod.RoleManager.FindObjective(value)
-        if objective ~= nil and objective.AlwaysActive then
-            objective = objective:new()
-
-            local character = self.Character
-
-            objective:Init(character)
-            objective.OnAwarded = function ()
-                Traitormod.Stats.AddCharacterStat("TraitorSubObjectives", character, 1)
-            end
-
-            if objective:Start(character) then
-                self:AssignObjective(objective)
-                table.insert(toRemove, key)
-            end
-        end
-    end
-    for key, value in pairs(toRemove) do table.remove(pool, value) end
-
-    for i = 1, math.random(self.MinSubObjectives, self.MaxSubObjectives), 1 do
+    for i = 1, 3, 1 do
         local objective = Traitormod.RoleManager.RandomObjective(pool)
         if objective == nil then break end
 
         objective = objective:new()
 
         local character = self.Character
-
         objective:Init(character)
         local target = self:FindValidTarget(objective)
-
-        objective.OnAwarded = function ()
-            Traitormod.Stats.AddCharacterStat("TraitorSubObjectives", character, 1)
-        end
 
         if objective:Start(target) then
             self:AssignObjective(objective)
@@ -79,26 +53,19 @@ function role:End(roundEnd)
     end
 end
 
----@return string mainPart, string subPart
+---@return string objectives
 function role:ObjectivesToString()
-    local primary = Traitormod.StringBuilder:new()
-    local secondary = Traitormod.StringBuilder:new()
+    local objs = Traitormod.StringBuilder:new()
 
     for _, objective in pairs(self.Objectives) do
-        -- Assassinate objectives are primary
-        local buf = objective.Name == "AssassinateAzoe" and primary or secondary
-
-        if objective:IsCompleted() or objective.Awarded then
-            buf:append(" > ", objective.Text, Traitormod.Language.Completed)
+        if objective:IsCompleted() then
+            objs:append(" > ", objective.Text, Traitormod.Language.Completed)
         else
-            buf:append(" > ", objective.Text, string.format(Traitormod.Language.Points, objective.AmountPoints))
+            objs:append(" > ", objective.Text, string.format(Traitormod.Language.Points, objective.AmountPoints))
         end
     end
-    if #primary == 0 then
-        primary(Traitormod.Language.NoObjectivesYet)
-    end
 
-    return primary:concat("\n"), secondary:concat("\n")
+    return objs:concat("\n")
 end
 
 function role:Greet()
@@ -110,14 +77,12 @@ function role:Greet()
         end
     end
     partners = partners:concat(" ")
-    local primary, secondary = self:ObjectivesToString()
+    local objectives = self:ObjectivesToString()
 
     local sb = Traitormod.StringBuilder:new()
     sb("%s\n\n", Traitormod.Language.CaveDwellerUndercoverYou)
-    sb("%s\n", Traitormod.Language.MainObjectivesYou)
-    sb(primary)
-    sb("\n\n%s\n", Traitormod.Language.SecondaryObjectivesYou)
-    sb(secondary)
+    sb("%s\n", Traitormod.Language.BasicObjectivesYou)
+    sb(objectives)
     sb("\n\n")
     if #agents < 2 then
         sb(Traitormod.Language.SoloAgent)
@@ -132,35 +97,11 @@ end
 
 function role:OtherGreet()
     local sb = Traitormod.StringBuilder:new()
-    local primary, secondary = self:ObjectivesToString()
+    local objectives = self:ObjectivesToString()
     sb(Traitormod.Language.UndercoverOther, self.Character.Name)
-    sb("\n%s\n", Traitormod.Language.MainObjectivesOther)
-    sb(primary)
-    sb("\n%s\n", Traitormod.Language.SecondaryObjectivesOther)
-    sb(secondary)
+    sb("\n%s\n", Traitormod.Language.BasicObjectivesOther)
+    sb(objectives)
     return sb:concat()
-end
-
-function role:FilterTarget(objective, character)
-    if not self.SelectBotsAsTargets and character.IsBot then return false end
-
-    if objective.Name == "Assassinate" and self.SelectUniqueTargets then
-        for key, value in pairs(Traitormod.RoleManager.FindCharactersByRole("CaveDwellerBandit")) do
-            local targetRole = Traitormod.RoleManager.GetRole(value)
-
-            for key, obj in pairs(targetRole.Objectives) do
-                if obj.Name == "Assassinate" and obj.Target == character then
-                    return false
-                end
-            end
-        end
-    end
-
-    if character.TeamID ~= CharacterTeamType.Team1 and not self.SelectPiratesAsTargets then
-        return false
-    end
-
-    return Traitormod.RoleManager.Roles.Antagonist.FilterTarget(self, objective, character)
 end
 
 return role
