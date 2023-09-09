@@ -1,8 +1,14 @@
 local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "StealAzoeIDCard"
-objective.AmountPoints = 450
+objective.AmountPoints = 600
 objective.Seconds = 65
+objective.RoleFilter = {
+    ["citizen"] = true,
+    ["medicaldoctor"] = true,
+    ["he-chef"] = true,
+    ["guardone"] = true,
+}
 
 function objective:GetTargetName()
     if self.IdCard.OwnerName == "" then
@@ -61,14 +67,6 @@ function objective:IsCompleted()
 end
 
 function objective:TargetPreference(character)
-    if character.HasJob("guardtci")
-        or character.HasJob("thal_scientist")
-        or character.HasJob("researchdirector")
-        or character.HasJob("cavedweller")
-    then
-        return false
-    end
-
     local idCardItem = character.Inventory.GetItemInLimbSlot(InvSlotType.Card)
     if not idCardItem then
         return false

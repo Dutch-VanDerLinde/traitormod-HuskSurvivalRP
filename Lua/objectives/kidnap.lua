@@ -1,8 +1,14 @@
 local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "Kidnap"
-objective.AmountPoints = 4500
+objective.AmountPoints = 2500
 objective.InstitutePosition = Traitormod.GetRandomJobWaypoint("DeliverySpawnTci").WorldPosition
+objective.RoleFilter = {
+    ["citizen"] = true,
+    ["medicaldoctor"] = true,
+    ["he-chef"] = true,
+    ["guardone"] = true,
+}
 
 function objective:Start(target)
     self.Target = target
@@ -34,18 +40,6 @@ function objective:IsCompleted()
     end
 
     return false
-end
-
-function objective:TargetPreference(character)
-    if character.HasJob("guardtci")
-        or character.HasJob("thal_scientist")
-        or character.HasJob("researchdirector")
-        or character.HasJob("cavedweller")
-    then
-        return false
-    end
-
-    return true
 end
 
 return objective

@@ -1,7 +1,14 @@
 local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "AssassinateAzoe"
-objective.AmountPoints = 600
+objective.AmountPoints = 925
+objective.RoleFilter = {
+    ["citizen"] = true,
+    ["medicaldoctor"] = true,
+    ["he-chef"] = true,
+    ["guardone"] = true,
+}
+
 function objective:Start(target)
     self.Target = target
 
@@ -14,18 +21,6 @@ end
 
 function objective:IsCompleted()
     return self.Target.IsDead
-end
-
-function objective:TargetPreference(character)
-    if character.HasJob("guardtci")
-        or character.HasJob("thal_scientist")
-        or character.HasJob("researchdirector")
-        or character.HasJob("cavedweller")
-    then
-        return false
-    end
-
-    return true
 end
 
 return objective

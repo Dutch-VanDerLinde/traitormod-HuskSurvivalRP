@@ -19,8 +19,10 @@ end
 function objective:IsCompleted()
     if self.Target.IsDead then return false end
 
-    if self.Target.Inventory.FindItemByIdentifier("adminpaper", true) then
-        return true
+    for item in self.Target.Inventory.AllItems do
+        if item.Prefab.Identifier == "adminpaper" then
+            return true
+        end
     end
 
     return false
