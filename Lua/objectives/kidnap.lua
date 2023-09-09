@@ -28,7 +28,7 @@ function objective:IsCompleted()
     if item ~= nil and item.Prefab.Identifier == "handcuffs" then
         local distance = Vector2.Distance(char.WorldPosition, self.InstitutePosition)
 
-        if distance < 6000 then
+        if distance < 5000 then
             return true
         end
     end

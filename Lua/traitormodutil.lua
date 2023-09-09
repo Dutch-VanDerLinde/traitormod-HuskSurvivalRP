@@ -775,6 +775,8 @@ end
 Traitormod.GetRandomJobWaypoint = function(JobIdentifier)
     local waypoints = {}
 
+    if not Game.RoundStarted then return end
+
     for key, value in pairs(Submarine.MainSub.GetWaypoints(true)) do
         if value.AssignedJob and value.AssignedJob.Identifier == JobIdentifier then
             table.insert(waypoints, value)
@@ -981,7 +983,7 @@ Traitormod.DoJobSet = function(character)
                 function(spawned)
                     local sb = Traitormod.StringBuilder:new()
                     sb(Traitormod.Language.AzoeCodes, character.Name)
-                    sb("\n\nThe azoe region radio channel is: %s",
+                    sb("\n\nThe Azoe Region radio channel is: %s",
                         string.format(colororange, Traitormod.AzoeRadioChannel))
 
                     spawned.Description = sb:concat()

@@ -178,7 +178,7 @@ config.RoleConfig = {
     },
 
     InstituteUndercover = {
-        AvailableObjectives = {"StealCaptainID", "AssassinateAzoe", "Kidnap", "StealAzoeIDCard"},
+        AvailableObjectives = {"StealCaptainID", "AssassinateAzoe", "Kidnap", "StealAzoeIDCard", "HeistAzoePaper"},
 
         NextObjectiveDelayMin = 5,
         NextObjectiveDelayMax = 10,

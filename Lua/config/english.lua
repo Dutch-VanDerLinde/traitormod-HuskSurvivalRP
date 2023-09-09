@@ -165,12 +165,13 @@ language.ObjectiveGrowMudraptors = "Grow (%s/%s) mudraptors."
 language.ObjectiveHusk = "Turn %s into a full husk."
 language.ObjectiveTurnHusk = "Turn yourself into a husk."
 language.ObjectiveSurvive = "Complete at least one objective and survive the shift."
-language.ObjectiveStealCaptainID = "Steal the azoe region adminstrator's ID."
+language.ObjectiveStealCaptainID = "Steal the Azoe Region adminstrator's ID."
 language.ObjectiveStealID = "Steal the %s's ID for %s seconds."
 language.ObjectiveKidnap = "Bring %s to the institute, we need to interrogate them. Make sure they're in cuffs."
 language.ObjectivePoisonCaptain = "Poison %s with %s."
 language.ObjectiveWreckGift = "Grab the gift"
 language.ObjectiveDestroyMinerals = "Deconstruct %s minerals."
+language.ObjectiveStealAzoeCodes = "Steal the Azoe Region administrator's classified codes document. Deliver it to me, the research director."
 
 language.ObjectiveFinishAllObjectives = "Finish all objectives."
 language.ObjectiveFinishRoundFast = "Finish the round in less than 20 minutes."
@@ -482,7 +483,7 @@ language.LastNames = {"Smith","Hall","Stewart","Price","Johnson","Allen","Sanche
 
 --administrator delivery stuff
 language.InstituteCodes = "This document is for %s, the latest research director. These codes should only be given to institute members."
-language.AzoeCodes = "This document is for %s, the newly appointed azoe region administrator. These codes should be given to trusted personnel only."
+language.AzoeCodes = "This document is for %s, the newly appointed Azoe Region administrator. These codes should be given to trusted personnel only."
 
 language.ToAzoe = "There's a label on it, it says: 'To Azoe Region'"
 language.ToMeltwater = "There's a label on it, it says: 'To Meltwater Region'"

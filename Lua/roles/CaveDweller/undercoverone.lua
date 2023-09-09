@@ -64,6 +64,9 @@ function role:ObjectivesToString()
             objs:append(" > ", objective.Text, string.format(Traitormod.Language.Points, objective.AmountPoints))
         end
     end
+    if #objs == 0 then
+        objs(Traitormod.Language.NoObjectivesYet)
+    end
 
     return objs:concat("\n")
 end
