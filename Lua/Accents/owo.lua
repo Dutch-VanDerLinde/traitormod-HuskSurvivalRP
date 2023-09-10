@@ -9,7 +9,7 @@ Traitormod.Accents.OwO = function (message)
     end
 
     local faces = {
-        " (・`ω´・)", " ;;w;;", " owo", " UwU", " >w<", " ^w^"
+        " (・`ω´・)", " ;;w;;", " owo", " UwU", " >w<", " ^w^", " :3", " X3", " TwT"
     }
 
     message = message:gsub("!", faces[math.random(#faces)])
