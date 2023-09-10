@@ -694,15 +694,15 @@ end)
 Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
     if not sender.HasPermission(ClientPermissions.Kick) then return end
 
-    local flag = false
     local adminmsg = ""
     local targetClient = nil
     if #args > 1 then
-        local name = table.remove(args, 1)
+        targetClient = table.remove(args, 1)
         -- find character by client name
         for player in Client.ClientList do
-            if player.Name == name or player.SteamID == name then
+            if player.Name == targetClient or player.SteamID == targetClient then
                 targetClient = player
+                break
             end
         end
 
@@ -710,13 +710,7 @@ Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
         for word in args do
             adminmsg = adminmsg .. " " .. word
         end
-    elseif targetClient then
-        Game.SendDirectChatMessage("", "You didn't enter a message.", nil, ChatMessageType.Error, client)
     else
-        Game.SendDirectChatMessage("", "Client " .. Traitormod.ClientLogName(targetClient) .. " not found. Enter their steam ID or name.", nil, ChatMessageType.Error, client)
-    end
-
-    if flag then
         return true
     end
 
