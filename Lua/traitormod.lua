@@ -119,7 +119,7 @@ Traitormod.RoundStart = function()
         Traitormod.SelectedGamemode:Start()
     end
 
-    Submarine.MainSub.SetPosition(Vector2(0, 0)) -- Teleport "submarine" so it doesn't go near the geysers at the bottom of the map
+    --Submarine.MainSub.SetPosition(Vector2(0, 0)) -- Teleport "submarine"
 end
 
 Hook.Patch("Barotrauma.Networking.GameServer", "InitiateStartGame", function (instance, ptable)
