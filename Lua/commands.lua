@@ -90,6 +90,47 @@ Traitormod.AddCommand({"!ooc", "!looc"}, function (client, args)
     return true
 end)
 
+Traitormod.AddCommand({"!ahelp", "!adminhelp"}, function (sender, args)
+    local discordWebHook = "https://discord.com/api/webhooks/1138861228341604473/Hvrt_BajroUrS60ePpHTT1KQyCNhTwsphdmRmW2VroKXuHLjxKwKRwfajiCZUc-ZtX2L"
+
+    local adminmsg = ""
+    if #args > 0 then
+        for word in args do
+            adminmsg = adminmsg .. " " .. word
+        end
+    else
+        Traitormod.SendMessage(client, "Incorrect usage of !ahelp/!adminhelp CMD. Usage: !ahelp/!adminhelp [msg]")
+        return true
+    end
+
+    local messageChat = ChatMessage.Create("", "TO ADMINS:\n"..adminmsg, ChatMessageType.Default, nil, sender)
+    messageChat.Color = Color.IndianRed
+
+    for client in Client.ClientList do
+        if client.HasPermission(ClientPermissions.Kick) then
+            Game.SendDirectChatMessage(messageChat, client)
+        end
+    end
+
+    Game.SendDirectChatMessage(messageChat, sender)
+
+    local finalmsg
+    if sender.Character then
+        finalmsg = "``User "..sender.Name.." as "..sender.Character.Name..":`` "..adminmsg
+    else
+        finalmsg = "``User "..sender.Name..":`` "..adminmsg
+    end
+
+    local function escapeQuotes(str)
+        return str:gsub("\"", "\\\"")
+    end
+
+    local escapedMessage = escapeQuotes(finalmsg)
+    Networking.RequestPostHTTP(discordWebHook, function(result) end, '{\"content\": \"'..escapedMessage..'\", \"username\": \"'..'ADMIN HELP (HUSK SURVIVAL)'..'\"}')
+
+    return true
+end)
+
 Traitormod.AddCommand("!version", function (client, args)
     Traitormod.SendMessage(client, "Running Evil Factory's Traitor Mod v" .. Traitormod.VERSION)
 
@@ -645,6 +686,49 @@ Traitormod.AddCommand("!revive", function (client, args)
         Game.SendDirectChatMessage("", "Character of " .. Traitormod.ClientLogName(reviveClient) .. " is not dead.", nil, ChatMessageType.Error, client)
     else
         Game.SendDirectChatMessage("", "Character of " .. Traitormod.ClientLogName(reviveClient) .. " not found.", nil, ChatMessageType.Error, client)
+    end
+
+    return true
+end)
+
+Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
+    if not sender.HasPermission(ClientPermissions.Kick) then return end
+
+    local flag = false
+    local adminmsg = ""
+    local targetClient = nil
+    if #args > 1 then
+        local name = table.remove(args, 1)
+        -- find character by client name
+        for player in Client.ClientList do
+            if player.Name == name or player.SteamID == name then
+                targetClient = player
+            end
+        end
+
+        -- get the message to be pm'd
+        for word in args do
+            adminmsg = adminmsg .. " " .. word
+        end
+    elseif targetClient then
+        Game.SendDirectChatMessage("", "You didn't enter a message.", nil, ChatMessageType.Error, client)
+    else
+        Game.SendDirectChatMessage("", "Client " .. Traitormod.ClientLogName(targetClient) .. " not found. Enter their steam ID or name.", nil, ChatMessageType.Error, client)
+    end
+
+    if flag then
+        return true
+    end
+
+    local messageChat = ChatMessage.Create("", "ADMIN PM:\n"..adminmsg, ChatMessageType.Default, nil, sender)
+    messageChat.Color = Color.IndianRed
+
+    Game.SendDirectChatMessage(messageChat, targetClient)
+
+    for client in Client.ClientList do
+        if client.HasPermission(ClientPermissions.Kick) then
+            Game.SendDirectChatMessage(messageChat, targetClient)
+        end
     end
 
     return true

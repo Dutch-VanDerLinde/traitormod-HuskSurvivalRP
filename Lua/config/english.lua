@@ -11,9 +11,9 @@ language.Tips = {
     "Ghost roles might become available when you are dead, you can use !ghostrole to claim them.",
     "You can use !deathspawn to respawn as a creature.",
     "Dying in the first 200 seconds as a bought creature refunds the price of it fully.",
-    "Have an OOC dispute you want to deal with? Use !ooc to send a message to the OOC chat!",
+    "Use !ooc command to talk about out of character matters.",
     "The round will automatically end once all humans die.",
-    "If your original character died, do not worry! You can still be cloned at the institute. Better hope that someone brings you there..",
+    "If your original character died, do not worry! You can still be cloned at the institute. Better hope that someone brings you there, though..",
 }
 
 language.Help = "\n!help - shows this help message\n!helpadmin - lists all admin commands\n!role - show role info\n!deathspawn - opens the deathspawn shop\n!money - show your money and lives\n!alive - list alive players (only while dead)\n!suicide - kills your character\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!playtime - shows how long you've played on the server\n!roundtime - shows the current round time\n!ooc [message] - sends a message to ooc chat"

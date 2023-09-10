@@ -13,16 +13,20 @@
         else
             finalmsg = "``User "..sender.Name..":`` "..adminmsg
         end
+
         local escapedMessage = escapeQuotes(finalmsg)
         Networking.RequestPostHTTP(discordWebHook, function(result) end, '{\"content\": \"'..escapedMessage..'\", \"username\": \"'..'ADMIN HELP (HUSK SURVIVAL)'..'\"}')
+
+        local messageChat = ChatMessage.Create("", "TO ADMINS:\n"..adminmsg, ChatMessageType.Default, nil, sender)
+        messageChat.Color = Color.IndianRed
+
         for key, client in pairs(Client.ClientList) do
             if client.HasPermission(ClientPermissions.Kick) then
-                local messageChat = ChatMessage.Create("", "TO ADMINS:\n"..adminmsg, ChatMessageType.Default, nil, sender)
-                messageChat.Color = Color.IndianRed
                 Game.SendDirectChatMessage(messageChat, client)
-                Game.SendDirectChatMessage(messageChat, sender)
             end
         end
+
+        Game.SendDirectChatMessage(messageChat, sender)
     end)
 
     local function UpdatePlayerList(client, joinedleft)

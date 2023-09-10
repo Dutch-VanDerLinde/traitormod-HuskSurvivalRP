@@ -44,6 +44,7 @@ function gm:Start()
     end)
 
     local possiblespecialweaponholder = {"autoshotgun","assaultrifle","arcemitter"}
+    local randomweaponholder = possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)]
 
     local loottable = {
         --Uses binomial distribution (p is %, n is tries)
@@ -139,7 +140,7 @@ function gm:Start()
             {"empgrenade ", 1, 1, math.random(1, 2)},
         },
         specialweaponholder = {
-            {possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)], 1, 1, 1},
+            {randomweaponholder, 1, 1, 1},
         },
         firstaidcab = {
             {"scp_painkillers ", 1, 1, math.random(1, 2)},
