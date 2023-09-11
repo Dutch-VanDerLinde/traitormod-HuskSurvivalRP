@@ -790,9 +790,12 @@ end
 Traitormod.DoJobSet = function(character)
     if character.HasJob("cavedweller") then
         Entity.Spawner.AddEntityToRemoveQueue(character.Inventory.GetItemInLimbSlot(InvSlotType.Head))
-        local possibleHats = { "bluebeanie", "oldseadoghat", "sgt_fieldcap", }
-        local possibleCoats = { "cavejacketbrown", "cavejacketbrown", "cavejacketbrown", "cavejacketblack",
-            "cavejacketblack", "armoredivingmask" }
+        local possibleHats = {"bluebeanie", "oldseadoghat", "sgt_fieldcap", "sgt_cowboy"}
+        local possibleCoats = {
+           "cavejacketbrown", "cavejacketbrown", "cavejacketbrown",
+           "cavejacketblack", "cavejacketblack",
+           "armoredivingmask",
+        }
         local possibleBags = { -- Multiple of the same item to increase commonness
             "toolbelt",
             "toolbelt",
