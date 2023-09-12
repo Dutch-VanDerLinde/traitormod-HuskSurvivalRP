@@ -714,16 +714,29 @@ Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
         return true
     end
 
-    local messageChat = ChatMessage.Create("", "ADMIN PM:\n"..adminmsg, ChatMessageType.Default, nil, sender)
+    local finalmsg = adminmsg.."\n\nTo respond, type use the admin help button or the command !adminhelp."
+    local messageChat = ChatMessage.Create("", "ADMIN PM:\n"..finalmsg, ChatMessageType.Default, nil, sender)
     messageChat.Color = Color.IndianRed
 
     Game.SendDirectChatMessage(messageChat, targetClient)
 
     for client in Client.ClientList do
         if client.HasPermission(ClientPermissions.Kick) then
-            Game.SendDirectChatMessage(messageChat, targetClient)
+            Game.SendDirectChatMessage(messageChat, client)
         end
     end
+
+    print(sender.Name)
+    print(targetClient.Name)
+    local discordWebHook = "https://discord.com/api/webhooks/1138861228341604473/Hvrt_BajroUrS60ePpHTT1KQyCNhTwsphdmRmW2VroKXuHLjxKwKRwfajiCZUc-ZtX2L"
+    local hookmsg = string.format("``Admin %s`` to ``User %s:`` %s", sender.Name, targetClient.Name, adminmsg)
+
+    local function escapeQuotes(str)
+        return str:gsub("\"", "\\\"")
+    end
+
+    local escapedMessage = escapeQuotes(hookmsg)
+    Networking.RequestPostHTTP(discordWebHook, function(result) end, '{\"content\": \"'..escapedMessage..'\", \"username\": \"'..'ADMIN HELP (HUSK SURVIVAL)'..'\"}')
 
     return true
 end)

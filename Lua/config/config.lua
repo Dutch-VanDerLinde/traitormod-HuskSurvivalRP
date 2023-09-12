@@ -44,7 +44,7 @@ config.EnableRPChat = true -- removes phrases like "lol" and "afk"
 -- This overrides the game's respawn shuttle, and uses it as a submarine injector, to spawn submarines in game easily. Respawn should still work as expected, but the shuttle submarine file needs to be manually added here.
 -- Note: If this is disabled, traitormod will disable all functions related to submarine spawning.
 -- Warning: Only respawn shuttles will be used, the option to spawn people directly into the submarine doesnt work.
-config.OverrideRespawnSubmarine = true
+config.OverrideRespawnSubmarine = false
 config.RespawnSubmarineFile = "Content/Submarines/Selkie.sub"
 config.RespawnText = "Respawn in %s seconds."
 config.RespawnTeam = CharacterTeamType.Team1
@@ -234,21 +234,21 @@ config.ObjectiveConfig = {
 ----- EVENTS -----
 config.RandomEventConfig = {
     Events = {
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/communicationsoffline.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/communicationsoffline.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
         --dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),
         --dofile(Traitormod.Path .. "/Lua/config/randomevents/ammodelivery.lua"),
         --dofile(Traitormod.Path .. "/Lua/config/randomevents/hiddenpirate.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/electricalfixdischarge.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/wreckpirate.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/beaconpirate.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/lightsoff.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/shadymission.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/oxygengenpoison.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/oxygengenhusk.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/randomlights.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/randomevents/clownmagic.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/wreckpirate.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/beaconpirate.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/lightsoff.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/shadymission.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/oxygengenpoison.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/oxygengenhusk.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/randomlights.lua"),
+        --dofile(Traitormod.Path .. "/Lua/config/randomevents/clownmagic.lua"),
     }
 }
 

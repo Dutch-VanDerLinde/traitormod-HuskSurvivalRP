@@ -427,7 +427,6 @@ Traitormod.GhostRoles = dofile(Traitormod.Path .. "/Lua/ghostroles.lua")
 dofile(Traitormod.Path .. "/Lua/playtime.lua")
 dofile(Traitormod.Path .. "/Lua/commands.lua")
 dofile(Traitormod.Path .. "/Lua/statistics.lua")
-dofile(Traitormod.Path .. "/Lua/respawnshuttle.lua")
 dofile(Traitormod.Path .. "/Lua/traitormodmisc.lua")
 
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/gamemode.lua"))

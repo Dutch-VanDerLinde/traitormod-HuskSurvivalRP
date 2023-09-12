@@ -2,7 +2,6 @@ local objective = Traitormod.RoleManager.Objectives.Objective:new()
 
 objective.Name = "Kidnap"
 objective.AmountPoints = 2500
-objective.InstitutePosition = Traitormod.GetRandomJobWaypoint("DeliverySpawnTci").WorldPosition
 objective.RoleFilter = {
     ["citizen"] = true,
     ["medicaldoctor"] = true,
@@ -19,6 +18,7 @@ function objective:Start(target)
 
     self.TargetName = Traitormod.GetJobString(target) .. " " .. target.Name
     self.Text = string.format(Traitormod.Language.ObjectiveKidnap, self.TargetName)
+    self.InstitutePosition = Traitormod.GetRandomJobWaypoint("DeliverySpawnTci").WorldPosition
 
 
     return true
