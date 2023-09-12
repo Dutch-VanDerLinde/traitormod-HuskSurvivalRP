@@ -699,9 +699,9 @@ Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
     if #args > 1 then
         targetClient = table.remove(args, 1)
         -- find character by client name
-        for player in Client.ClientList do
-            if player.Name == targetClient or player.SteamID == targetClient then
-                targetClient = player
+        for client in Client.ClientList do
+            if client.Name == targetClient or client.SteamID == targetClient then
+                targetClient = client
                 break
             end
         end
@@ -711,6 +711,11 @@ Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
             adminmsg = adminmsg .. " " .. word
         end
     else
+        return true
+    end
+
+    if targetClient == nil then
+        Traitormod.SendMessage(sender, "That player does not exist.")
         return true
     end
 
@@ -726,8 +731,6 @@ Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
         end
     end
 
-    print(sender.Name)
-    print(targetClient.Name)
     local discordWebHook = "https://discord.com/api/webhooks/1138861228341604473/Hvrt_BajroUrS60ePpHTT1KQyCNhTwsphdmRmW2VroKXuHLjxKwKRwfajiCZUc-ZtX2L"
     local hookmsg = string.format("``Admin %s`` to ``User %s:`` %s", sender.Name, targetClient.Name, adminmsg)
 
