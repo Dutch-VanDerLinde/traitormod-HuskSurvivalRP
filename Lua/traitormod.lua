@@ -472,7 +472,6 @@ Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/c
 
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/role.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/antagonist.lua"))
-Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/traitor.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/husk.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/miner.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/technician.lua"))

@@ -61,10 +61,6 @@ function role:Start()
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
     end)
-    -- Gear spawn
-    for key, item in pairs(self.RoleGear) do
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
-    end
 
     --Give id card tags
     local ogidcard = self.Character.Inventory.FindItemByIdentifier("idcard", true)
@@ -83,6 +79,11 @@ function role:Start()
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Card)
         self.Character.Inventory.TryPutItem(id, slot, true, false, self.Character)
     end)
+
+    -- Gear spawn
+    for key, item in pairs(self.RoleGear) do
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
+    end
 end
 
 
