@@ -458,7 +458,9 @@ Traitormod.SendTip = function()
     local tip = Traitormod.Language.Tips[math.random(1, #Traitormod.Language.Tips)]
 
     for index, value in pairs(Client.ClientList) do
-        Traitormod.SendChatMessage(value, Traitormod.Language.TipText .. tip, Color.Orange)
+        if value.Character == nil or value.Character.IsDead then
+            Traitormod.SendChatMessage(value, Traitormod.Language.TipText .. tip, Color.Orange)
+        end
     end
 end
 
