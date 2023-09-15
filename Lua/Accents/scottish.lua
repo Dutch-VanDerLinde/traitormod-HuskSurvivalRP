@@ -4,6 +4,7 @@ Traitormod.Accents.scottishaffliction = {
     ["boy"] = "laddie",
     ["man"] = "lad",
     ["woman"] = "lass",
+    ["friend"] = "mate",
     ["do"] = "dae",
     ["don't"] = "dinnae",
     ["dont"] = "dinnae",
