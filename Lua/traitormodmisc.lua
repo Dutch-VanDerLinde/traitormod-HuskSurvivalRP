@@ -354,55 +354,49 @@ Traitormod.Laugh = function(character)
 end
 
 Traitormod.FlaggedRP_Phrases = {
-    ["brb"] = "be right back",
-    ["afk"] = "",
-    ["ez"] = "easy",
-    ["Ez"] = "easy",
+    ["omg"] = "oh my god",
+    ["omfg"] = "oh my fucking god",
+    ["ong"] = "on god",
     ["wtf"] = "what the fuck",
-    ["Wtf"] = "what the fuck",
-    ["wtF"] = "what the FUCK",
+    ["gtfo"] = "get the fuck out",
+    ["ffs"] = "for fuck's sake",
+    ["stfu"] = "shut the fuck up",
+    ["tf"] = "the fuck",
+    ["afaik"] = "as far as i know",
+    ["ik"] = "i know",
+    ["ikr"] = "i know, right",
+    ["idc"] = "i don't care",
+    ["tbh"] = "to be honest",
+    ["u"] = "you",
+    ["ur"] = "your",
+    ["mk"] = "mmm, okay",
+    ["iirc"] = "if i remember correctly",
+    ["np"] = "no problem",
+    ["omw"] = "on my way",
+    ["nvm"] = "nevermind",
+    ["imo"] = "in my opinion",
+    ["pls"] = "please",
+    ["plz"] = "please",
+    ["plox"] = "please",
+    ["fr"] = "for real",
+    ["brb"] = "be right back",
+    ["btw"] = "by the way",
+    ["jk"] = "just kidding",
     ["thx"] = "thanks",
     ["ty"] = "thank you",
+    ["afk"] = "",
     ["i"] = "I",
     --Laughs
     ["lmao"] = { Traitormod.Laugh, "*laughs*" },
-    ["LMAO"] = { Traitormod.Laugh, "*laughs*" },
-    ["Lmao"] = { Traitormod.Laugh, "*laughs*" },
     ["lol"] = { Traitormod.Laugh, "*laughs*" },
     ["lo"] = { Traitormod.Laugh, "*laughs*" },
-    ["LOL"] = { Traitormod.Laugh, "*laughs*" },
     ["xd"] = { Traitormod.Laugh, "*laughs*" },
-    ["xD"] = { Traitormod.Laugh, "*laughs*" },
-    ["XD"] = { Traitormod.Laugh, "*laughs*" },
     ["*laughs"] = { Traitormod.Laugh, "*laughs*" },
     ["laughs"] = { Traitormod.Laugh, "*laughs*" },
     ["*laughs*"] = { Traitormod.Laugh, "*laughs*" },
     --1984
-    ["1987"] = "1983",
-    ["1984"] = "1984",
-    ["sex"] = "1984",
     ["admins"] = "gods",
-    ["rdm"] = "",
 }
--- Create a new table for uppercase variants
-local uppercaseReplacements = {}
-for word, replacement in pairs(Traitormod.FlaggedRP_Phrases) do
-    if type(replacement) == "string" then
-        if replacement == "" then
-            uppercaseReplacements[word:upper()] = ""
-        else
-            uppercaseReplacements[word:upper()] = replacement:upper()
-            -- first letter capital
-            local firstcapital = string.upper(word:sub(1, 1)) .. word:sub(2, #word)
-            uppercaseReplacements[firstcapital] = replacement
-        end
-    end
-end
-
--- Merge the two tables
-for word, replacement in pairs(uppercaseReplacements) do
-    Traitormod.FlaggedRP_Phrases[word] = replacement
-end
 
 -- To prevent people from using non-realistic phrases, it also auto capitalizes the first letter of the sentence
 Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(instance, ptable)
@@ -418,15 +412,7 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
 
     if character and not character.IsDead and not character.IsHusk then
         -- Original = flagged phrase, such as "wtf" | replacement = the word to replace it, such as "what the fuck"
-        for original, replacement in pairs(Traitormod.FlaggedRP_Phrases) do
-            if type(replacement) == "table" and message:find("%f[%a]" .. original .. "%f[%A]") then
-                local func = replacement[1]
-                func(character)
-                replacement = replacement[2]
-            end
-
-            message = string.gsub(message, "%f[%a]" .. original .. "%f[%A]", replacement)
-        end
+        message = Traitormod.Accents.replaceWords(message, Traitormod.FlaggedRP_Phrases, character)
 
         -- Loop through all afflictions, if you have one that matches an accent table, then replace the words.
         local afflictionlist = character.CharacterHealth.GetAllAfflictions()
@@ -436,7 +422,7 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
             if not prefab.LimbSpecific then
                 local accenttable = Traitormod.Accents[identifier]
                 if accenttable then -- if found an accent, then replace the words of the message
-                    message = Traitormod.Accents.replaceWords(message, accenttable)
+                    message = Traitormod.Accents.replaceWords(message, accenttable, character)
                     break
                 end
             end

@@ -174,24 +174,29 @@ Traitormod.Accents.archaicaffliction = {
     ["after that"] = "thereafter",
 }
 
--- Create a new table for uppercase variants
-local uppercaseReplacements = {}
-for word, replacement in pairs(Traitormod.Accents.archaicaffliction) do
-    uppercaseReplacements[word:upper()] = replacement:upper()
-    -- first letter capital
-    local firstcapital = string.upper(word:sub(1, 1)) .. word:sub(2, #word)
-    uppercaseReplacements[firstcapital] = replacement
-end
+Traitormod.Accents.replaceWords = function(input, replacements, speaker)
+    local result = {}
+    local start = 1
 
--- Merge the two tables
-for word, replacement in pairs(uppercaseReplacements) do
-    Traitormod.Accents.archaicaffliction[word] = replacement
-end
+    for i = 1, #input do
+        local word, punctuation = input:match("([^%s%p]*)([%s%p]*)(.*)", start)
 
-Traitormod.Accents.replaceWords = function(input, replacements)
-    for original, replacement in pairs(replacements) do
-        input = string.gsub(input, "%f[%a]" .. original .. "%f[%A]", replacement)
+        if word then
+            local replacement = replacements[word:lower()] or word
+
+            if type(replacement) ~= "string" then
+                local ReplaceFunc = replacement[1]
+                ReplaceFunc(speaker)
+                replacement = replacement[2]
+            end
+
+            table.insert(result, replacement .. punctuation)
+        else
+            break
+        end
+
+        start = start + #word + #punctuation
     end
 
-    return input
+    return table.concat(result)
 end
