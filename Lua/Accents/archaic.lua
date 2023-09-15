@@ -189,11 +189,11 @@ Traitormod.Accents.replaceWords = function(input, replacements, speaker)
                 local ReplaceFunc = replacement[1]
                 ReplaceFunc(speaker)
                 replacement = replacement[2]
-            elseif word:upper() == word then
+            elseif word == word:upper() then
                 replacement = replacement:upper()
             end
 
-            table.insert(result, replacement .. punctuation)
+            table.insert(result, replacement..punctuation)
         else
             break
         end
