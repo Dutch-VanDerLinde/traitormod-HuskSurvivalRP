@@ -387,13 +387,14 @@ Traitormod.FlaggedRP_Phrases = {
     ["afk"] = "",
     ["i"] = "I",
     --Laughs
-    ["lmao"] = { Traitormod.Laugh, "*laughs*" },
-    ["lol"] = { Traitormod.Laugh, "*laughs*" },
-    ["lo"] = { Traitormod.Laugh, "*laughs*" },
-    ["xd"] = { Traitormod.Laugh, "*laughs*" },
-    ["*laughs"] = { Traitormod.Laugh, "*laughs*" },
-    ["laughs"] = { Traitormod.Laugh, "*laughs*" },
-    ["*laughs*"] = { Traitormod.Laugh, "*laughs*" },
+    ["lmao"] = { Traitormod.Laugh, "laughs" },
+    ["lol"] = { Traitormod.Laugh, "laughs" },
+    ["lo"] = { Traitormod.Laugh, "laughs" },
+    ["xd"] = { Traitormod.Laugh, "laughs" },
+    ["rofl"] = { Traitormod.Laugh, "laughs" },
+    ["*laughs"] = { Traitormod.Laugh, "laughs" },
+    ["laughs"] = { Traitormod.Laugh, "laughs" },
+    ["*laughs*"] = { Traitormod.Laugh, "laughs" },
     --1984
     ["admins"] = "gods",
 }
@@ -456,3 +457,4 @@ Traitormod.Accents = {}
 dofile(Traitormod.Path .. "/Lua/Accents/owo.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/misc.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/archaic.lua")
+dofile(Traitormod.Path .. "/Lua/Accents/scottish.lua")

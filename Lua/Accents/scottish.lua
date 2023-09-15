@@ -1,5 +1,5 @@
 -- Credit to SS14 accent file
-Traitormod.Accents.accent_scottish = {
+Traitormod.Accents.scottishaffliction = {
     ["girl"] = "lassie",
     ["boy"] = "laddie",
     ["man"] = "lad",
@@ -67,6 +67,7 @@ Traitormod.Accents.accent_scottish = {
     ["food"] = "grub",
     ["hey"] = "oye",
     ["what"] = "wot",
+    ["whats"] = "wot's",
     ["when"] = "wen",
     ["myself"] = "mesel",
     ["himself"] = "hesel",
@@ -75,7 +76,6 @@ Traitormod.Accents.accent_scottish = {
     ["moving"] = "moeven",
     ["wasn't"] = "wis'nae",
     ["wasnt"] = "wisnae",
-    ["wizard"] = "wizer",
     ["fool"] = "wazzok",
     ["for"] = "fer",
     ["about"] = "abut",

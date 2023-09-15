@@ -164,6 +164,7 @@ Traitormod.Accents.archaicaffliction = {
     ["have"] = "hath",
     ["yours"] = "thine",
     ["you"] = "thou",
+    ["ya"] = "thou",
     ["consider"] = "deem",
     ["so far"] = "as of this date",
     ["shall"] = "shalt",
@@ -188,6 +189,8 @@ Traitormod.Accents.replaceWords = function(input, replacements, speaker)
                 local ReplaceFunc = replacement[1]
                 ReplaceFunc(speaker)
                 replacement = replacement[2]
+            elseif word:upper() == word then
+                replacement = replacement:upper()
             end
 
             table.insert(result, replacement .. punctuation)
