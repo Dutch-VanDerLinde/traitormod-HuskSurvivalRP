@@ -458,3 +458,10 @@ dofile(Traitormod.Path .. "/Lua/Accents/owo.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/misc.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/archaic.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/scottish.lua")
+
+
+
+-- monster loot spawns
+Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
+    
+end)
