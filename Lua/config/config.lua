@@ -266,11 +266,17 @@ config.PointShopConfig = {
 config.GhostRoleConfig = {
     Enabled = true,
     MiscGhostRoles = {
-        ["Watcher"] = true,
+        ["humanhuskold"] = true,
+        ["Huskold"] = true,
+        ["Huskabyssold"] = true,
+        ["Huskcombatold"] = true,
+        ["Huskslipold"] = true,
+        ["Huskpucsold"] = true,
+        ["Mudraptorhusk"] = true,
+        ["Crawlerhusk"] = true,
+        ["Mantishusk"] = true,
+        ["Defensebot"] = true,
         ["Mudraptor_pet"] = true,
-        ["Fractalguardian"] = true,
-        ["Fractalguardian2"] = true,
-        ["Fractalguardian3"] = true,
     }
 }
 
