@@ -184,8 +184,6 @@ Traitormod.Accents.replaceWords = function(input, replacements, speaker)
 
         for phrase, replacement in pairs(replacements) do
             local phraseStart, phraseEnd = input:find("%f[%a]"..phrase.."%f[%A]", start)
-            print(phraseStart)
-            print(phraseEnd)
             if phraseStart == start then
                 if type(replacement) ~= "string" then
                     local ReplaceFunc = replacement[1]
