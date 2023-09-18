@@ -182,6 +182,11 @@ Traitormod.Accents.replaceWords = function(input, replacements, speaker)
         for phrase, replacement in pairs(replacements) do
             local phraseStart, phraseEnd = input:find("%f[%a]"..phrase.."%f[%A]", start)
 
+            if not phraseStart then
+                -- If not found, try the uppercase version
+                phraseStart, phraseEnd = input:find("%f[%a]" .. phrase:upper() .. "%f[%A]", start)
+            end
+
             if phraseStart == start then
                 local originalPhrase = input:sub(phraseStart, phraseEnd)
 
