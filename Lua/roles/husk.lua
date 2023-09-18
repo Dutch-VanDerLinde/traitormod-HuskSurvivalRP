@@ -15,12 +15,7 @@ end
 function role:Greet()
     local sb = Traitormod.StringBuilder:new()
     sb(Traitormod.Language.HuskServantYou)
-
-    sb("\n\n")
-
-    if self.TraitorBroadcast then
-        sb("\n\n%s", Traitormod.Language.HuskServantTcTip)
-    end
+    sb("\n\n%s", Traitormod.Language.HuskServantTcTip)
 
     return sb:concat()
 end

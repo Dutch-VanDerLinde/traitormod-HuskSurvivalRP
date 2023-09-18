@@ -73,10 +73,9 @@ language.HonkMotherYou = "You are a Honkmother Clown!"
 language.HonkMotherOther = "Honkmother Clown %s."
 language.CultistYou = "You are a Husk Cultist!\nHumans that you manage to turn into a husk will be in your side and may help you."
 language.CultistOther = "Cultist %s."
-language.HuskServantYou = "You are now a Husk!\nWork together with your hive to infect all other lifeforms. Use !hc or !huskchat to communicate with your hive.\n\nReminder: If you drop items or are friendly to humans, you will be set to spectator."
+language.HuskServantYou = "You are now a Husk!\nWork together with your hive to infect all other lifeforms."
 language.HuskServantOther = "Husk %s."
-language.HuskFellows = "Fellow Husks: %s\n"
-language.HuskServantTcTip = "You cannot speak, but you can use !hc or !huskchat to communicate with your hive."
+language.HuskServantTcTip = "You can communicate with your hive by typing in chat.\n\nReminder: If you drop items or are friendly to humans, you will be set to spectator."
 
 language.AgentNoticeCodewords = "There are other agents on this submarine. You dont know their names, but you do have a method of communication. Use the code words to greet the agent and code response to respond. Disguise such words in a normal-looking phrase so the crew doesn't suspect anything."
 
