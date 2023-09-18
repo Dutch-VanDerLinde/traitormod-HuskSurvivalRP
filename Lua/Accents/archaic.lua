@@ -180,25 +180,47 @@ Traitormod.Accents.replaceWords = function(input, replacements, speaker)
     local start = 1
 
     for i = 1, #input do
-        local word, punctuation = input:match("([^%s%p]*)([%s%p]*)(.*)", start)
+        local foundPhrase = false
 
-        if word then
-            local replacement = replacements[word:lower()] or word
+        for phrase, replacement in pairs(replacements) do
+            local phraseStart, phraseEnd = input:find(phrase, start)
+            if phraseStart == start then
+                if type(replacement) ~= "string" then
+                    local ReplaceFunc = replacement[1]
+                    ReplaceFunc(speaker)
+                    replacement = replacement[2]
+                elseif phrase == phrase:upper() then
+                    replacement = replacement:upper()
+                end
 
-            if type(replacement) ~= "string" then
-                local ReplaceFunc = replacement[1]
-                ReplaceFunc(speaker)
-                replacement = replacement[2]
-            elseif word == word:upper() then
-                replacement = replacement:upper()
+                table.insert(result, replacement)
+                start = phraseEnd + 1
+                foundPhrase = true
+                break
             end
-
-            table.insert(result, replacement..punctuation)
-        else
-            break
         end
 
-        start = start + #word + #punctuation
+        if not foundPhrase then
+            local pattern = "([^%s%.%?%!%;:/\\'%+_=%[%] }{ |\\~`!@#%^&*()%-]*['%w]*)([%s%.%?%!%;:/\\'%+_=%[%] }{ |\\~`!@#%^&*()%-]*)(.*)"
+            local word, punctuation = input:match(pattern, start)
+
+            if word then
+                local replacement = replacements[word:lower()] or word
+
+                if type(replacement) ~= "string" then
+                    local ReplaceFunc = replacement[1]
+                    ReplaceFunc(speaker)
+                    replacement = replacement[2]
+                elseif word == word:upper() then
+                    replacement = replacement:upper()
+                end
+
+                table.insert(result, replacement .. punctuation)
+                start = start + #word + #punctuation
+            else
+                break
+            end
+        end
     end
 
     return table.concat(result)
