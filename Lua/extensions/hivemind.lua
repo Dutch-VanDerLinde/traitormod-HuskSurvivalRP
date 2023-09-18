@@ -10,7 +10,7 @@ extension.Init = function ()
             for _, loopclient in pairs(Client.ClientList) do
                 if (not loopclient.Character or loopclient.Character.IsDead) or not loopclient.Character.IsHuman then
                     local formatedname = string.format(Traitormod.Language.CMDHuskChat, client.Name, client.Character.Name)
-                    local chatMessage = ChatMessage.Create(formatedname, message, ChatMessageType.Default)
+                    local chatMessage = ChatMessage.Create(formatedname, message, ChatMessageType.Default, character, client)
                     chatMessage.Color = Color(60,107,195,255)
                     Game.SendDirectChatMessage(chatMessage, loopclient)
                 end
