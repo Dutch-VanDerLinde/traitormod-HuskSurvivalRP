@@ -385,7 +385,6 @@ Traitormod.FlaggedRP_Phrases = {
     ["thx"] = "thanks",
     ["ty"] = "thank you",
     ["afk"] = "",
-    ["i"] = "I",
     ["lmk"] = "let me know",
     --Laughs
     ["lmao"] = { Traitormod.Laugh, "laughs" },
@@ -445,8 +444,10 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
             message = Traitormod.Accents.stutter(message)
         end
 
-        local uppercaseletter = string.upper(message:sub(1, 1))
+        -- capitalize the first letter and "I"
+        local uppercaseletter = message:sub(1, 1):upper()
         message = uppercaseletter .. message:sub(2, #message)
+        message = Traitormod.Accents.capitalizeLetterI(message)
     end
 
     ptable["message"] = message

@@ -127,7 +127,7 @@ Traitormod.Accents.archaicaffliction = {
     ["can"] = "may",
     ["why"] = "for what reason",
     ["hey"] = "pardon me",
-    ["you suck"] = "thou are foul",
+    ["you suck"] = "thou art foul",
     ["soda"] = "drink",
     ["how"] = "in what way",
     ["want"] = "wish for",
@@ -141,6 +141,7 @@ Traitormod.Accents.archaicaffliction = {
     ["desolate"] = "forlorn",
     ["before"] = "ere",
     ["ruin"] = "defile",
+    ["guy"] = "man",
     ["coward"] = "craven",
     ["probably"] = "belike",
     ["burden"] = "fardel",
@@ -187,6 +188,11 @@ Traitormod.Accents.replaceWords = function(input, replacements, speaker)
                 phraseStart, phraseEnd = input:find("%f[%a]" .. phrase:upper() .. "%f[%A]", start)
             end
 
+            if not phraseStart then
+                -- If still not found, try a case-insensitive search
+                phraseStart, phraseEnd = input:lower():find("%f[%a]" .. phrase .. "%f[%A]", start)
+            end
+
             if phraseStart == start then
                 local originalPhrase = input:sub(phraseStart, phraseEnd)
 
@@ -229,4 +235,21 @@ Traitormod.Accents.replaceWords = function(input, replacements, speaker)
     end
 
     return table.concat(result)
+end
+
+Traitormod.Accents.capitalizeLetterI = function(inputString)
+    -- Split the input string into words
+    local words = {}
+    for word in inputString:gmatch("%S+") do
+        table.insert(words, word)
+    end
+
+    for i, word in ipairs(words) do
+        if word:lower() == "i" then
+            words[i] = "I"
+        end
+    end
+
+    local resultString = table.concat(words, " ")
+    return resultString
 end
