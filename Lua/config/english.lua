@@ -51,7 +51,7 @@ language.SecondaryObjectivesOther = "Their secondary objectives were:"
 language.BasicObjectivesYou = "Your objectives are:"
 language.BasicObjectivesOther = "Their objectives were:"
 
-language.CaveDwellerBanditYou = "You are a cave dweller bandit!\n\nYour job is to loot structure, and people. You are hostile to everyone except for your partners!"
+language.CaveDwellerBanditYou = "You are a cave dweller bandit!\n\nYour job is to loot structures and people. You are hostile to everyone except for your partners!"
 language.BanditOther = "Bandit %s."
 language.SoloBandit = "You are the only bandit."
 language.BanditNoticePartners = "Find your partners for a higher chance of survival."
