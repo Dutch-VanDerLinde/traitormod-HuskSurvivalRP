@@ -13,6 +13,7 @@ config.Extensions = {
     dofile(Traitormod.Path .. "/Lua/extensions/playerui.lua"),
     dofile(Traitormod.Path .. "/Lua/extensions/bypassplayercount.lua"),
     dofile(Traitormod.Path .. "/Lua/extensions/hivemind.lua"),
+    dofile(Traitormod.Path .. "/Lua/extensions/idcardprinter.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/weaponnerfs.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/paralysisnerf.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/pressuremidjoin.lua"),

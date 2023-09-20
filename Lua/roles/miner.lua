@@ -70,7 +70,7 @@ function role:Start()
         id.AddTag("job:citizen")
         id.AddTag("miner")
         id.AddTag("azoe")
-        id.Description = "They are an Azoe Linea miner."
+        id.Description = "Mine access."
         local IdCardComponent = id.GetComponentString("IdCard")
         IdCardComponent.OwnerJobId = "citizen"
         IdCardComponent.OwnerName = self.Character.Name
