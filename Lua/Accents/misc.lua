@@ -113,7 +113,7 @@ Traitormod.Accents.brainbleed = function(input, value)
         value = 100
     end
 
-    if value > 85 then
+    if value > 80 then
         -- Replace with a random phrase
         local randomPhrases = {
             "About...time...",
