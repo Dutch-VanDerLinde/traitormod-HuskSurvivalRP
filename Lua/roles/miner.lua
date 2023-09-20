@@ -63,11 +63,11 @@ function role:Start()
     end)
 
     --Give id card tags
-    local ogidcard = self.Character.Inventory.FindItemByIdentifier("idcard", true)
+    local ogidcard = self.Character.Inventory.FindItemByIdentifier("azoe_idcard", true)
     Entity.Spawner.AddEntityToRemoveQueue(ogidcard)
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("idcard"), self.Character.Inventory, nil, nil, function (id)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("azoe_idcard"), self.Character.Inventory, nil, nil, function (id)
         id.AddTag("name:"..self.Character.Name)
-        id.AddTag("job:citizen")
+        id.AddTag("job:miner")
         id.AddTag("miner")
         id.AddTag("azoe")
         id.Description = "Mine access."

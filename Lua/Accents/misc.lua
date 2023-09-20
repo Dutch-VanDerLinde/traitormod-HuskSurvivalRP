@@ -88,3 +88,92 @@ Traitormod.Accents.drunkslur = function(message, drunkedness)
 
     return result
 end
+
+-- Function to shuffle a string randomly with intensity controlled by value
+local function shuffleString(input, value)
+    local result = {}
+    local len = #input
+
+    for i = 1, len do
+        local char = input:sub(i, i)
+        if math.random(100) <= value - 50 then -- Subtract 50 to start shuffling from value 50
+            char = input:sub(math.random(len), math.random(len))
+        end
+        result[i] = char
+    end
+
+    return table.concat(result)
+end
+
+-- brain hemorrhage stuff
+Traitormod.Accents.brainbleed = function(input, value)
+    if value < 50 then
+        return input -- No weird text below 50
+    elseif value > 100 then
+        value = 100
+    end
+
+    if value > 85 then
+        -- Replace with a random phrase
+        local randomPhrases = {
+            "About...time...",
+            "...I...found...it!",
+            "Who...?",
+            "Whaaat?",
+            "Whhh.....",
+            "th...th....",
+            "Th...anks....",
+            "But.....how?",
+            "NO!",
+            "Y...Y..YES!",
+            "YES!",
+            "Yes..?",
+            "B......ye!",
+            "N...ice",
+            "There....it....is",
+            "g..g......g....",
+            "Get....get...that..thing!",
+            "there....w..we.....go",
+            "damn......it....",
+            "damn.....it?....",
+            "funny..",
+            "help..",
+            "help....ME...",
+            "help....ME.....NOW!!",
+            "that's...funny...........",
+            "tht's......funny....?.",
+            "get...him....!",
+            "get...her....!",
+            "get.....him...?",
+            "get.....her...?",
+            "kill...the..one...",
+            "kill...the..twoooooooo...!",
+            "fucking....",
+            "HUSK!",
+            "That's...a...husk!",
+            "Yeah!",
+            "Yeah...yeah...yeah......yeah",
+            "Yeah...yeah..no......yeah",
+            "fucking..hell....",
+            "i like...it!",
+            "seems...nice!",
+            "what..in....god...",
+            "what..hmm...",
+            "what...you...say?",
+            "what..it......say..?",
+            "OF...COURSE!",
+            "OF...COURSE.......NOT!",
+            "saying? no...no...no!",
+            "fuck...........off!",
+        }
+        input = randomPhrases[math.random(#randomPhrases)]
+    end
+
+    local scrambledWords = {}
+    for word in input:gmatch("%S+") do
+        local scrambledWord = shuffleString(word, value)
+        table.insert(scrambledWords, scrambledWord)
+    end
+
+    return table.concat(scrambledWords, " ")
+end

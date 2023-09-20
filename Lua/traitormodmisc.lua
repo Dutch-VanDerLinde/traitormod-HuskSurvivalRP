@@ -439,6 +439,12 @@ Hook.Patch("Barotrauma.Networking.GameServer", "SendChatMessage", function(insta
             message = Traitormod.Accents.drunkslur(message, strength)
         end
 
+        -- If brain hemorrhage, then shuffle string
+        if HF.HasAffliction(character, "brainhemorrhage", 5) then
+            local strength = HF.GetAfflictionStrength(character, "brainhemorrhage")
+            message = Traitormod.Accents.brainbleed(message, strength)
+        end
+
         -- If losing blood, then stutter string
         if HF.HasAffliction(character, "bloodloss", 50) or HF.HasAffliction(character, "hypothermia", 45) then
             message = Traitormod.Accents.stutter(message)

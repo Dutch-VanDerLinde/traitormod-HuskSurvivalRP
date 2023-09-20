@@ -17,7 +17,7 @@ end
 
 function objective:IsCompleted()
     for item in self.Character.Inventory.AllItems do
-        if item.Prefab.Identifier == "idcard" and item.GetComponentString("IdCard").OwnerJobId == "adminone" then
+        if item.Prefab.Identifier == "azoe_idcard" and item.GetComponentString("IdCard").OwnerJobId == "adminone" then
             return true
         end
     end

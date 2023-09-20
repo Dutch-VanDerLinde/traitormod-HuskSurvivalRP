@@ -57,6 +57,7 @@ extension.Init = function()
             local idname
             local idjobname
             local jobid
+            local idcardprefab = "idcard"
 
             if computerID == "husk_idterminalazoe" then
                 local secaccess = CustomInterfaceList[1].State
@@ -64,47 +65,38 @@ extension.Init = function()
                 local engaccess = CustomInterfaceList[3].State
                 local medaccess = CustomInterfaceList[4].State
                 local chefaccess = CustomInterfaceList[5].State
-                local isCitizen = true
                 idname = CustomInterfaceList[6].Signal
                 jobid = "citizen"
                 idjobname = "citizen"
+                idcardprefab = "azoe_idcard"
 
-                table.insert(AccessTable, "citizen access")
-                table.insert(IDTags, "azoe")
                 if chefaccess == true then
                     jobid = "he-chef"
                     idjobname = "chef"
                     table.insert(IDTags, "azoe_chef")
                     table.insert(AccessTable, "kitchen access")
-                    isCitizen = false
                 end
                 if mineaccess == true then
+                    idjobname = "miner"
                     table.insert(IDTags, "miner")
                     table.insert(AccessTable, "mine access")
-                    isCitizen = false
                 end
                 if engaccess == true then
+                    idjobname = "technician"
                     table.insert(IDTags, "technician")
                     table.insert(AccessTable, "engineering access")
-                    isCitizen = false
                 end
                 if medaccess == true  then
                     jobid = "medicaldoctor"
                     idjobname = "medical doctor"
                     table.insert(IDTags, "azoe_med")
                     table.insert(AccessTable, "medbay access")
-                    isCitizen = false
                 end
                 if secaccess == true then
                     jobid = "guardone"
                     idjobname = "security officer"
                     table.insert(IDTags, "azoe_gov")
                     table.insert(AccessTable, "government access")
-                    isCitizen = false
-                end
-
-                if not isCitizen then
-                    table.remove(AccessTable, 1)
                 end
             elseif idComputerItem.HasTag("tci") then
 
@@ -116,7 +108,10 @@ extension.Init = function()
             end
 
             local formatstring = "%s and %s"
-            if #AccessTable == 1 then
+            if #AccessTable < 1 then
+                local descstring = tostring(ItemPrefab.GetItemPrefab(idcardprefab).Description):lower()
+                AccessString = descstring:sub(1, #descstring - 1)
+            elseif #AccessTable == 1 then
                 AccessString = AccessTable[1]
             elseif #AccessTable == 2 then
                 AccessString = string.format(formatstring, AccessTable[1], AccessTable[2])
@@ -128,7 +123,7 @@ extension.Init = function()
             local upperCasedLetter = AccessString:sub(1, 1):upper()
             AccessString = upperCasedLetter..AccessString:sub(2, #AccessString).."."
 
-            ReplaceIDCard(item.OwnInventory, containedID, "idcard", tagstring, AccessString, idname, idjobname, jobid)
+            ReplaceIDCard(item.OwnInventory, containedID, idcardprefab, tagstring, AccessString, idname, idjobname, jobid)
         end
     end)
 end
