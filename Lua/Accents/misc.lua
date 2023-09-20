@@ -96,7 +96,7 @@ local function shuffleString(input, value)
 
     for i = 1, len do
         local char = input:sub(i, i)
-        if math.random(100) <= value - 50 then -- Subtract 50 to start shuffling from value 50
+        if math.random(80) <= value - 50 then -- Subtract 50 to start shuffling from value 50
             char = input:sub(math.random(len), math.random(len))
         end
         result[i] = char
@@ -165,6 +165,21 @@ Traitormod.Accents.brainbleed = function(input, value)
             "OF...COURSE.......NOT!",
             "saying? no...no...no!",
             "fuck...........off!",
+            "FIRE!",
+            "IT'S...ON.....FIRE...PUT...!",
+            "IT'S...ON.....FIRE...PUT.........IT...............OUT!!!",
+            "IT'S...FIRE.....ON...PUT.........IT!!!",
+            "I need....some water, please...?",
+            "I....need....water some, please...",
+            "I....need....water...",
+            "I....need....foooooood...",
+            "I....need....fod...",
+            "I....need......",
+            "doctor......PLEASE!",
+            "hey...there!",
+            "what's up....guys??",
+            "of course??",
+            "DENIED!",
         }
         input = randomPhrases[math.random(#randomPhrases)]
     end
