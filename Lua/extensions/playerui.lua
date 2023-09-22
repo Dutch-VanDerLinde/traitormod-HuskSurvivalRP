@@ -66,6 +66,10 @@
                         truename = "Azoe "..truename
                     elseif jobid == "guardtci" then
                         truename = "Institute Security Officer"
+                    elseif jobid == "researchdirector" then
+                        truename = "Institute Research Director"
+                    elseif jobid == "thal_scientist" then
+                        truename = "Institute Scientist"
                     end
                 end
 
