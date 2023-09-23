@@ -1021,10 +1021,6 @@ Traitormod.SendJobInfoMsg = function(client, job)
             color = Color.IndianRed
             msg =
             "You are the medical doctor of the Azoe Region!\nCommence surgeries, heal patients. Make sure the residents of the Azoe Region stay happy & healthy."
-        elseif job == "he-chef" then
-            color = Color.DarkOrange
-            msg =
-            "You are the chef of the Azoe Region!\nCook food and make rations so that Azoe Region can thrive. You work directly with the botanist."
         elseif job == "researchdirector" then
             color = Color.Aqua
             msg =

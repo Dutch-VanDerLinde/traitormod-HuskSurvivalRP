@@ -474,6 +474,7 @@ Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/antagonist.
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/husk.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/miner.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/technician.lua"))
+Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/chef.lua"))
 
 -- Cave Dweller Roles
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/CaveDweller/bandit.lua"))
