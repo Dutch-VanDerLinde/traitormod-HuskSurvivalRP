@@ -197,7 +197,7 @@ config.RoleConfig = {
     Cultist = {
         MinSubObjectives = 2,
         MaxSubObjectives = 3,
-        AvailableObjectives = {"DestroyCaly", "TurnHusk", "Husk", "AssassinateAzoe"},
+        AvailableObjectives = {"DestroyCaly", "TurnHusk", "Husk"},
     },
 }
 

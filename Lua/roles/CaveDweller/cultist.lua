@@ -1,11 +1,13 @@
 local role = Traitormod.RoleManager.Roles.Antagonist:new()
 role.Name = "Cultist"
 role.RoleGear = {
+    "syringegun",
+    "huskstinger",
     "huskeggsbasic",
     "huskeggsbasic",
     "huskeggs",
     "huskeggs",
-    "toolbelt",
+    "unstablehuskeggs",
     "handcuffs",
 }
 
@@ -104,13 +106,9 @@ end
 
 ---@return string mainPart, string subPart
 function role:ObjectivesToString()
-    local primary = Traitormod.StringBuilder:new()
     local secondary = Traitormod.StringBuilder:new()
 
     for _, objective in pairs(self.Objectives) do
-        -- Husk objectives are primary
-        primary:append(" > ", Traitormod.Language.ObjectiveGiveHusk)
-
         if objective:IsCompleted() or objective.Awarded then
             secondary:append(" > ", objective.Text, Traitormod.Language.Completed)
         else
@@ -118,16 +116,16 @@ function role:ObjectivesToString()
         end
     end
 
-    return primary:concat("\n"), secondary:concat("\n")
+    return secondary:concat("\n")
 end
 
 function role:Greet()
-    local primary, secondary = self:ObjectivesToString()
+    local secondary = self:ObjectivesToString()
 
     local sb = Traitormod.StringBuilder:new()
     sb("%s\n\n", Traitormod.Language.CultistYou)
     sb("%s\n", Traitormod.Language.MainObjectivesYou)
-    sb(primary)
+    sb(" > "..Traitormod.Language.ObjectiveGiveHusk)
     sb("\n\n%s\n", Traitormod.Language.SecondaryObjectivesYou)
     sb(secondary)
     sb("\n\n")
