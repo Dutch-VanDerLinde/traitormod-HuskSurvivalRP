@@ -11,6 +11,22 @@ Traitormod.AddCommand("!helpadmin", function (client, args)
     return true
 end)
 
+Traitormod.AddCommand("!setrpname", function (client, args)
+    local name = ""
+    for word in args do
+        name = name .. " " .. word
+    end
+
+    if name == "" or name == " " then
+        Traitormod.SetData(client, "TrueRPName", nil)
+    else
+        Traitormod.SetData(client, "TrueRPName", name)
+        Traitormod.SendMessage(client, "Your RP name has been set to "..name..". Reminder: Non-realistic names are not tolerated.")
+    end
+
+    return true
+end)
+
 Traitormod.AddCommand("!name", function (client, args)
     local name = Traitormod.GetData(client, "RPName")
 

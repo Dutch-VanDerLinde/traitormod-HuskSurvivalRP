@@ -628,6 +628,7 @@ Traitormod.randomizeCharacterName = function(character)
 
     if client then
         local name = Traitormod.GetRPName(client)
+        local truename = Traitormod.GetData(client, "TrueRPName")
 
         if character.IsMale then
             randomName = Traitormod.GetRandomName("male")
@@ -640,11 +641,15 @@ Traitormod.randomizeCharacterName = function(character)
             randomName = "Dr. Javier"
         end
 
-        if name == nil then
-            Traitormod.ChangeRPName(client, randomName)
-            name = randomName
+        if truename == nil then
+            if name == nil then
+                Traitormod.ChangeRPName(client, randomName)
+                name = randomName
+            else
+                character.Info.Rename(name)
+            end
         else
-            character.Info.Rename(name)
+            Traitormod.ChangeRPName(client, truename)
         end
 
         Traitormod.Log(Traitormod.ClientLogName(client) .. " has spawned in as " .. name)
