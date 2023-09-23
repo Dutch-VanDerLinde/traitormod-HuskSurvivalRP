@@ -896,7 +896,6 @@ Traitormod.DoJobSet = function(character)
         local possibleRadios = {
             "headset",
             "ek_security_radio",
-            "ek_citizen_radio",
         }
 
         local randomRadio = possibleRadios[math.random(1, #possibleRadios)]
