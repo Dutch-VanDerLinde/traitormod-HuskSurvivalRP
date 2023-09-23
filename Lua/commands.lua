@@ -13,11 +13,12 @@ end)
 
 Traitormod.AddCommand("!setrpname", function (client, args)
     local playtimerequired = 3.5*60*60 -- 3.5 hours
-    if Traitormod.GetData(client, "Playtime") <= playtimerequired then
+    local playtime = Traitormod.GetData(client, "Playtime")
+    if playtime <= playtimerequired then
         Traitormod.SendMessage(client, string.format(
             Traitormod.Language.CMDLocked,
             Traitormod.FormatTime(playtimerequired),
-            Traitormod.FormatTime(math.ceil(Traitormod.GetData(client, "Playtime") or 0))
+            Traitormod.FormatTime(math.ceil(playtime or 0))
         ))
         return true
     end
