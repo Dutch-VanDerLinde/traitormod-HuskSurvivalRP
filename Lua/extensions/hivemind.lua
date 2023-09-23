@@ -6,6 +6,8 @@ extension.Init = function ()
     Hook.Add("chatMessage", "Traitormod.ChatMessageHivemindComms", function(message, client)
         local character = client.Character
 
+        if message:sub(1, 1) == "!" then return true end
+
         if character and not character.IsHuman and character.SpeciesName ~= "Crawler" then
             for _, loopclient in pairs(Client.ClientList) do
                 if (not loopclient.Character or loopclient.Character.IsDead) or not loopclient.Character.IsHuman then
