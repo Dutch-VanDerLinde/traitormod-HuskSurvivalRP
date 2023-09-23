@@ -81,7 +81,7 @@ function role:Start()
     end)
 
     --Plasma cutter spawn
-    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("scp_fieldpack"), self.Character.Inventory, nil, nil, function(spawned)
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("plasmacutter"), self.Character.Inventory, nil, nil, function(spawned)
         Timer.Wait(function ()
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
         end, 350)

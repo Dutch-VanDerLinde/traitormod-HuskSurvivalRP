@@ -1055,7 +1055,7 @@ Traitormod.GiveTraits = function(character)
     local traits = {
         "archaicaffliction",
         --"mobsteraccent",
-        "pirateaccent",
+        "pirateaffliction",
         "scottishaffliction"
     }
 
