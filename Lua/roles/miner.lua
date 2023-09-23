@@ -2,7 +2,7 @@ local role = Traitormod.RoleManager.Roles.Role:new()
 role.Name = "Miner"
 role.Antagonist = false
 role.RoleClothes = {"orangejumpsuit1", "minerclothes"}
-role.RoleGear = {"plasmacutter","oxygentank","oxygentank","advanceddivingmask"}
+role.RoleGear = {"oxygentank","husk_oxygenmask"}
 
 function role:Start()
     local availableObjectives = self.AvailableObjectives
@@ -56,7 +56,7 @@ function role:Start()
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
     end)
-    --Toolbelt spawn
+    --Backpack spawn
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("scp_fieldpack"), self.Character.Inventory, nil, nil, function(spawned)
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
@@ -80,10 +80,19 @@ function role:Start()
         self.Character.Inventory.TryPutItem(id, slot, true, false, self.Character)
     end)
 
-    -- Gear spawn
-    for key, item in pairs(self.RoleGear) do
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
-    end
+    --Plasma cutter spawn
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("scp_fieldpack"), self.Character.Inventory, nil, nil, function(spawned)
+        Timer.Wait(function ()
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
+        end, 350)
+    end)
+
+    Timer.Wait(function ()
+        -- Gear Spawn
+        for key, item in pairs(self.RoleGear) do
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
+         end
+    end, 450)
 end
 
 

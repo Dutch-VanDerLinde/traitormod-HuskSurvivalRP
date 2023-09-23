@@ -80,10 +80,12 @@ function role:Start()
         self.Character.Inventory.TryPutItem(id, slot, true, false, self.Character)
     end)
 
-    -- Gear spawn
-    for key, item in pairs(self.RoleGear) do
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
-    end
+    Timer.Wait(function ()
+        -- Gear Spawn
+        for key, item in pairs(self.RoleGear) do
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
+         end
+    end, 450)
 end
 
 
