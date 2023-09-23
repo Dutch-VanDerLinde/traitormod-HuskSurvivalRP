@@ -146,16 +146,32 @@ function role:OtherGreet()
 end
 
 Hook.Add("husk.clientControlHusk", "Traitormod.Cultist.HuskControl", function (client, husk)
-    local cultist
     for _, character in pairs(Traitormod.RoleManager.FindCharactersByRole("Cultist")) do
-        if character == client.Character then
-            cultist = Traitormod.RoleManager.GetRole(character)
-            break
+        if character ~= client.Character then
+            local cultistClient = Traitormod.FindClientCharacter(character)
+            if cultistClient then
+                local points = Traitormod.AwardPoints(cultistClient, 100)
+                Traitormod.SendObjectiveCompleted(cultistClient, husk.Name.." has joined the hive.", points)
+            end
         end
     end
+end)
 
-    if cultist then
-        Traitormod.RoleManager.TransferRole(client.Character, cultist)
+Hook.Add("meleeWeapon.handleImpact",  "Cultist.Stinger", function (melee, target)
+    if melee.Item.Prefab.Identifier ~= "huskstinger" then return end
+    if not LuaUserData.IsTargetType(target.UserData, "Barotrauma.Limb") then return end
+    local character = target.UserData.character
+
+    do
+        local affliction = AfflictionPrefab.Prefabs["huskinfection"].Instantiate(2)
+        character.CharacterHealth.ApplyAffliction(character.AnimController.MainLimb, affliction)
+    end
+
+    do -- speed up affliction, since its capped at 50% by default
+        local affliction = character.CharacterHealth.GetAffliction("huskinfection", true)
+        if affliction then
+            affliction._strength = affliction._strength + 2
+        end
     end
 end)
 
