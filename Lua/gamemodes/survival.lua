@@ -244,6 +244,7 @@ function gm:PreStart()
 
     Traitormod.AmountMiners = 0
     Traitormod.AmountTechnicians = 0
+    Traitormod.AmountChefs = 0
 end
 
 function gm:AwardCrew()

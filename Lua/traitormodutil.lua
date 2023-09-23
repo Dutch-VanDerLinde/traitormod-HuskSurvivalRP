@@ -13,6 +13,7 @@ Traitormod.InstituteRadioChannel = nil
 
 Traitormod.AmountMiners = 0
 Traitormod.AmountTechnicians = 0
+Traitormod.AmountChefs = 0
 
 --[[
 for key, value in pairs(Traitormod.Languages) do
@@ -912,11 +913,15 @@ Traitormod.DoJobSet = function(character)
 
         local role = Traitormod.RoleManager.Roles["Technician"]
 
-        if 2 > Traitormod.AmountMiners then
+        if Traitormod.AmountTechnicians < 1 then
+            role = Traitormod.RoleManager.Roles["Technician"]
+            Traitormod.AmountTechnicians = 1
+        elseif Traitormod.AmountMiners < 2 then
             role = Traitormod.RoleManager.Roles["Miner"]
             Traitormod.AmountMiners = Traitormod.AmountMiners + 1
-        elseif 2 > Traitormod.AmountTechnicians then
-            Traitormod.AmountTechnicians = Traitormod.AmountTechnicians + 1
+        elseif Traitormod.AmountChefs < 1 then
+            role = Traitormod.RoleManager.Roles["Chef"]
+            Traitormod.AmountChefs = 1
         end
 
         Traitormod.RoleManager.AssignRole(character, role:new())
