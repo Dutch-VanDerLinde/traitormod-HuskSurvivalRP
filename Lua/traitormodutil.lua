@@ -641,8 +641,8 @@ Traitormod.randomizeCharacterName = function(character)
             randomName = "Dr. Javier"
         end
 
-        if truename == nil then
-            if name == nil then
+        if not truename then
+            if not name then
                 Traitormod.ChangeRPName(client, randomName)
                 name = randomName
             else

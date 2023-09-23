@@ -21,6 +21,7 @@ Traitormod.AddCommand("!setrpname", function (client, args)
         Traitormod.SetData(client, "TrueRPName", nil)
     else
         Traitormod.SetData(client, "TrueRPName", name)
+        Traitormod.SetData(client, "RPName", name)
         Traitormod.SaveData()
         Traitormod.SendMessage(client, "Your RP name has been set to "..name..". Reminder: Non-realistic names are not tolerated.")
     end
@@ -32,7 +33,7 @@ Traitormod.AddCommand("!name", function (client, args)
     local name = Traitormod.GetData(client, "RPName")
 
     if name then
-        Traitormod.SendMessage(client, "Your RP name is "..name..". You will have this name til your character dies.")
+        Traitormod.SendMessage(client, "Your RP name is "..name..". You will have this name til your character dies, unless it is set.")
     else
         Traitormod.SendMessage(client, "You do not have a RP name.")
     end
