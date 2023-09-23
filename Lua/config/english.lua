@@ -60,7 +60,7 @@ language.CaveDwellerUndercoverYou = "You are an undercover agent working for the
 language.UndercoverOther = "Institute Agent %s."
 language.SoloAgent = "You are the only institute agent."
 
-language.AzoeMiner = "You are a miner of the Azoe Region. Your job is to mine/find materials, fabricate items and logistics for the survival of the Azoe Region.\n\nYou have been assigned the following bonus objectives.\n\n"
+language.AzoeMiner = "You are a miner of the Azoe Region. Your job is to mine/find materials, fabricate items and logistics of supplies for the survival of the Azoe Region.\n\nYou have been assigned the following bonus objectives.\n\n"
 language.AzoeTechnician = "You are a technician of the Azoe Region. Your job is to operate the reactor, fix devices, and create new electrical/mechanical contraptions.\n\nYou have been assigned the following bonus objectives.\n\n"
 language.AzoeChef = "You are the chef of the Azoe Region!\nCook food and make rations so that Azoe Region can thrive."
 
