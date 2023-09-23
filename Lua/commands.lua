@@ -59,8 +59,8 @@ Traitormod.AddCommand("!helptraitor", function (client, args)
 end)
 
 Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
-    if client.Character == nil or client.Character.IsHuman then
-        Traitormod.SendMessage(client, Traitormod.Language.CMDOnlyMonsters)
+    if client.Character == nil or not Traitormod.RoleManager.HasRole(client.Character, "Cultist") then
+        Traitormod.SendMessage(client, "Only cultists can use this command.")
         return true
     end
 
@@ -74,14 +74,7 @@ Traitormod.AddCommand({"!huskchat", "!hc"}, function (client, args)
         msg = msg .. " " .. word
     end
 
-    for _, loopclient in pairs(Client.ClientList) do
-        if (not loopclient.Character or loopclient.Character.IsDead) or not loopclient.Character.IsHuman then
-            local formatedname = string.format(Traitormod.Language.CMDHuskChat, client.Name, client.Character.Name)
-            local chatMessage = ChatMessage.Create(formatedname, msg, ChatMessageType.Default)
-            chatMessage.Color = Color(60,107,195,255)
-            Game.SendDirectChatMessage(chatMessage, loopclient)
-        end
-    end
+    Traitormod.SendHuskChatMessage(msg, client)
 
     return true
 end)

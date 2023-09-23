@@ -272,6 +272,13 @@ Hook.Patch("Barotrauma.Character", "TryAdjustHealerSkill", function (character, 
     rm.CallObjectiveFunction("CharacterHealed", character, healer, healthChange)
 end, Hook.HookMethodType.After)
 
+Hook.Patch("Barotrauma.Character", "OnAttackedProjSpecific", function(character, ptable)
+    local attacker = ptable["attacker"]
+    local attackresult = ptable["attackResult"]
+
+    rm.CallObjectiveFunction("CharacterAttacked", character, attacker, attackresult)
+end, Hook.HookMethodType.After)
+
 rm.EndRound = function ()
     rm.CheckObjectives(true)
 

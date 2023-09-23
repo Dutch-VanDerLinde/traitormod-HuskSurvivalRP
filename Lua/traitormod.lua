@@ -479,6 +479,7 @@ Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/chef.lua"))
 -- Cave Dweller Roles
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/CaveDweller/bandit.lua"))
 Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/CaveDweller/undercoverone.lua"))
+Traitormod.RoleManager.AddRole(dofile(Traitormod.Path .. "/Lua/roles/CaveDweller/cultist.lua"))
 
 
 if Traitormod.Config.Extensions then

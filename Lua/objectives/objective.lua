@@ -27,6 +27,7 @@ function objective:CharacterDeath(character) end
 function objective:StopRepairing(item, character) end
 function objective:HullRepaired(item, character) end
 function objective:CharacterHealed(character, healer, healthChange) end
+function objective:CharacterAttacked(character, attacker, attackresult) end
 
 function objective:IsFailed()
     return false

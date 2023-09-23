@@ -9,15 +9,7 @@ extension.Init = function ()
         if message:sub(1, 1) == "!" then return true end
 
         if character and not character.IsHuman and character.SpeciesName ~= "Crawler" then
-            for _, loopclient in pairs(Client.ClientList) do
-                if (not loopclient.Character or loopclient.Character.IsDead) or not loopclient.Character.IsHuman then
-                    local formatedname = string.format(Traitormod.Language.CMDHuskChat, client.Name, client.Character.Name)
-                    local chatMessage = ChatMessage.Create(formatedname, message, ChatMessageType.Default, character, client)
-                    chatMessage.Color = Color(60,107,195,255)
-                    Game.SendDirectChatMessage(chatMessage, loopclient)
-                end
-            end
-
+            Traitormod.SendHuskChatMessage(message, client)
             return true
         end
     end)

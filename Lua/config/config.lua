@@ -165,7 +165,7 @@ config.RoleConfig = {
     -- Cave Dweller Roles
 
     CaveDwellerBandit = {
-        SubObjectives = {"StealCaptainID", "KillAny", "Kidnap", "DestroyCaly"},
+        SubObjectives = {"StealCaptainID", "KillAny", "Kidnap"},
         MinSubObjectives = 2,
         MaxSubObjectives = 3,
 
@@ -192,6 +192,12 @@ config.RoleConfig = {
         SelectBotsAsTargets = true,
         SelectPiratesAsTargets = false,
         SelectUniqueTargets = true,     -- every traitor target can only be chosen once per traitor (respawn+false -> no end)
+    },
+
+    Cultist = {
+        MinSubObjectives = 2,
+        MaxSubObjectives = 3,
+        AvailableObjectives = {"DestroyCaly", "TurnHusk", "Husk", "AssassinateAzoe"},
     },
 }
 
