@@ -135,6 +135,7 @@ language.NoLives = "You lost all your lives. As a result you lose some money."
 language.MaxLives = "You have the maximum amount of lives."
 
 language.RoleLocked = "You didn't meet the requirements to be selected as %s.\nThe requirements are:\n%s worth of playtime. Your playtime is %s."
+language.CMDLocked = "You need %s worth of playtime to use this command. Your playtime is %s."
 
 language.Codewords = "Code Words: %s"
 language.CodeResponses = "Code Responses: %s"
