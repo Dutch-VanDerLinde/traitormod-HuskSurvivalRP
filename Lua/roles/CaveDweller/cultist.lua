@@ -9,6 +9,7 @@ role.RoleGear = {
     "huskeggs",
     "unstablehuskeggs",
     "handcuffs",
+    "husk_campfire",
 }
 
 function role:Start()
@@ -25,11 +26,19 @@ function role:Start()
     Entity.Spawner.AddItemToSpawnQueue(selectedClothes, self.Character.Inventory, nil, nil, function(spawned)
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
+        Timer.Wait(function ()
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
+        end, 250)
     end)
     --Toolbelt spawn
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("toolbelt"), self.Character.Inventory, nil, nil, function(spawned)
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
+        Timer.Wait(function ()
+            for i = 1, math.random(1, 2) do
+                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
+            end
+        end, 100)
     end)
     -- Gear Spawn
     Timer.Wait(function ()
