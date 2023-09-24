@@ -212,6 +212,29 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function(item, sen
     end
 end)
 
+Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item, client, output)
+    if not item.HasTag("idcardlocator") then return end
+    if not client.Character then return end
+
+    if output ~= "crewstatus" then return end
+
+    local terminal = item.GetComponentString("Terminal")
+    local itemID = item.Prefab.Identifier
+    local idcardidentifier = "tci_idcard"
+    if itemID == "admindeviceazoe" then idcardidentifier = "azoe_idcard" end
+
+    local ShowMessage = ""
+    for key, value in pairs(Util.GetItemsById(idcardidentifier)) do
+        local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition)
+        local idCard = value.GetComponentString("IdCard")
+        local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
+
+        ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance))
+    end
+
+    terminal.ServerEventRead(ShowMessage, client)
+end)
+
 Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, ptable)
     local client = ptable["c"]
     local item = instance.Item
