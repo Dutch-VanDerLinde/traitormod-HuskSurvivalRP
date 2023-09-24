@@ -171,6 +171,9 @@ Hook.Add("husk.clientControlHusk", "Traitormod.Cultist.HuskControl", function (c
     end
 end)
 
+LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.StatusEffect"], "set_Afflictions")
+LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Affliction"], "_strength")
+
 Hook.Add("meleeWeapon.handleImpact",  "Cultist.Stinger", function (melee, target)
     if melee.Item.Prefab.Identifier ~= "huskstinger" then return end
     if not LuaUserData.IsTargetType(target.UserData, "Barotrauma.Limb") then return end

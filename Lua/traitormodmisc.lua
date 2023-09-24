@@ -232,7 +232,9 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
         ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance))
     end
 
-    item.CreateServerEvent(terminal, terminal.ServerEventData(#terminal.messageHistory + 1, ShowMessage))
+    LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Items.Components.Terminal"], "ServerEventData")
+
+    item.CreateServerEvent(terminal, terminal.ServerEventData(5, ShowMessage))
 end)
 
 Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, ptable)
