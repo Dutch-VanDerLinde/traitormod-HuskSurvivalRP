@@ -21,21 +21,26 @@ function role:Start()
     for item in self.Character.Inventory.AllItemsMod do
         Entity.Spawner.AddEntityToRemoveQueue(item)
     end
+    -- Mask spawn
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("husk_oxygenmask"), self.Character.Inventory, nil, nil, function(spawned)
+        local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.HealthInterface)
+        self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
+        Timer.Wait(function ()
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
+        end, 150)
+    end)
     -- Clothes spawn
     local selectedClothes = ItemPrefab.GetItemPrefab("huskrobes")
     Entity.Spawner.AddItemToSpawnQueue(selectedClothes, self.Character.Inventory, nil, nil, function(spawned)
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.InnerClothes)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
-        Timer.Wait(function ()
-            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
-        end, 250)
     end)
     --Toolbelt spawn
     Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("toolbelt"), self.Character.Inventory, nil, nil, function(spawned)
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
         Timer.Wait(function ()
-            for i = 1, math.random(1, 2) do
+            for i = 1, math.random(1, 4) do
                 Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
             end
         end, 100)
