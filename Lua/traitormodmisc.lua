@@ -223,18 +223,15 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
     local idcardidentifier = "tci_idcard"
     if itemID == "admindeviceazoe" then idcardidentifier = "azoe_idcard" end
 
-    local ShowMessage = ""
     for key, value in pairs(Util.GetItemsById(idcardidentifier)) do
         local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition)
         local idCard = value.GetComponentString("IdCard")
         local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
 
-        ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance))
+        terminal.ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance))
     end
 
-    LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Items.Components.Terminal"], "ServerEventData")
-
-    item.CreateServerEvent(terminal, terminal.ServerEventData(5, ShowMessage))
+    terminal.SyncHistory()
 end)
 
 Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, ptable)
