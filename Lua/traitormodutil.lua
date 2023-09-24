@@ -839,7 +839,6 @@ Traitormod.DoJobSet = function(character)
             "flashlight",
             "thgflashlightheavy",
             "thgflashlightheavy",
-            "thgcellcharger",
         }
 
         local randomHat = possibleHats[math.random(1, #possibleHats)]
