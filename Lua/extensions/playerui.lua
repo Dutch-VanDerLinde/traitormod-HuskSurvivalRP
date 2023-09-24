@@ -76,7 +76,10 @@
                 local CharacterString = client.Name.." as "..truename.." "..character.Name
                 local message = Networking.Start("AddPlayerToCredits")
                 message.WriteString(CharacterString)
-                Networking.Send(message, client.Connection)
+
+                for loopClient in Client.ClientList do
+                    Networking.Send(message, loopClient.Connection)
+                end
             end, 4100)
         end
     end)

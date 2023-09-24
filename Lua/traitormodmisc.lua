@@ -131,6 +131,14 @@ Traitormod.AddStaticToMessage = function(msg, chance)
 end
 
 Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function(item, sender, output)
+    if not item.HasTag("intercom")
+        or not sender.Character
+        or not sender.Character.IsHuman
+        or output == (nil or "")
+    then
+        return
+    end
+
     local idcard = item.OwnInventory.GetItemAt(0)
 
     if item.Condition < 100 then
@@ -145,14 +153,6 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function(item, sen
         local messageChat = ChatMessage.Create("Intercom", "Invalid credentials.", ChatMessageType.Default, nil, nil)
         messageChat.Color = Color.Red
         Game.SendDirectChatMessage(messageChat, sender)
-        return
-    end
-
-    if not item.HasTag("intercom")
-        or not sender.Character
-        or not sender.Character.IsHuman
-        or output == (nil or "")
-    then
         return
     end
 
@@ -232,7 +232,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
         ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance))
     end
 
-    terminal.ServerEventRead(ShowMessage, client)
+    item.CreateServerEvent(terminal, terminal.ServerEventData(#terminal.messageHistory + 1, ShowMessage))
 end)
 
 Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, ptable)
