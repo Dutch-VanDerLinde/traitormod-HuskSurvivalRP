@@ -112,9 +112,7 @@ Traitormod.AddCommand({"!ooc", "!looc"}, function (client, args)
     return true
 end)
 
-Traitormod.AddCommand({"!ahelp", "!adminhelp"}, function (sender, args)
-    local discordWebHook = "https://discord.com/api/webhooks/1138861228341604473/Hvrt_BajroUrS60ePpHTT1KQyCNhTwsphdmRmW2VroKXuHLjxKwKRwfajiCZUc-ZtX2L"
-
+Traitormod.AddCommand({"!ahelp", "!adminhelp"}, function (client, args)
     local adminmsg = ""
     if #args > 0 then
         for word in args do
@@ -125,30 +123,7 @@ Traitormod.AddCommand({"!ahelp", "!adminhelp"}, function (sender, args)
         return true
     end
 
-    local messageChat = ChatMessage.Create("", "TO ADMINS:\n"..adminmsg, ChatMessageType.Default, nil, sender)
-    messageChat.Color = Color.IndianRed
-
-    for client in Client.ClientList do
-        if client.HasPermission(ClientPermissions.Kick) then
-            Game.SendDirectChatMessage(messageChat, client)
-        end
-    end
-
-    Game.SendDirectChatMessage(messageChat, sender)
-
-    local finalmsg
-    if sender.Character then
-        finalmsg = "``User "..sender.Name.." as "..sender.Character.Name..":`` "..adminmsg
-    else
-        finalmsg = "``User "..sender.Name..":`` "..adminmsg
-    end
-
-    local function escapeQuotes(str)
-        return str:gsub("\"", "\\\"")
-    end
-
-    local escapedMessage = escapeQuotes(finalmsg)
-    Networking.RequestPostHTTP(discordWebHook, function(result) end, '{\"content\": \"'..escapedMessage..'\", \"username\": \"'..'ADMIN HELP (HUSK SURVIVAL)'..'\"}')
+    Traitormod.SendAdminHelpMessage(adminmsg, client)
 
     return true
 end)
@@ -742,7 +717,7 @@ Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
     end
 
     local finalmsg = adminmsg.."\n\nTo respond, type use the admin help button or the command !adminhelp."
-    local messageChat = ChatMessage.Create("", "ADMIN PM:\n"..finalmsg, ChatMessageType.Default, nil, sender)
+    local messageChat = ChatMessage.Create(sender.Name.." to "..targetClient.Name, "ADMIN PM:\n"..finalmsg, ChatMessageType.Default, nil, sender)
     messageChat.Color = Color.IndianRed
 
     Game.SendDirectChatMessage(messageChat, targetClient)

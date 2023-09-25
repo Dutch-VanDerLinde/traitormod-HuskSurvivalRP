@@ -2,12 +2,12 @@
     local function escapeQuotes(str)
         return str:gsub("\"", "\\\"")
     end
+
     -- Admin message
-    Networking.Receive("admin", function(message, sender)
-        local adminmsg = message.ReadString()
-        local finalmsg = nil
+    Traitormod.SendAdminHelpMessage = function(adminmsg, sender)
         local discordWebHook = "https://discord.com/api/webhooks/1138861228341604473/Hvrt_BajroUrS60ePpHTT1KQyCNhTwsphdmRmW2VroKXuHLjxKwKRwfajiCZUc-ZtX2L"
-        
+        local finalmsg = nil
+
         if sender.Character then
             finalmsg = "``User "..sender.Name.." as "..sender.Character.Name..":`` "..adminmsg
         else
@@ -27,6 +27,11 @@
         end
 
         Game.SendDirectChatMessage(messageChat, sender)
+    end
+
+    Networking.Receive("admin", function(message, sender)
+        local adminmsg = message.ReadString()
+        Traitormod.SendAdminHelpMessage(adminmsg, sender)
     end)
 
     local function UpdatePlayerList(client, joinedleft)

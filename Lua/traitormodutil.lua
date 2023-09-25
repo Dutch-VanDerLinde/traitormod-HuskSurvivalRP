@@ -662,9 +662,14 @@ Traitormod.randomizeCharacterName = function(character)
             randomName = Traitormod.GetRandomName("female")
         end
 
+        -- special names
         if client.SteamID == "76561198408663756" and client.Name == "Dr. Javier" then
             name = nil
             randomName = "Dr. Javier"
+        elseif client.SteamID == "76561199027224111" and client.Name == "foob" then
+            local lastname = Traitormod.Language.LastNames[math.random(1, #Traitormod.Language.LastNames)]
+            name = nil
+            randomName = "Foob "..lastname
         end
 
         if not truename then
