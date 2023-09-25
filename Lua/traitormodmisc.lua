@@ -225,7 +225,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
     local truekey = 0
     for key, value in pairs(Util.GetItemsById(idcardidentifier)) do
         if not value.Removed then -- make sure our id isn't deleted
-            local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition)
+            local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
             local idCard = value.GetComponentString("IdCard")
             local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
             truekey = truekey + 1
