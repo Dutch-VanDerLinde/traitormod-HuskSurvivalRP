@@ -5,6 +5,7 @@ Game.OverrideTraitors(true)
 Game.EnableControlHusk(true)
 Game.ServerSettings.RandomizeSeed = false
 Game.NetLobbyScreen.LevelSeed = "DownDown" -- So the map is on a better seed suited for Husk Survival
+Game.ExecuteCommand("enablecheats")
 Game.ExecuteCommand("disablecrewai") -- Disable human ai (It's laggy as hell)
 
 if Traitormod.Config.RagdollOnDisconnect ~= nil then
