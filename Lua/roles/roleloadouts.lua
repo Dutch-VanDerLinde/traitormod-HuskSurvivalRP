@@ -70,11 +70,6 @@ Traitormod.Outfits = {
         clothes = {"thal_botanistsuit", "thal_geneticistsuit"}
     },
 
-    ["he-chef"] = {
-        clothes = {"he-chefsuniform2", "he-chefsuniform1"},
-        randomwearables = {"he-chefscap2", "he-chefscap1"}
-    },
-
     citizen = {},
 
     cavedweller = {
@@ -86,7 +81,7 @@ Traitormod.Outfits = {
     },
 
     medicaldoctor = {
-        clothes = {"doctorsuniform2", "doctorsuniform1", "surgeonclothes"},
+        clothes = {"doctorsuniform2", "doctorsuniform1"},
         wearables = {"surgicalmask"}
     },
 

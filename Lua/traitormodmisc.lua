@@ -35,7 +35,7 @@ Hook.Add("think", "Traitormod.MiscThink", function()
             local client = Traitormod.FindClientCharacter(character)
             if not Traitormod.GhostRoles.IsGhostRole(character) and not client then
                 if Traitormod.Config.GhostRoleConfig.MiscGhostRoles[character.SpeciesName.Value] then
-                    Traitormod.GhostRoles.Ask(character.Name .. " " .. ghostRoleNumber, function(client)
+                    Traitormod.GhostRoles.Ask(character.DisplayName .. " " .. ghostRoleNumber, function(client)
                         client.SetClientCharacter(character)
                     end, character)
                     ghostRoleNumber = ghostRoleNumber + 1
@@ -280,7 +280,6 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
         LimbType.Head
     }
     if data and not data.NonInteractable then
-        local condition = data.Condition
         local prop = data.SerializableProperties[Identifier("NonInteractable")]
         data.NonInteractable = true
         Networking.CreateEntityEvent(data, Item.ChangePropertyEventData(prop, data))
@@ -308,16 +307,15 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
                     end
                 end)
 
-            Traitormod.SendMessage(client,
-                "You are being cloned! If your current character is alive, you won't gain control of the clone.")
+            Traitormod.SendMessage(client, "You are being cloned! If your current character is alive, you won't gain control of the clone.")
         end
 
         Timer.Wait(function()
             local traumatic = 0
             local surgical = 0
             local randomdisorder = possibledisorders[math.random(1, #possibledisorders)]
-            local char = Character.Create(client.CharacterInfo, item.WorldPosition, client.CharacterInfo.Name, 0, true,
-                false)
+            local char = Character.Create(client.CharacterInfo, item.WorldPosition, client.CharacterInfo.Name, 0, true, false)
+            local condition = data.Condition
             char.TeamID = CharacterTeamType.FriendlyNPC
             HF.RemoveItem(data)
 
@@ -332,8 +330,7 @@ Hook.Add("HuskSurvival.CloneStart", "HuskSurvival.CloneStart", function(effect, 
                         Traitormod.LostLivesThisRound[ghostclient.SteamID] = false
                         ghostclient.SetClientCharacter(char)
 
-                        Traitormod.SendMessageCharacter(char, string.format(Traitormod.Language.CloneRandom, char.Name),
-                            "InfoFrameTabButton.Mission")
+                        Traitormod.SendMessageCharacter(char, string.format(Traitormod.Language.CloneRandom, char.Name), "InfoFrameTabButton.Mission")
                     end, char)
                 end
             end, 1500)
@@ -501,19 +498,39 @@ dofile(Traitormod.Path .. "/Lua/Accents/scottish.lua")
 
 -- monster loot spawns
 Traitormod.MonsterItemsets = {
-    humanhuskold = {
+    { -- Cave Dweller
+        Chance = 1,
+
+        Suit = {
+            armoredivingmask = 0.15,
+            placeholdermask = 0.5,
+            cavejacketblack = 0.75,
+            cavejacketbrown = 1,
+        },
         Clothes = {
+            ["0.05"] = {"clownsuitunique", "clowncostume", "cultistrobes"},
+            ["1"] = {"caveclothes1", "caveclothes1green", "caveclothes2", "caveclothes3", "prisonerclothes"},
+        },
+        Items = {
 
         },
+    },
+
+    { -- Azoe Security
+        Chance = 0.35,
+
         Suit = {
-            armoredivingmask_alternate = 0.05,
-            armoredivingmask_improved = 0.1,
-            armoredivingmask = 0.15,
+            scp_combathardsuit = 0.001,
+            armoredivingmask_alternate = 0.1,
+            armoredivingmask = 0.1,
             husk_brokensuit = 0.45,
-            labcoat = 0.7,
-            cavejacketblack = 0.85,
-            cavejacketbrown = 0.9,
+            cavejacketblack = 0.3,
+            scp_softvest = 0.75,
+            scp_riotvest = 0.6,
             placeholdermask = 1,
+        },
+        Clothes = {
+            ["1"] = {"divinginstructorgarments", "divinginstructorgarments_short"},
         },
         Items = {
 
@@ -521,28 +538,49 @@ Traitormod.MonsterItemsets = {
     },
 }
 
-Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
-    local FoundItemSet = Traitormod.MonsterItemsets[tostring(character.SpeciesName)]
-    if not FoundItemSet then return end
+local function RollHuskLoadout()
+    local RandomLoadout = Traitormod.MonsterItemsets[math.random(#Traitormod.MonsterItemsets)]
+    local givenChance = math.random()
 
-    for item, chance in ipairs(FoundItemSet["Suit"]) do
+    if givenChance <= RandomLoadout["Chance"] then
+        return RandomLoadout
+    else
+        return RollHuskLoadout()
+    end
+end
+
+Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
+    if character.SpeciesName.ToString() ~= "humanhuskold" then return end
+    local RandomLoadout = RollHuskLoadout()
+
+    for item, chance in pairs(RandomLoadout["Suit"]) do
         local givenChance = math.random()
 
-        if givenChance <= chance then
+        if givenChance <= chance and math.random(1, 3) == 1 then
             local itemPrefab = ItemPrefab.GetItemPrefab(item)
             Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
                 local allowedSlots = {InvSlotType.OuterClothes, InvSlotType.Head}
-                character.Inventory.TryPutItem(spawned, allowedSlots, true, false, character)
+                character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, allowedSlots)
             end)
             break
         end
     end
 
-    for key, item in pairs(FoundItemSet["Clothes"]) do
+    for chance, itemset in pairs(RandomLoadout["Clothes"]) do
+        local givenChance = math.random()
 
+        if givenChance <= tonumber(chance) then
+            local randomclothing = itemset[math.random(1, #itemset)]
+            local itemPrefab = ItemPrefab.GetItemPrefab(randomclothing)
+            Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
+                local allowedSlots = {InvSlotType.InnerClothes, InvSlotType.Head, InvSlotType.HealthInterface, InvSlotType.Bag}
+                character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, allowedSlots)
+            end)
+            break
+        end
     end
 
-    for item in FoundItemSet["Items"] do
+    for item in RandomLoadout["Items"] do
 
     end
 end)
