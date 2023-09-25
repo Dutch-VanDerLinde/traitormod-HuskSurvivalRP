@@ -180,21 +180,21 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function(item, sen
 
                 -- If the player doesn't have a radio then it doesn't announce
                 if radio then
+                    local message = output
                     if distance >= 9500 then
-                        output = Traitormod.AddStaticToMessage(output, math.random(3, 5))
+                        message = Traitormod.AddStaticToMessage(message, math.random(3, 5))
                     end
 
                     local sb = Traitormod.StringBuilder:new()
-                    sb(color, string.format("\"%s\"", output))
+                    sb(color, string.format("\"%s\"", message))
                     sb("\n\n")
-                    sb("‖color:#D5B413‖%s‖color:end‖",
-                        string.format(Traitormod.Language.IntercomSentBy, sendername, jobname))
+                    sb("‖color:#D5B413‖%s‖color:end‖", string.format(Traitormod.Language.IntercomSentBy, sendername, jobname))
 
-                    output = sb:concat()
+                    message = sb:concat()
 
                     if distance <= 17500 then
                         Timer.Wait(function()
-                            local messageChat = ChatMessage.Create("Intercom", output, ChatMessageType.Default, nil, nil)
+                            local messageChat = ChatMessage.Create("Intercom", message, ChatMessageType.Default, nil, nil)
                             Game.SendDirectChatMessage(messageChat, client)
                         end, 500)
                     end
