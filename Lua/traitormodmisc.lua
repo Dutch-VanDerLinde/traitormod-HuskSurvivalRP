@@ -499,9 +499,50 @@ dofile(Traitormod.Path .. "/Lua/Accents/misc.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/archaic.lua")
 dofile(Traitormod.Path .. "/Lua/Accents/scottish.lua")
 
-
-
 -- monster loot spawns
+Traitormod.MonsterItemsets = {
+    humanhuskold = {
+        Clothes = {
+
+        },
+        Suit = {
+            cavejacketbrown = 0.9,
+            cavejacketblack = 0.8,
+            labcoat = 0.7,
+            husk_brokensuit = 0.45,
+            armoredivingmask = 0.15,
+            armoredivingmask_improved = 0.1,
+            armoredivingmask_alternate = 0.05,
+            placeholdermask = 0.95,
+        },
+        Items = {
+
+        },
+    },
+}
+
 Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
-    
+    local FoundItemSet = Traitormod.MonsterItemsets[tostring(character.SpeciesName)]
+    if not FoundItemSet then return end
+
+    for item, chance in pairs(FoundItemSet["Suit"]) do
+        local givenChance = math.random()
+
+        if givenChance <= chance then
+            local itemPrefab = ItemPrefab.GetItemPrefab(item)
+            Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
+                local allowedSlots = {InvSlotType.OuterClothes, InvSlotType.Head}
+                character.Inventory.TryPutItem(spawned, allowedSlots, true, false, character)
+            end)
+            break
+        end
+    end
+
+    for key, item in pairs(FoundItemSet["Clothes"]) do
+
+    end
+
+    for item in FoundItemSet["Items"] do
+
+    end
 end)
