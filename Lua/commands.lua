@@ -741,6 +741,30 @@ Traitormod.AddCommand({"!apm", "!adminpm"}, function (sender, args)
     return true
 end)
 
+Traitormod.AddCommand({"!achat", "!adminchat"}, function (sender, args)
+    if not sender.HasPermission(ClientPermissions.Kick) then return end
+
+    local finalmsg = ""
+    if #args > 0 then
+        for word in args do
+            finalmsg = finalmsg .. " " .. word
+        end
+    else
+        return true
+    end
+
+    local messageChat = ChatMessage.Create("", "ADMIN CHAT:\n"..finalmsg, ChatMessageType.Default, sender.Character, sender)
+    messageChat.Color = Color.IndianRed
+
+    for client in Client.ClientList do
+        if client.HasPermission(ClientPermissions.Kick) then
+            Game.SendDirectChatMessage(messageChat, client)
+        end
+    end
+
+    return true
+end)
+
 Traitormod.AddCommand("!ongoingevents", function (client, args)
     if not client.HasPermission(ClientPermissions.ConsoleCommands) then return end
 
