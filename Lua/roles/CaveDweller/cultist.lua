@@ -48,7 +48,11 @@ function role:Start()
     -- Gear Spawn
     Timer.Wait(function ()
         for key, item in pairs(self.RoleGear) do
-            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory)
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(item), self.Character.Inventory, nil, nil, function(spawned)
+                if spawned.Prefab.Identifier == "huskstinger" then
+                    spawned.AddTag("cultist_stinger")
+                end
+            end)
          end
     end, 100)
 
@@ -175,7 +179,7 @@ LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.StatusEffect"], "set_Af
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Affliction"], "_strength")
 
 Hook.Add("meleeWeapon.handleImpact",  "Cultist.Stinger", function (melee, target)
-    if melee.Item.Prefab.Identifier ~= "huskstinger" then return end
+    if melee.Item.Prefab.Identifier ~= "huskstinger" and melee.Item.HasTag("cultist_stinger") then return end
     if not LuaUserData.IsTargetType(target.UserData, "Barotrauma.Limb") then return end
     local character = target.UserData.character
 
