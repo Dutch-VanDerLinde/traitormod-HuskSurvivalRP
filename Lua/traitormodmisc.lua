@@ -232,7 +232,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
 
             local direction = Traitormod.VectorCompassDirection(client.Character.WorldPosition, value.WorldPosition)
 
-            if distance <= 300 then direction = "•" end
+            if distance <= 10 then direction = "•" end
 
             local ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance), direction)
             local netmessage = Networking.Start("Traitormod.IdCardLocator.MakeCrewList")
