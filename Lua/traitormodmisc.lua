@@ -506,14 +506,14 @@ Traitormod.MonsterItemsets = {
 
         },
         Suit = {
-            cavejacketbrown = 0.9,
-            cavejacketblack = 0.8,
-            labcoat = 0.7,
-            husk_brokensuit = 0.45,
-            armoredivingmask = 0.15,
-            armoredivingmask_improved = 0.1,
             armoredivingmask_alternate = 0.05,
-            placeholdermask = 0.95,
+            armoredivingmask_improved = 0.1,
+            armoredivingmask = 0.15,
+            husk_brokensuit = 0.45,
+            labcoat = 0.7,
+            cavejacketblack = 0.85,
+            cavejacketbrown = 0.9,
+            placeholdermask = 1,
         },
         Items = {
 
@@ -525,7 +525,7 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
     local FoundItemSet = Traitormod.MonsterItemsets[tostring(character.SpeciesName)]
     if not FoundItemSet then return end
 
-    for item, chance in pairs(FoundItemSet["Suit"]) do
+    for item, chance in ipairs(FoundItemSet["Suit"]) do
         local givenChance = math.random()
 
         if givenChance <= chance then
