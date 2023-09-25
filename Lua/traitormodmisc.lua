@@ -218,20 +218,29 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
 
     if output ~= "crewstatus" then return end
 
-    local terminal = item.GetComponentString("Terminal")
     local itemID = item.Prefab.Identifier
     local idcardidentifier = "tci_idcard"
     if itemID == "admindeviceazoe" then idcardidentifier = "azoe_idcard" end
 
+    local truekey = 0
     for key, value in pairs(Util.GetItemsById(idcardidentifier)) do
-        local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition)
-        local idCard = value.GetComponentString("IdCard")
-        local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
+        if not value.Removed then -- make sure our id isn't deleted
+            local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition)
+            local idCard = value.GetComponentString("IdCard")
+            local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
+            truekey = truekey + 1
 
-        terminal.ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance))
+            local direction = Traitormod.VectorCompassDirection(client.Character.WorldPosition, value.WorldPosition)
+
+            if distance <= 300 then direction = "•" end
+
+            local ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance), direction)
+            local netmessage = Networking.Start("Traitormod.IdCardLocator.MakeCrewList")
+            netmessage.WriteString(ShowMessage)
+            netmessage.WriteByte(Byte(truekey))
+            Networking.Send(netmessage, client.Connection)
+        end
     end
-
-    terminal.SyncHistory()
 end)
 
 Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", function(instance, ptable)

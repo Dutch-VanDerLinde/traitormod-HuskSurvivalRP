@@ -554,6 +554,31 @@ Traitormod.EndReached = function(character, distance)
     return characterInsideOutpost or Vector2.Distance(character.WorldPosition, Level.Loaded.EndPosition) < distance
 end
 
+Traitormod.VectorCompassDirection = function(vector1, vector2)
+    local dx = vector2.X - vector1.X
+    local dy = vector2.Y - vector1.Y
+
+    if dx > 0 and dy > 0 then
+        return "northeast"
+    elseif dx < 0 and dy > 0 then
+        return "northwest"
+    elseif dx < 0 and dy < 0 then
+        return "southwest"
+    elseif dx > 0 and dy < 0 then
+        return "southeast"
+    elseif dx > 0 then
+        return "east"
+    elseif dx < 0 then
+        return "west"
+    elseif dy > 0 then
+        return "north"
+    elseif dy < 0 then
+        return "south"
+    else
+        return "none"
+    end
+end
+
 Traitormod.SendWelcome = function(client)
     if Traitormod.Config.SendWelcomeMessage or Traitormod.Config.SendWelcomeMessage == nil then
         Game.SendDirectChatMessage("",

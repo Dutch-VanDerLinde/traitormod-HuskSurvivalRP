@@ -371,7 +371,7 @@ language.Pointshop = {
     other = "Other",
     idcardlocator = "Id Card Locator",
     idcardlocator_desc = "‖color:gui.red‖Id Card Locator‖color:end‖",
-    idcardlocator_result = "%s - %s - %s meters away",
+    idcardlocator_result = "%s - %s - %s meters away - %s",
 }
 
 language.FakeHandcuffsUsage = "You can free yourself from these handcuffs using !fhc"
