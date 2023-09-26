@@ -245,7 +245,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
 
     local truekey = 0
     for key, value in pairs(Util.GetItemsById(idcardidentifier)) do
-        if not value.Removed then -- make sure our id isn't deleted
+        if not value.Removed and not value.HasTag("notracker") then -- make sure our id isn't deleted
             local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
             local idCard = value.GetComponentString("IdCard")
             local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
@@ -620,21 +620,19 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
             local itemPrefab = ItemPrefab.GetItemPrefab(IdCard["Prefab"])
             Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
                 character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.Card})
-
                 local IDTags = IdCard["Tags"]
                 local randomname = Traitormod.AddStaticToMessage(Traitormod.GetRandomName(), math.random(1, 3))
 
-                if IDTags then
-                    spawned.Tags = IDTags or waypoint.IdCardTags
-                    spawned.AddTag("job:"..IdCard["JobTitle"])
-                    spawned.AddTag("name:"..randomname)
-                    spawned.Description = Traitormod.AddStaticToMessage(IdCard["Description"], math.random(2, 4))
+                spawned.Tags = IDTags or waypoint.IdCardTags
+                spawned.AddTag("job:"..IdCard["JobTitle"])
+                spawned.AddTag("name:"..randomname)
+                spawned.AddTag("notracker")
+                spawned.Description = Traitormod.AddStaticToMessage(IdCard["Description"], math.random(2, 4))
 
-                    local IdCardComponent = spawned.GetComponentString("IdCard")
-                    IdCardComponent.OwnerJobId = IdCard["JobID"]
-                    IdCardComponent.OwnerName  = randomname
-                    spawned.CreateServerEvent(IdCardComponent, IdCardComponent)
-                end
+                local IdCardComponent = spawned.GetComponentString("IdCard")
+                IdCardComponent.OwnerJobId = IdCard["JobID"]
+                IdCardComponent.OwnerName  = randomname
+                spawned.CreateServerEvent(IdCardComponent, IdCardComponent)
             end)
         end
     end
