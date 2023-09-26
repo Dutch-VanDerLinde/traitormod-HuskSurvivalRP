@@ -118,6 +118,27 @@ if Traitormod.Config.DeathLogBook then
     end)
 end
 
+-- random materials table
+Traitormod.MineralsTable = {
+    "carbon",
+    "copper",
+    "iron",
+    "lead",
+    "magnesium",
+    "silicon",
+    "titanium",
+    "scrap",
+    "zinc",
+    "organicfiber",
+    "opium",
+    "rubber",
+    "tin",
+    "aragonite",
+    "stannite",
+    "amblygonite",
+    "yeastshroom",
+}
+
 Traitormod.AddStaticToMessage = function(msg, chance)
     for i = 1, #msg do
         local c = msg:sub(i, i)
@@ -507,34 +528,73 @@ Traitormod.MonsterItemsets = {
             cavejacketblack = 0.75,
             cavejacketbrown = 1,
         },
-        Clothes = {
-            ["0.05"] = {"clownsuitunique", "clowncostume", "cultistrobes"},
-            ["1"] = {"caveclothes1", "caveclothes1green", "caveclothes2", "caveclothes3", "prisonerclothes"},
-        },
+        Clothes = {"caveclothes1", "caveclothes1green", "caveclothes2", "caveclothes3", "prisonerclothes"},
         Items = {
 
         },
     },
 
     { -- Azoe Security
-        Chance = 0.35,
+        Chance = 0.2,
+        IDCard = {Prefab = "azoe_idcard", JobTitle = "security officer", JobID = "guardone", Description = "Government access."},
 
         Suit = {
             scp_combathardsuit = 0.001,
-            armoredivingmask_alternate = 0.1,
-            armoredivingmask = 0.1,
+            armoredivingmask_alternate = 0.05,
             husk_brokensuit = 0.45,
             cavejacketblack = 0.3,
             scp_softvest = 0.75,
             scp_riotvest = 0.6,
             placeholdermask = 1,
         },
-        Clothes = {
-            ["1"] = {"divinginstructorgarments", "divinginstructorgarments_short"},
-        },
+        Clothes = {"divinginstructorgarments", "divinginstructorgarments_short"},
         Items = {
 
         },
+    },
+
+    { -- Miner
+        Chance = 0.75,
+        IDCard = {Prefab = "azoe_idcard", Tags = "miner,azoe", JobTitle = "miner", JobID = "citizen", Description = "Mine access."},
+
+        Suit = {
+            armoredivingmask_alternate = 0.1,
+            armoredivingmask_improved = 0.1,
+            husk_brokensuit = 0.85,
+            cavejacketbrown = 0.85,
+            placeholdermask = 1,
+        },
+        Clothes = {"orangejumpsuit1", "minerclothes"},
+        Items = {
+            {Chance = 0.95, Item = "plasmacutter", ContainedItems = {"oxygentank"}, ContainedConditionRange = {0, 20}},
+            {Chance = 0.95, Item = "scp_fieldpack", SpawnRandomMinerals = true},
+        },
+    },
+
+    -- Special Husk sets below
+
+    { -- Clown (Rare)
+        Chance = 0.1,
+
+        Suit = {clownmask = 1},
+        Clothes = {"clowncostume"},
+        Items = {},
+    },
+
+    { -- Unique Clown (Rare)
+        Chance = 0.08,
+
+        Suit = {clownmaskunique = 1},
+        Clothes = {"clownsuitunique"},
+        Items = {},
+    },
+
+    { -- Cultist (Rare)
+        Chance = 0.04,
+
+        Suit = {},
+        Clothes = {"cultistrobes"},
+        Items = {},
     },
 }
 
@@ -552,11 +612,37 @@ end
 Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
     if character.SpeciesName.ToString() ~= "humanhuskold" then return end
     local RandomLoadout = RollHuskLoadout()
+    local IdCard = RandomLoadout["IDCard"]
+
+    if IdCard then
+        local waypoint = Traitormod.GetRandomJobWaypoint(IdCard["JobID"])
+        if waypoint then
+            local itemPrefab = ItemPrefab.GetItemPrefab(IdCard["Prefab"])
+            Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
+                character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.Card})
+
+                local IDTags = IdCard["Tags"]
+                local randomname = Traitormod.AddStaticToMessage(Traitormod.GetRandomName(), math.random(1, 3))
+
+                if IDTags then
+                    spawned.Tags = IDTags or waypoint.IdCardTags
+                    spawned.AddTag("job:"..IdCard["JobTitle"])
+                    spawned.AddTag("name:"..randomname)
+                    spawned.Description = Traitormod.AddStaticToMessage(IdCard["Description"], math.random(2, 4))
+
+                    local IdCardComponent = spawned.GetComponentString("IdCard")
+                    IdCardComponent.OwnerJobId = IdCard["JobID"]
+                    IdCardComponent.OwnerName  = randomname
+                    spawned.CreateServerEvent(IdCardComponent, IdCardComponent)
+                end
+            end)
+        end
+    end
 
     for item, chance in pairs(RandomLoadout["Suit"]) do
         local givenChance = math.random()
 
-        if givenChance <= chance and math.random(1, 3) == 1 then
+        if givenChance <= chance then
             local itemPrefab = ItemPrefab.GetItemPrefab(item)
             Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
                 local allowedSlots = {InvSlotType.OuterClothes, InvSlotType.Head}
@@ -566,21 +652,64 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
         end
     end
 
-    for chance, itemset in pairs(RandomLoadout["Clothes"]) do
-        local givenChance = math.random()
-
-        if givenChance <= tonumber(chance) then
-            local randomclothing = itemset[math.random(1, #itemset)]
-            local itemPrefab = ItemPrefab.GetItemPrefab(randomclothing)
-            Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
-                local allowedSlots = {InvSlotType.InnerClothes, InvSlotType.Head, InvSlotType.HealthInterface, InvSlotType.Bag}
-                character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, allowedSlots)
-            end)
-            break
-        end
-    end
+    local possibleClothes = RandomLoadout["Clothes"]
+    local randomclothing = ItemPrefab.GetItemPrefab(possibleClothes[math.random(#possibleClothes)])
+    Entity.Spawner.AddItemToSpawnQueue(randomclothing, character.Inventory, nil, nil, function(spawned)
+        local allowedSlots = {InvSlotType.InnerClothes, InvSlotType.Head, InvSlotType.HealthInterface, InvSlotType.Bag}
+        character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, allowedSlots)
+    end)
 
     for item in RandomLoadout["Items"] do
+        local itemType = type(item)
 
+        if itemType == "table" then
+            local itemToSpawn = item["Item"]
+            local chance = item["Chance"]
+            local containedItems = item["ContainedItems"]
+            local ContainedConditionRange = item["ContainedConditionRange"]
+            local givenChance = math.random()
+
+            local function SpawnItem()
+                local prefab = ItemPrefab.GetItemPrefab(itemToSpawn)
+                Entity.Spawner.AddItemToSpawnQueue(prefab, character.Inventory, nil, nil, function(spawned)
+                    local allowedSlots = {InvSlotType.InnerClothes, InvSlotType.Head, InvSlotType.HealthInterface, InvSlotType.Bag, InvSlotType.Card, InvSlotType.OuterClothes, InvSlotType.Headset}
+                    character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, allowedSlots)
+
+                    if containedItems then
+                        for itemID in containedItems do
+                            local containedPrefab = ItemPrefab.GetItemPrefab(itemID)
+                            local condition = 100
+
+                            if ContainedConditionRange then 
+                                condition = math.random(ContainedConditionRange[1], ContainedConditionRange[2])
+                            end
+
+                            Timer.Wait(function () Entity.Spawner.AddItemToSpawnQueue(containedPrefab, spawned.OwnInventory, condition) end, 250)
+                        end
+                    end
+
+                    if item["SpawnRandomMinerals"] then
+                        for i = 1, math.random(4, 11), 1 do
+                            local randomitem = Traitormod.MineralsTable[math.random(#Traitormod.MineralsTable)]
+                            for i = 1, math.random(1, 4), 1 do
+                                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomitem), spawned.OwnInventory)
+                            end
+                        end
+                    end
+                end)
+            end
+
+            if chance and givenChance <= chance then
+                SpawnItem()
+            elseif not chance then
+                SpawnItem()
+            end
+        elseif itemType == "string" then
+            local prefab = ItemPrefab.GetItemPrefab(item)
+            Entity.Spawner.AddItemToSpawnQueue(prefab, character.Inventory, nil, nil, function(spawned)
+                local allowedSlots = {InvSlotType.InnerClothes, InvSlotType.Head, InvSlotType.HealthInterface, InvSlotType.Bag, InvSlotType.Card, InvSlotType.OuterClothes, InvSlotType.Headset}
+                character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, allowedSlots)
+            end)
+        end
     end
 end)

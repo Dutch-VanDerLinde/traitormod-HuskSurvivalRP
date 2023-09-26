@@ -616,10 +616,11 @@ end
 
 Traitormod.GetRandomName = function(gender)
     local firstname = "Unknown"
+    local chance = math.random(1, 2) -- if no gender argument given, go random
 
-    if gender == "male" then
+    if gender == "male" or chance == 1 then
         firstname = Traitormod.Language.MaleNames[math.random(1, #Traitormod.Language.MaleNames)]
-    elseif gender == "female" then
+    elseif gender == "female" or chance == 2 then
         firstname = Traitormod.Language.FemaleNames[math.random(1, #Traitormod.Language.FemaleNames)]
     end
 
@@ -884,31 +885,10 @@ Traitormod.DoJobSet = function(character)
             function(spawned) character.Inventory.TryPutItemWithAutoEquipCheck(spawned, nil, { InvSlotType.OuterClothes }) end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomBag), character.Inventory, nil, nil,
             function(spawned)
-                character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Bag), true, false,
-                    character)
-
-                -- random materials
-                local randomItems = {
-                    "carbon",
-                    "copper",
-                    "iron",
-                    "lead",
-                    "magnesium",
-                    "silicon",
-                    "titanium",
-                    "scrap",
-                    "zinc",
-                    "organicfiber",
-                    "opium",
-                    "rubber",
-                    "tin",
-                    "aragonite",
-                    "stannite",
-                    "amblygonite",
-                }
+                character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Bag), true, false, character)
 
                 for i = 1, math.random(3, 8), 1 do
-                    local randomitem = randomItems[math.random(1, #randomItems)]
+                    local randomitem = Traitormod.MineralsTable[math.random(1, #Traitormod.MineralsTable)]
                     for i = 1, math.random(1, 3), 1 do
                         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomitem), spawned.OwnInventory)
                     end
