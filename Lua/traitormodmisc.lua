@@ -616,7 +616,7 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
 
     if IdCard then
         local waypoint = Traitormod.GetRandomJobWaypoint(IdCard["JobID"])
-        local IDTags = WayPoint.IdCardTags
+        local IDTags = waypoint.IdCardTags
 
         if IdCard["Tags"] then IDTags = IdCard["Tags"] end
         if waypoint then

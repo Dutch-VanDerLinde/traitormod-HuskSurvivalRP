@@ -129,29 +129,10 @@ category.Products = {
     },
 
     {
-        Identifier = "spawnashuskedhumanold",
-        Price = 450,
-        Limit = 3,
-        IsLimitGlobal = true,
-        PricePerLimit = 100,
-        Timeout = 60,
-
-        RoundPrice = {
-            PriceReduction = 300,
-            StartTime = 15,
-            EndTime = 35,
-        },
-
-        Action = function (client, product, items, paidPrice)
-            SpawnCreature("humanhuskold", client, product, paidPrice)
-        end
-    },
-
-    {
         Identifier = "spawnashusk",
         Price = 600,
-        Limit = 3,
-        IsLimitGlobal = true,
+        Limit = 5,
+        IsLimitGlobal = false,
         PricePerLimit = 100,
         Timeout = 60,
 
@@ -162,26 +143,7 @@ category.Products = {
         },
 
         Action = function (client, product, items, paidPrice)
-            SpawnCreature("huskold", client, product, paidPrice)
-        end
-    },
-
-    {
-        Identifier = "spawnashuskpucs",
-        Price = 900,
-        Limit = 4,
-        IsLimitGlobal = true,
-        PricePerLimit = 175,
-        Timeout = 60,
-
-        RoundPrice = {
-            PriceReduction = 850,
-            StartTime = 15,
-            EndTime = 30,
-        },
-
-        Action = function (client, product, items, paidPrice)
-            SpawnCreature("huskpucsold", client, product, paidPrice)
+            SpawnCreature("humanhuskold", client, product, paidPrice)
         end
     },
 
