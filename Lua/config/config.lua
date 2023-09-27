@@ -14,6 +14,7 @@ config.Extensions = {
     dofile(Traitormod.Path .. "/Lua/extensions/bypassplayercount.lua"),
     dofile(Traitormod.Path .. "/Lua/extensions/hivemind.lua"),
     dofile(Traitormod.Path .. "/Lua/extensions/idcardprinter.lua"),
+    dofile(Traitormod.Path .. "/Lua/extensions/constructionmenu.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/weaponnerfs.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/paralysisnerf.lua"),
     --dofile(Traitormod.Path .. "/Lua/extensions/pressuremidjoin.lua"),
@@ -25,11 +26,11 @@ config.ExtensionConfig = {
 
 ----- GAMEPLAY -----
 config.Codewords = {
-    "hull", "tabacco", "nonsense", "fish", "clown", "quartermaster", "fast", "possibility",
+    "hull", "tabacco", "nonsense", "fish", "clown", "hello", "fast", "possibility",
 	"thalamus", "hungry", "water", "looks", "renegade", "angry", "green", "sink", "rubber",
-	"mask", "sweet", "ice", "charybdis", "cult", "secret", "frequency",
-	"husk", "rust", "ruins", "red", "boat", "cats", "rats", "blast",
-	"tire", "trunk", "weapons", "threshers", "cargo", "method", "monkey"
+	"mask", "sweet", "ice", "crawler", "cult", "secret", "frequency", "red", "blue",
+	"husk", "rust", "ruins", "red", "boat", "cats", "rats", "blast", "found", "wreck",
+	"tire", "trunk", "weapons", "mudraptors", "cargo", "method", "monkey", "cultist", "fast"
 }
 
 config.AmountCodeWords = 2
