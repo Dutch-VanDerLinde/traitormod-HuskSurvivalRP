@@ -253,7 +253,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
 
             local direction = Traitormod.VectorCompassDirection(client.Character.WorldPosition, value.WorldPosition)
 
-            if distance <= 10 then direction = "•" end
+            if distance <= 4 then direction = "•" end
 
             local ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance), direction)
             local netmessage = Networking.Start("Traitormod.IdCardLocator.MakeCrewList")
@@ -616,14 +616,16 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
 
     if IdCard then
         local waypoint = Traitormod.GetRandomJobWaypoint(IdCard["JobID"])
+        local IDTags = WayPoint.IdCardTags
+
+        if IdCard["Tags"] then IDTags = IdCard["Tags"] end
         if waypoint then
             local itemPrefab = ItemPrefab.GetItemPrefab(IdCard["Prefab"])
             Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
                 character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.Card})
-                local IDTags = IdCard["Tags"]
                 local randomname = Traitormod.AddStaticToMessage(Traitormod.GetRandomName(), math.random(1, 3))
 
-                spawned.Tags = IDTags or waypoint.IdCardTags
+                spawned.Tags = IDTags
                 spawned.AddTag("job:"..IdCard["JobTitle"])
                 spawned.AddTag("name:"..randomname)
                 spawned.AddTag("notracker")

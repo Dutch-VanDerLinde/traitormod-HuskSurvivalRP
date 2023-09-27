@@ -23,7 +23,7 @@ Traitormod.AddCommand("!setrpname", function (client, args)
         return true
     end
 
-    local name = ""
+    local name = table.remove(args, 1)
     for word in args do
         name = name .. " " .. word
     end
