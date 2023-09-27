@@ -45,6 +45,9 @@ function gm:Start()
         this:CharacterDeath(character)
     end)
 
+    Submarine.MainSub.LockX = true
+    Submarine.MainSub.LockY = true
+
     local possiblespecialweaponholder = {"autoshotgun","assaultrifle","arcemitter"}
     local randomweaponholder = possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)]
 
