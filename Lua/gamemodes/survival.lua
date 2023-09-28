@@ -48,6 +48,8 @@ function gm:Start()
 
     Submarine.MainSub.LockX = true
     Submarine.MainSub.LockY = true
+    Game.ExecuteCommand("enablecheats")
+    Game.ExecuteCommand("disablecrewai") -- Disable human ai (It's laggy as hell)
 
     local possiblespecialweaponholder = {"autoshotgun","assaultrifle","arcemitter"}
     local randomweaponholder = possiblespecialweaponholder[math.random(1, #possiblespecialweaponholder)]
