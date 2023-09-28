@@ -1,6 +1,7 @@
 local extension = {}
 
 extension.Identifier = "construction"
+extension.FailedCraftMessage = "You don't have enough materials to craft %s!"
 
 extension.Init = function ()
     Networking.Receive("HuskConstructionMenu_RequestSpawn", function(msg, sender)
@@ -60,7 +61,7 @@ extension.Init = function ()
                 Game.Log(tostring(prefab).." has been crafted by "..sender.Name, ServerLogMessageType.Spawning)
             end, 2000)
         else
-            Husk.SendHuskAlertMessage("You don't have enough materials to craft"..prefab.Name.ToString(), Color.Red, sender)
+            Husk.SendHuskAlertMessage(string.format(extension.FailedCraftMessage, prefab.Name.ToString()), Color.Red, sender)
             Game.Log(sender.Name.." has attempted to craft "..tostring(prefab)..", but failed.", ServerLogMessageType.Spawning)
         end
     end)
