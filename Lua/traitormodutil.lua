@@ -791,7 +791,7 @@ end
 
 Traitormod.SpawnLootTables = function(loottable)
     for item in Submarine.MainSub.GetItems(false) do
-        if item.HasTag("container") then
+        if item.HasTag("container") or item.HasTag("weaponholder") then
             for tag, content in pairs(loottable) do
                 if item.HasTag(tag) then
                     -- Iterate through all the items in the loot table and do spawning procedure
