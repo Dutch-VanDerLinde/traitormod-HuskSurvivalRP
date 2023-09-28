@@ -14,6 +14,8 @@ language.Tips = {
     "Use !ooc command to talk about out of character matters.",
     "The round will automatically end once all humans die.",
     "If your original character died, do not worry! You can still be cloned at the institute. Better hope that someone brings you there, though..",
+    "While playing on our servers, please make sure you have clientside lua installed!",
+    "Press M to access the crafting menu.",
 }
 
 language.Help = "\n!help - shows this help message\n!helpadmin - lists all admin commands\n!role - show role info\n!deathspawn - opens the deathspawn shop\n!money - show your money and lives\n!alive - list alive players (only while dead)\n!suicide - kills your character\n!adminhelp - sends a message to an admin and on the discord\n!version - shows running version of the traitormod\n!write - writes to your death logbook\n!playtime - shows how long you've played on the server\n!roundtime - shows the current round time\n!ooc [message] - sends a message to ooc chat"
