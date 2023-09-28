@@ -615,31 +615,31 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
     local IdCard = RandomLoadout["IDCard"]
 
     if IdCard then
-        local waypoint = Traitormod.GetRandomJobWaypoint(IdCard["JobID"])
+        local waypoint = Traitormod.GetRandomJobWaypoint(IdCard.JobID)
         local IDTags = tostring(waypoint.IdCardTags)
 
-        if IdCard["Tags"] then IDTags = IdCard["Tags"] end
+        if IdCard.Tags then IDTags = IdCard.Tags end
         if waypoint then
-            local itemPrefab = ItemPrefab.GetItemPrefab(IdCard["Prefab"])
+            local itemPrefab = ItemPrefab.GetItemPrefab(IdCard.Prefab)
             Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
                 character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.Card})
                 local randomname = Traitormod.AddStaticToMessage(Traitormod.GetRandomName(), math.random(1, 3))
 
                 spawned.Tags = IDTags
-                spawned.AddTag("job:"..IdCard["JobTitle"])
+                spawned.AddTag("job:"..IdCard.JobTitle)
                 spawned.AddTag("name:"..randomname)
                 spawned.AddTag("notracker")
-                spawned.Description = Traitormod.AddStaticToMessage(IdCard["Description"], math.random(2, 4))
+                spawned.Description = Traitormod.AddStaticToMessage(IdCard.Description, math.random(2, 4))
 
                 local IdCardComponent = spawned.GetComponentString("IdCard")
-                IdCardComponent.OwnerJobId = IdCard["JobID"]
+                IdCardComponent.OwnerJobId = IdCard.JobID
                 IdCardComponent.OwnerName  = randomname
                 spawned.CreateServerEvent(IdCardComponent, IdCardComponent)
             end)
         end
     end
 
-    for item, chance in pairs(RandomLoadout["Suit"]) do
+    for item, chance in pairs(RandomLoadout.Suit) do
         local givenChance = math.random()
 
         if givenChance <= chance then
@@ -652,21 +652,21 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
         end
     end
 
-    local possibleClothes = RandomLoadout["Clothes"]
+    local possibleClothes = RandomLoadout.Clothes
     local randomclothing = ItemPrefab.GetItemPrefab(possibleClothes[math.random(#possibleClothes)])
     Entity.Spawner.AddItemToSpawnQueue(randomclothing, character.Inventory, nil, nil, function(spawned)
         local allowedSlots = {InvSlotType.InnerClothes, InvSlotType.Head, InvSlotType.HealthInterface, InvSlotType.Bag}
         character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, allowedSlots)
     end)
 
-    for item in RandomLoadout["Items"] do
+    for item in RandomLoadout.Items do
         local itemType = type(item)
 
         if itemType == "table" then
-            local itemToSpawn = item["Item"]
-            local chance = item["Chance"]
-            local containedItems = item["ContainedItems"]
-            local ContainedConditionRange = item["ContainedConditionRange"]
+            local itemToSpawn = item.Item
+            local chance = item.Chance
+            local containedItems = item.ContainedItems
+            local ContainedConditionRange = item.ContainedConditionRange
             local givenChance = math.random()
 
             local function SpawnItem()

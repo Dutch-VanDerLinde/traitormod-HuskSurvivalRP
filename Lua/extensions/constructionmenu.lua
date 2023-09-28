@@ -2,6 +2,7 @@ local extension = {}
 
 extension.Identifier = "construction"
 extension.FailedCraftMessage = "You don't have enough materials to craft %s!"
+extension.SuccessCraftMessage = "Succesfully crafted %s."
 
 extension.Init = function ()
     Networking.Receive("HuskConstructionMenu_RequestSpawn", function(msg, sender)
