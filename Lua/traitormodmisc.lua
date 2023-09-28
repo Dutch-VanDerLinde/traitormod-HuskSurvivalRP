@@ -688,7 +688,7 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
                         end
                     end
 
-                    if item["SpawnRandomMinerals"] then
+                    if item.SpawnRandomMinerals then
                         for i = 1, math.random(4, 11), 1 do
                             local randomitem = Traitormod.MineralsTable[math.random(#Traitormod.MineralsTable)]
                             for i = 1, math.random(1, 4), 1 do
