@@ -539,8 +539,6 @@ Traitormod.MonsterItemsets = {
         IDCard = {Prefab = "azoe_idcard", JobTitle = "security officer", JobID = "guardone", Description = "Government access."},
 
         Suit = {
-            scp_combathardsuit = 0.001,
-            armoredivingmask_alternate = 0.05,
             husk_brokensuit = 0.45,
             cavejacketblack = 0.3,
             scp_softvest = 0.75,
@@ -558,8 +556,6 @@ Traitormod.MonsterItemsets = {
         IDCard = {Prefab = "azoe_idcard", Tags = "miner,azoe", JobTitle = "miner", JobID = "citizen", Description = "Mine access."},
 
         Suit = {
-            armoredivingmask_alternate = 0.1,
-            armoredivingmask_improved = 0.1,
             husk_brokensuit = 0.85,
             cavejacketbrown = 0.85,
             placeholdermask = 1,
