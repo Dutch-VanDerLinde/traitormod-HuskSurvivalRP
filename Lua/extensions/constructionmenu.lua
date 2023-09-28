@@ -33,6 +33,9 @@ extension.Init = function ()
 
         if RequiredItemsPicked >= MaxRequiredItems then
             for item in ItemsToRemove do
+                for containeditem in item.OwnInventory.AllItemsMod do
+                    containeditem.Drop()
+                end
                 Entity.Spawner.AddEntityToRemoveQueue(item)
             end
             Timer.Wait(function ()
