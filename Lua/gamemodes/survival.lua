@@ -121,7 +121,8 @@ function gm:Start()
             {"husk_pistolmag", 1, 1, math.random(1, 2)},
             {"9mm_round", 0.5, 2, math.random(6, 12)},
             {"9mm_round", 0.25, 1, math.random(6, 24)},
-            {"9mm_round", 1, 1, math.random(12, 36)},
+            {"9mm_round", 1, 1, math.random(12, 24)},
+            {"9mm_round", 0.85, 1, math.random(6, 12)},
             {"husk_shotgun", 0.45, 1, 1},
             {"husk_shotgun", 0.15, 2, 1 + math.random(1, 2)},
             {"husk_shotgun", 0.75, 1, 1},
@@ -145,9 +146,7 @@ function gm:Start()
             {"chemgrenade ", 1, 1, 1},
             {"empgrenade ", 1, 1, math.random(1, 2)},
         },
-        specialweaponholder = {
-            {randomweaponholder, 0.5, 1, 1},
-        },
+        specialweaponholder = {{randomweaponholder, 1, 1, 1}},
         firstaidcab = {
             {"scp_painkillers ", 1, 1, math.random(1, 2)},
             {"scp_painkillers", 0.5, 1, 2},
