@@ -51,8 +51,10 @@ function gm:Start()
     Game.ExecuteCommand("enablecheats")
     Game.ExecuteCommand("disablecrewai") -- Disable human ai (It's laggy as hell)
 
-    local possiblespecialweaponholder = {"autoshotgun","husk_assaultrifle","arcemitter"}
-    local randomweaponholder = possiblespecialweaponholder[math.random(#possiblespecialweaponholder)]
+    local possiblespecialweaponholderTCI = {"autoshotgun","husk_assaultrifle","arcemitter","flamerunique"}
+    local possiblespecialweaponholderAzoe = {"autoshotgun","shotgununique","arcemitter","harpooncoilrifle"}
+    local randomweaponholderTCI = possiblespecialweaponholderTCI[math.random(#possiblespecialweaponholderTCI)]
+    local randomweaponholderAzoe = possiblespecialweaponholderAzoe[math.random(#possiblespecialweaponholderAzoe)]
 
     local loottable = {
         --Uses binomial distribution (p is %, n is tries)
@@ -116,8 +118,8 @@ function gm:Start()
             {"pistol", 1, 1, 2},
             {"pistol", 0.5, 1, 1},
             {"pistol", 0.5, 1, 1},
-            {"husk_pistolmag", 0.5, 2, 1},
-            {"husk_pistolmag", 0.25, 1, 1},
+            {"husk_pistolmag", 0.55, 2, 1},
+            {"husk_pistolmag", 0.85, 1, 2},
             {"husk_pistolmag", 1, 1, math.random(1, 2)},
             {"9mm_round", 0.5, 2, math.random(6, 12)},
             {"9mm_round", 0.25, 1, math.random(6, 24)},
@@ -139,14 +141,13 @@ function gm:Start()
             {"stungrenade", 0.2, math.random(1, 2), 1},
             {"fraggrenade", 1, 1, math.random(1, 3)},
             {"fraggrenade", 0.5, 1, 1},
-            {"incendiumgrenade", 1, 1, 1},
-            {"incendiumgrenade", 0.65, math.random(1, 2), math.random(1, 2)},
-            {"chemgrenade ", 0.85, 1, math.random(2, 5)},
-            {"chemgrenade ", 1, 1, 1},
-            {"chemgrenade ", 1, 1, 1},
-            {"empgrenade ", 1, 1, math.random(1, 2)},
+            {"chemgrenade", 0.85, 1, math.random(2, 5)},
+            {"chemgrenade", 1, 1, 1},
+            {"chemgrenade", 1, 1, 1},
+            {"empgrenade", 1, 1, math.random(1, 2)},
         },
-        specialweaponholder = {{randomweaponholder, 1, 1, 1}},
+        specialweaponholdertci = {{randomweaponholderTCI, 1, 1, 1}},
+        specialweaponholderazoe = {{randomweaponholderAzoe, 1, 1, 1}},
         firstaidcab = {
             {"scp_painkillers ", 1, 1, math.random(1, 2)},
             {"scp_painkillers", 0.5, 1, 2},
