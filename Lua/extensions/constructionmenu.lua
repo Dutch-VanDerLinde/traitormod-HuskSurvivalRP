@@ -8,6 +8,11 @@ extension.Init = function ()
         local prefab = ItemPrefab.GetItemPrefab(itemID)
         local itemEntry = Husk.ConstructionMenuList[itemID]
 
+        local clonedTable = {}
+        for item in itemEntry do
+            table.insert(clonedTable, item) -- clone the table because table.remove
+        end
+
         if not sender.Character
             or sender.Character.IsDead
             or sender.Character.IsHusk
@@ -22,10 +27,20 @@ extension.Init = function ()
         local RequiredItemsPicked = 0
         local ItemsToRemove = {}
 
-        for requireditem in itemEntry do
-            for item in character.Inventory.AllItemsMod do
-                if item.Prefab.Identifier == requireditem then
+        local itemsTable = {}
+        for item in character.Inventory.AllItems do
+            for key, value in pairs(clonedTable) do
+                if value == item.Prefab.Identifier.ToString() then
+                    table.insert(itemsTable, item)
+                end
+            end
+        end
+
+        for item in itemsTable do
+            for key, value in ipairs(clonedTable) do
+                if item.Prefab.Identifier.ToString() == value and RequiredItemsPicked < MaxRequiredItems then
                     RequiredItemsPicked = RequiredItemsPicked + 1
+                    table.remove(clonedTable, key)
                     table.insert(ItemsToRemove, item)
                 end
             end
@@ -33,8 +48,10 @@ extension.Init = function ()
 
         if RequiredItemsPicked >= MaxRequiredItems then
             for item in ItemsToRemove do
-                for containeditem in item.OwnInventory.AllItemsMod do
-                    containeditem.Drop()
+                if item.OwnInventory then
+                    for containeditem in item.OwnInventory.AllItemsMod do
+                        containeditem.Drop()
+                    end
                 end
                 Entity.Spawner.AddEntityToRemoveQueue(item)
             end
@@ -43,8 +60,7 @@ extension.Init = function ()
                 Game.Log(tostring(prefab).." has been crafted by "..sender.Name, ServerLogMessageType.Spawning)
             end, 2000)
         else
-            local chatmessage = ChatMessage.Create("", "I don't have enough materials to make this..", ChatMessageType.Default, character, sender)
-            Game.SendDirectChatMessage(chatmessage, sender)
+            Husk.SendHuskAlertMessage("You don't have enough materials to craft"..prefab.Name.ToString(), Color.Red, sender)
             Game.Log(sender.Name.." has attempted to craft "..tostring(prefab)..", but failed.", ServerLogMessageType.Spawning)
         end
     end)
