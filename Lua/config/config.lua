@@ -35,7 +35,7 @@ config.Codewords = {
 
 config.AmountCodeWords = 2
 
-config.DamageResistance = 0.25
+config.DamageResistance = 0.1
 config.OptionalTraitors = true        -- players can use !toggletraitor
 config.RagdollOnDisconnect = false
 config.EnableControlHusk = true     -- EXPERIMENTAL: enable to control husked character after death
