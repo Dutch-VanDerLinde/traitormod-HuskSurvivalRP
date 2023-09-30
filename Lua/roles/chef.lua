@@ -55,8 +55,10 @@ function role:Start()
          end
     end, 450)
 
-    local tppos = Traitormod.GetRandomJobWaypoint("he-chef").WorldPosition
-    self.Character.TeleportTo(tppos)
+    Timer.Wait(function ()
+        local tppos = Traitormod.GetRandomJobWaypoint("he-chef").WorldPosition
+        self.Character.TeleportTo(tppos)
+    end, 1500)
 end
 
 
