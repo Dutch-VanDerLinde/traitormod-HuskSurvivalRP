@@ -250,6 +250,8 @@ function gm:Start()
         },
         medfabcab = {
             {"adrenaline", 0.9, 1, math.random(3, 6)},
+            {"ointment", 0.9, 1, math.random(3, 6)},
+            {"ointment", 1, 1, math.random(2, 4)},
             {"chlorine", 0.9, math.random(2, 3), math.random(2)},
             {"phosphorus", 0.75, math.random(2), math.random(3, 4)},
             {"potassium", 0.9, math.random(2, 3), math.random(2)},
