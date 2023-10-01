@@ -361,7 +361,6 @@ function gm:PreStart()
         if Traitormod.Config.HideCrewList then Networking.CreateEntityEvent(character, Character.RemoveFromCrewEventData.__new(character.TeamID, {})) end
         if Traitormod.Config.RoleplayNames then Traitormod.randomizeCharacterName(character) end
 
-        character.GiveTalent("husk_overwhelmingpresence")
         Traitormod.GiveJobItems(character)
     end)
 
