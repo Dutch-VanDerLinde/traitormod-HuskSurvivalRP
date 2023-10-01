@@ -865,6 +865,7 @@ Traitormod.SpawnWreckedCrates = function (amountcrates)
             end
 
             local ItemContainer = spawnedCrate.GetComponentString("ItemContainer")
+            AutoItemPlacer.RegenerateLoot(spawnedCrate.Submarine, ItemContainer)
         end)
     end
 end
