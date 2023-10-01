@@ -865,7 +865,7 @@ Traitormod.SpawnWreckedCrates = function (amountcrates)
             end
 
             local ItemContainer = spawnedCrate.GetComponentString("ItemContainer")
-            AutoItemPlacer.RegenerateLoot(spawnedCrate.Submarine, ItemContainer)
+            --AutoItemPlacer.RegenerateLoot(spawnedCrate.Submarine, ItemContainer)
         end)
     end
 end
@@ -961,22 +961,14 @@ Traitormod.DoJobSet = function(character)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil,
             math.random(0, 2))
     elseif character.HasJob("citizen") then
-        local possibleRadios = {
-            "headset",
-            "ek_security_radio",
-        }
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("headset"), character.Inventory, nil, nil, function(spawned)
+            character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Headset), true, false, character)
 
-        local randomRadio = possibleRadios[math.random(1, #possibleRadios)]
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomRadio), character.Inventory, nil, nil,
-            function(spawned)
-                character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Headset), true,
-                    false, character)
-
-                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory,
-                    math.random(75, 100), nil, function(batcell)
-                    spawned.OwnInventory.TryPutItem(batcell, 0, true, false, character)
-                end)
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory,
+                math.random(75, 100), nil, function(batcell)
+                spawned.OwnInventory.TryPutItem(batcell, 0, true, false, character)
             end)
+        end)
 
         local role = Traitormod.RoleManager.Roles["Technician"]
 
@@ -1054,8 +1046,7 @@ Traitormod.DoJobSet = function(character)
                 function(spawned)
                     local sb = Traitormod.StringBuilder:new()
                     sb(Traitormod.Language.InstituteCodes, character.Name)
-                    sb("\n\nThe institute radio channel is: %s",
-                        string.format(colororange, Traitormod.InstituteRadioChannel))
+                    sb("\n\nThe institute radio channel is: %s",string.format(colororange, Traitormod.InstituteRadioChannel))
                     sb("\nThe undercover agent codewords are: %s", string.format(colorired, "hello"))
 
                     spawned.Description = sb:concat()
