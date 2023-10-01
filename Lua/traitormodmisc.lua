@@ -186,39 +186,25 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function(item, sen
 
         for key, client in pairs(Client.ClientList) do
             if client.Character then
-                local radio = false
                 local distance = Vector2.Distance(client.Character.WorldPosition, item.WorldPosition)
+                local message = output
 
-                for headset in client.Character.Inventory.AllItems do
-                    if headset.HasTag("mobileradio") then
-                        local battery = headset.OwnInventory.GetItemAt(0)
-                        if battery and battery.Condition > 0.1 then
-                            radio = true
-                            break
-                        end
-                    end
+                if distance >= 9500 then
+                    message = Traitormod.AddStaticToMessage(message, math.random(3, 5))
                 end
 
-                -- If the player doesn't have a radio then it doesn't announce
-                if radio then
-                    local message = output
-                    if distance >= 9500 then
-                        message = Traitormod.AddStaticToMessage(message, math.random(3, 5))
-                    end
+                local sb = Traitormod.StringBuilder:new()
+                sb(color, string.format("\"%s\"", message))
+                sb("\n\n")
+                sb("‖color:#D5B413‖%s‖color:end‖", string.format(Traitormod.Language.IntercomSentBy, sendername, jobname))
 
-                    local sb = Traitormod.StringBuilder:new()
-                    sb(color, string.format("\"%s\"", message))
-                    sb("\n\n")
-                    sb("‖color:#D5B413‖%s‖color:end‖", string.format(Traitormod.Language.IntercomSentBy, sendername, jobname))
+                message = sb:concat()
 
-                    message = sb:concat()
-
-                    if distance <= 17500 then
-                        Timer.Wait(function()
-                            local messageChat = ChatMessage.Create("Intercom", message, ChatMessageType.Default, nil, nil)
-                            Game.SendDirectChatMessage(messageChat, client)
-                        end, 500)
-                    end
+                if distance <= 25000 then
+                    Timer.Wait(function()
+                        local messageChat = ChatMessage.Create("Intercom", message, ChatMessageType.Default, nil, nil)
+                        Game.SendDirectChatMessage(messageChat, client)
+                    end, 500)
                 end
             end
         end
