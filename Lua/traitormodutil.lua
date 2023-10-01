@@ -799,8 +799,7 @@ Traitormod.SpawnLootTables = function(loottable)
                         for n = 1, loot[3] do
                             if math.random() <= loot[2] then
                                 for n = 1, loot[4] do
-                                    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(loot[1]),
-                                        item.OwnInventory, nil, nil, nil)
+                                    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(loot[1]),item.OwnInventory, nil, nil, nil)
                                 end
                             end
                         end
@@ -808,6 +807,66 @@ Traitormod.SpawnLootTables = function(loottable)
                 end
             end
         end
+    end
+end
+
+local rustycrateprefab = ItemPrefab.GetItemPrefab("rustycrate")
+Traitormod.SpawnWreckedCrates = function (amountcrates)
+    local possibletags = {
+        "abandonedarmcab",
+        "abandonedcrewcab",
+        "abandonedcrewcabinet",
+        "abandonedmedcab",
+        "abandonedengcab",
+        "abandonedstoragecab",
+        "wreckstoragecab",
+        "wrecksupplycab",
+        "wrecksupplycab",
+        "wreckstoragecabcab",
+        "wreckstorage",
+        "wreckreactorcab",
+        "wreckcrewcab",
+        "wreckoxygentankcontainer",
+    }
+
+    local taglist = {}
+    local function GetTag()
+        local randomtag = possibletags[math.random(#possibletags)]
+
+        for tag in taglist do
+            if randomtag == tag then
+                return GetTag()
+            end
+        end
+
+        table.insert(taglist, randomtag)
+        return randomtag
+    end
+
+    local taggedworldpos = {}
+    local function GetRandomCrateSpawn()
+        local randompos = Traitormod.GetRandomJobWaypoint("CargoSpawn3").WorldPosition
+        for pos in taggedworldpos do
+            if randompos == pos then
+                return GetRandomCrateSpawn()
+            end
+        end
+
+        table.insert(taggedworldpos, randompos)
+        return randompos
+    end
+
+    for i = 1, amountcrates, 1 do
+        local randompos = GetRandomCrateSpawn()
+        Entity.Spawner.AddItemToSpawnQueue(rustycrateprefab, randompos, nil, nil, function (spawnedCrate)
+            for key = 1, math.random(2), 1 do
+                local randomtag = GetTag()
+                spawnedCrate.AddTag(randomtag)
+            end
+
+            local ItemContainer = spawnedCrate.GetComponentString("ItemContainer")
+            AutoItemPlacer.RegenerateLoot(Submarine.MainSub, ItemContainer)
+        end)
     end
 end
 

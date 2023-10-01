@@ -351,6 +351,7 @@ function gm:Start()
     }
 
     Traitormod.SpawnLootTables(loottable)
+    Traitormod.SpawnWreckedCrates(math.random(4))
 end
 
 function gm:PreStart()
