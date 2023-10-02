@@ -91,8 +91,7 @@ function gm:Start()
         },
         azoesuitcab = {
             {"armoredivingmask_improved", 0.4, 1, math.random(3)},
-            {"armoredivingmask_improved", 0.4, 1, math.random(3)},
-            {"armoredivingmask_improved", 0.4, 1, math.random(3)},
+            {"armoredivingmask_improved", 0.4, 1, math.random(2)},
         },
         tcisuitcab = {
             {"armoredivingmask_improved", 0.35, 1, math.random(2)},
@@ -102,7 +101,7 @@ function gm:Start()
         },
         minersuitcab = {
             {"armoredivingmask_alternate", 0.35, 1, 1},
-            {"armoredivingmask_alternate", 0.1, 2, math.random(2)},
+            {"armoredivingmask_alternate", 0.2, 2, math.random(2)},
             {"armoredivingmask_alternate", 1, 1, 1},
             {"armoredivingmask_alternate", 1, 1, 1},
         },
@@ -189,15 +188,19 @@ function gm:Start()
             {"batterycell", 1, 1, 1},
             {"flashlight", 0.5, 2, 1},
             {"flashlight", 0.5, 1, 1},
-            {"thgflashlightheavy", 0.52, 1, 1},
             -- Cutting
             {"plasmacutter", 1, 1, 1},
             {"plasmacutter", 0.45, 2, 1},
             {"plasmacutter", 0.8, 1, 1},
             {"plasmacutter", 0.5, 1, math.random(2)},
             -- Other
-            {"crowbar", 0.5, 1, 1},
+            {"crowbar", 0.5, 2, 1},
             {"crowbar", 0.25, 1, 1},
+            -- Tools
+            {"screwdriver", 1, 1, 2},
+            {"wrench", 1, 1, 2},
+            {"screwdriver", 0.7, math.random(2), 1},
+            {"wrench", 0.7, math.random(2), 1},
         },
         stasis = {
             {"stasisbag", 0.3, 2, 1},
