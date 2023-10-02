@@ -864,8 +864,10 @@ Traitormod.SpawnWreckedCrates = function (amountcrates)
                 spawnedCrate.AddTag(randomtag)
             end
 
-            local ItemContainer = spawnedCrate.GetComponentString("ItemContainer")
-            --AutoItemPlacer.RegenerateLoot(spawnedCrate.Submarine, ItemContainer)
+            Timer.Wait(function ()
+                local ItemContainer = spawnedCrate.GetComponentString("ItemContainer")
+                AutoItemPlacer.RegenerateLoot(spawnedCrate.Submarine, ItemContainer)
+            end, 10000)
         end)
     end
 end
@@ -1083,7 +1085,7 @@ Traitormod.SendJobInfoMsg = function(client, job)
         elseif job == "medicaldoctor" then
             color = Color.IndianRed
             msg =
-            "You are the medical doctor of the Azoe Region!\nCommence surgeries, heal patients. Make sure the residents of the Azoe Region stay happy & healthy."
+            "You are a medical doctor of the Azoe Region!\nCommence surgeries, heal patients. Make sure the residents of the Azoe Region stay happy & healthy."
         elseif job == "researchdirector" then
             color = Color.Aqua
             msg =
