@@ -169,7 +169,7 @@ end
 Hook.Add("husk.clientControlHusk", "Traitormod.Cultist.HuskControl", function (client, husk)
     local cultist
     for _, character in pairs(Traitormod.RoleManager.FindCharactersByRole("Cultist")) do
-        if character.Name == Traitormod.GetData(client, "TrueRPName") then
+        if character.Name == Traitormod.GetRPName(client) then
             cultist = Traitormod.RoleManager.GetRole(character)
             break
         else
