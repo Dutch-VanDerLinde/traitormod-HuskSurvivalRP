@@ -102,11 +102,42 @@ config.GamemodeConfig = {
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
         EndGameDelaySeconds = 10,
-        TraitorSelectDelayMin = 120,
-        TraitorSelectDelayMax = 150,
+
+        AntagSelectionMode = "Random",
+        AntagTypeChance = {
+            InstituteUndercover = 50,
+            CaveDwellerBandit = 50,
+            Cultist = 50,
+        },
 
         PointsGainedFromCrewMissionsCompleted = 1000,
         LivesGainedFromCrewMissionsCompleted = 1,
+
+        AmountAntags = function (amountPlayers)
+            config.TestMode = false
+            if amountPlayers > 22 then return 5 end
+            if amountPlayers > 18 and math.random() < 0.25 then return 4 end
+            if amountPlayers > 12 then return 3 end
+            if amountPlayers > 7 then return 2 end
+            if amountPlayers > 3 then return 1 end
+            if amountPlayers == 1 then
+                Traitormod.SendMessageEveryone(Traitormod.Language.TestingMode)
+                config.TestMode = true
+                return 1
+            end
+            print("Not enough players to start traitor mode.")
+            return 0
+        end,
+
+        -- 0 = 0% chance
+        -- 1 = 100% chance
+        AntagFilter = function (client)
+            if client.Character.TeamID ~= CharacterTeamType.Team1 then return 0 end
+            if not client.Character.IsHuman then return 0 end
+            if not client.Character.HasJob("cavedweller") then return 0 end
+
+            return 1
+        end
         --[[
         RoleLock = {
             LockIf = function(client, params)
@@ -140,27 +171,6 @@ config.RoleConfig = {
 
     Husk = {
         TraitorBroadcast = false,
-    },
-
-    Traitor = {
-        SubObjectives = {"StealCaptainID", "Survive", "Kidnap", "PoisonCaptain"},
-        MinSubObjectives = 2,
-        MaxSubObjectives = 3,
-
-        NextObjectiveDelayMin = 30,
-        NextObjectiveDelayMax = 60,
-
-        TraitorBroadcast = true,           -- traitors can broadcast to other traitors using !tc
-        TraitorBroadcastHearable = false,  -- if true, !tc will be hearable in the vicinity via local chat
-        TraitorDm = true,                  -- traitors can send direct messages to other players using !tdm
-
-        -- Names, Codewords, None
-        TraitorMethodCommunication = "Names",
-
-        SelectBotsAsTargets = true,
-        SelectPiratesAsTargets = false,
-        SelectUniqueTargets = true,     -- every traitor target can only be chosen once per traitor (respawn+false -> no end)
-        PointsPerAssassination = 100,
     },
 
     -- Cave Dweller Roles

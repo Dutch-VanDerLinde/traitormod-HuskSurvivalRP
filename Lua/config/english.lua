@@ -252,7 +252,7 @@ language.Answer = "Answer"
 language.Ignore = "Ignore"
 
 language.SecretSummary = "Objectives Completed: %s - Points Gained: %s\n"
-language.SecretTraitorAssigned = "You have been assigned to be a traitor, vote which type you want to be."
+language.SecretTraitorAssigned = "You have been assigned to be an antagonist, select which type you want to be."
 
 language.ItemsBought = "Items bought from point shop"
 language.CrewBoughtItem = "Players bought items from point shop"
