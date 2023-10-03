@@ -176,9 +176,9 @@ config.RoleConfig = {
     -- Cave Dweller Roles
 
     CaveDwellerBandit = {
-        SubObjectives = {"StealCaptainID", "KillAny", "Kidnap"},
-        MinSubObjectives = 2,
-        MaxSubObjectives = 3,
+        SubObjectives = {"StealCaptainID", "KillAny"},
+        MinSubObjectives = 1,
+        MaxSubObjectives = 2,
 
         NextObjectiveDelayMin = 55,
         NextObjectiveDelayMax = 95,

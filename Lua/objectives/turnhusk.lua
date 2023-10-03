@@ -7,13 +7,11 @@ objective.AlwaysActive = true
 function objective:Start()
     self.Text = Traitormod.Language.ObjectiveTurnHusk
 
-    self.OldCharacter = self.Character
-
     return true
 end
 
 function objective:IsCompleted()
-    if self.OldCharacter == nil then
+    if self.Character.IsHusk then
         return true
     end
 
