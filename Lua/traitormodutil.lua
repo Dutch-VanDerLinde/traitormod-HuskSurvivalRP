@@ -640,7 +640,7 @@ Traitormod.ChangeRPName = function(client, name)
     Traitormod.SetData(client, "RPName", name)
     Traitormod.SaveData()
 
-    if client.Character and not client.Character.IsDead then
+    if client.Character and not client.Character.IsDead and name ~= nil then
         client.Character.Info.Rename(name)
     end
 end

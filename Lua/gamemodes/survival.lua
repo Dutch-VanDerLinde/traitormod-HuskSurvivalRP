@@ -30,9 +30,6 @@ function gm:CharacterDeath(character)
     local msg = string.format(Traitormod.Language.CharacterDeath, name)
     Traitormod.SendMessage(client, msg, "GameModeIcon.pvp")
     --]]
-    if not Traitormod.GetData(client, "TrueRPName") then
-        Traitormod.ChangeRPName(client, nil)
-    end
 end
 
 function gm:Start()
@@ -779,6 +776,16 @@ function gm:End()
     Hook.Remove("characterDeath", "Traitormod.Survival.CharacterDeath")
     Hook.Remove("traitormod.midroundspawn", "Traitormod.Survival.MidRoundSpawn")
     Hook.Remove("character.giveJobItems", "Husk.Survival.giveJobItems")
+
+    for key, client in pairs(Client.ClientList) do
+        if Traitormod.Config.RoleplayNames then
+            if not client.Character or client.Character.IsDead or not client.Character.IsHuman then
+                if not Traitormod.GetData(client, "TrueRPName") then
+                    Traitormod.ChangeRPName(client, nil)
+                end
+            end
+        end
+    end
 end
 
 function gm:Think()

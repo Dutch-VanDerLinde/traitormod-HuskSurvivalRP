@@ -124,6 +124,7 @@ end
 
 ---@return string mainPart, string subPart
 function role:ObjectivesToString()
+    local primary = Traitormod.StringBuilder:new()
     local secondary = Traitormod.StringBuilder:new()
 
     for _, objective in pairs(self.Objectives) do
@@ -134,16 +135,18 @@ function role:ObjectivesToString()
         end
     end
 
-    return secondary:concat("\n")
+    primary(" > "..Traitormod.Language.ObjectiveGiveHusk)
+
+    return primary:concat("\n"), secondary:concat("\n")
 end
 
 function role:Greet()
-    local secondary = self:ObjectivesToString()
+    local primary, secondary = self:ObjectivesToString()
 
     local sb = Traitormod.StringBuilder:new()
     sb("%s\n\n", Traitormod.Language.CultistYou)
     sb("%s\n", Traitormod.Language.MainObjectivesYou)
-    sb(" > "..Traitormod.Language.ObjectiveGiveHusk)
+    sb(primary)
     sb("\n\n%s\n", Traitormod.Language.SecondaryObjectivesYou)
     sb(secondary)
     sb("\n\n")

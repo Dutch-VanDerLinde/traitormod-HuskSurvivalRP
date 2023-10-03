@@ -34,6 +34,24 @@
         Traitormod.SendAdminHelpMessage(adminmsg, sender)
     end)
 
+    local function ParseJobName(name, jobid)
+        if jobid == "adminone" then
+            name = "Azoe Administrator"
+        elseif jobid == "guardone" then
+            name = "Azoe Security Officer"
+        elseif jobid == "guardtci" then
+            name = "Institute Security Officer"
+        elseif jobid == "researchdirector" then
+            name = "Institute Research Director"
+        elseif jobid == "thal_scientist" then
+            name = "Institute Scientist"
+        elseif jobid == ("citizen" or "medicaldoctor") then
+            name = "Azoe "..name
+        end
+
+        return name
+    end
+
     -- Add character to credits
     Hook.Add("character.giveJobItems", "Player.UI.giveJobItems", function(character, waypoint)
         local client = Traitormod.FindClientCharacter(character)
@@ -41,25 +59,10 @@
         if client then
             Timer.Wait(function ()
                 local jobid = tostring(character.JobIdentifier)
-                local truename = character.Info.Job.Name.ToString()
-                local idcard = character.Inventory.FindItemByIdentifier("idcard")
-                if idcard then
-                    if idcard.HasTag("azoe_admin") then
-                        truename = "Azoe Administrator"
-                    elseif idcard.HasTag("azoe_gov") then
-                        truename = "Azoe Security Officer"
-                    elseif idcard.HasTag("azoe") then
-                        truename = "Azoe "..truename
-                    elseif jobid == "guardtci" then
-                        truename = "Institute Security Officer"
-                    elseif jobid == "researchdirector" then
-                        truename = "Institute Research Director"
-                    elseif jobid == "thal_scientist" then
-                        truename = "Institute Scientist"
-                    end
-                end
+                local jobname = character.Info.Job.Name.ToString()
+                jobname = ParseJobName(jobname, jobid)
 
-                local CharacterString = client.Name.." as "..truename.." "..character.Name
+                local CharacterString = client.Name.." as "..jobname.." "..character.Name
                 local message = Networking.Start("AddPlayerToCredits")
                 message.WriteString(CharacterString)
 
@@ -68,6 +71,15 @@
                 end
             end, 4100)
         end
+    end)
+
+    Hook.Add("client.connected", "PlayerUIClientConnection", function(client)
+        Timer.Wait(function ()
+            if client.Connection then
+                local message = Networking.Start("NewCredits")
+                Networking.Send(message, client.Connection)
+            end
+        end, 2500)
     end)
 
     Hook.Add("roundEnd", "EndCredits", function()

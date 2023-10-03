@@ -153,7 +153,6 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     Traitormod.PointsToBeGiven = {}
     Traitormod.AbandonedCharacters = {}
     Traitormod.PointItems = {}
-    Traitormod.RoundTime = 0
     Traitormod.LostLivesThisRound = {}
 
     local endMessage = ""
@@ -172,6 +171,7 @@ Hook.Add("missionsEnded", "Traitormod.MissionsEnded", function(missions)
     Traitormod.RoundEvents.EndRound()
 
     Traitormod.SelectedGamemode = nil
+    Traitormod.RoundTime = 0
 
     Traitormod.SaveData()
     Traitormod.Stats.SaveData()
@@ -198,16 +198,6 @@ end)
 
 Hook.Add("characterCreated", "Traitormod.CharacterCreated", function(character)
     -- if character is valid player
-    if character.IsHusk then
-        Timer.Wait(function ()
-            local client = Traitormod.FindClientCharacter(character)
-            if client then
-                local role = Traitormod.RoleManager.Roles["Husk"]
-                Traitormod.RoleManager.AssignRole(character, role:new())
-            end
-        end, 1000)
-    end
-
     if character == nil or
         character.IsBot == true or
         character.IsHuman == false or
@@ -218,7 +208,6 @@ Hook.Add("characterCreated", "Traitormod.CharacterCreated", function(character)
     -- delay handling, otherwise client won't be found
     Timer.Wait(function()
         local client = Traitormod.FindClientCharacter(character)
-        
         Traitormod.Stats.AddClientStat("Spawns", client, 1)
 
         if client ~= nil then

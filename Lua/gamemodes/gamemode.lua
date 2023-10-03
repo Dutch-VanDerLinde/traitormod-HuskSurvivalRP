@@ -34,6 +34,8 @@ function gm:RoundSummary()
         end
     end
 
+    sb("\nThe round lasted for " .. math.floor(Traitormod.RoundTime / 60) .. " minutes.")
+
     return sb:concat()
 end
 

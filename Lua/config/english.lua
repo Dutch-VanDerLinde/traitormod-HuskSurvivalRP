@@ -121,7 +121,7 @@ language.NoTraitors = "No traitors."
 language.TraitorAlive = "You survived as a traitor."
 
 language.PointsInfo = "You have %s dollars and %s/%s lives."
-language.TraitorInfo = "Your traitor chance is %s%%, compared to the rest of the crew."
+language.TraitorInfo = "Your antagonist chance is %s%%."
 
 language.Points = " (%s Dollars)"
 language.Experience = " (%s XP)"
