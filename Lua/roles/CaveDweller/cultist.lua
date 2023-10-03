@@ -167,14 +167,24 @@ function role:OtherGreet()
 end
 
 Hook.Add("husk.clientControlHusk", "Traitormod.Cultist.HuskControl", function (client, husk)
+    local cultist
     for _, character in pairs(Traitormod.RoleManager.FindCharactersByRole("Cultist")) do
-        if character ~= client.Character then
+        if character.Name == Traitormod.GetData(client, "TrueRPName") then
+            cultist = Traitormod.RoleManager.GetRole(character)
+            break
+        else
             local cultistClient = Traitormod.FindClientCharacter(character)
             if cultistClient then
                 local points = Traitormod.AwardPoints(cultistClient, 100)
                 Traitormod.SendObjectiveCompleted(cultistClient, husk.Name.." has joined the hive.", points)
             end
         end
+    end
+
+    if cultist then
+        Traitormod.RoleManager.TransferRole(client.Character, cultist)
+    else
+        Traitormod.RoleManager.AssignRole(client.Character, Traitormod.RoleManager.Roles.Husk:new())
     end
 end)
 
