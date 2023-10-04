@@ -98,8 +98,25 @@ extension.Init = function()
                     table.insert(IDTags, "azoe_gov")
                     table.insert(AccessTable, "government access")
                 end
-            elseif idComputerItem.HasTag("tci") then
+            elseif computerID == "husk_idterminaltci" then
+                local secaccess = CustomInterfaceList[1].State
+                local labaccess = CustomInterfaceList[2].State
+                idname = CustomInterfaceList[3].Signal
+                jobid = "thal_scientist"
+                idjobname = "institute member"
+                idcardprefab = "tci_idcard"
+                table.insert(AccessTable, "laboratory access")
+                table.insert(IDTags, "sci")
 
+                if labaccess == true then
+                    idjobname = "thal_scientist"
+                end
+                if secaccess == true then
+                    jobid = "guardtci"
+                    idjobname = "security officer"
+                    table.insert(IDTags, "tci_guard")
+                    table.insert(AccessTable, "security access")
+                end
             end
 
             for index, value in ipairs(IDTags) do
