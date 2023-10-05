@@ -61,6 +61,23 @@ function role:Start()
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
     end)
+    --Hat spawn
+    local hatchance = math.random(5)
+    local hatprefabid = "baseballcap"
+    if hatchance == 1 then
+        hatprefabid = "asafetyvisor"
+    elseif hatchance == 2 or hatchance == 3 then
+        hatprefabid = "ahardhat"
+    end
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(hatprefabid), self.Character.Inventory, nil, nil, function(spawned)
+        local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Head)
+        self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
+
+        if math.random(1, 3) == 1 then
+            spawned.Drop()
+            Entity.Spawner.AddEntityToRemoveQueue(spawned)
+        end
+    end)
 
     --Give id card tags
     local ogidcard = self.Character.Inventory.FindItemByIdentifier("azoe_idcard", true)
