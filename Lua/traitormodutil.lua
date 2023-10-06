@@ -925,6 +925,12 @@ Traitormod.DoJobSet = function(character)
             "scp_improvmachete",
             "scp_machete",
         }
+        local possibleGuns = { -- Multiple of the same item to increase commonness
+            "pistol",
+            "shotgunsawedoff",
+            "separatistderringer",
+            "husk_revolver",
+        }
         local possibleLights = { -- Multiple of the same item to increase commonness
             "flashlight",
             "flashlight",
@@ -937,6 +943,7 @@ Traitormod.DoJobSet = function(character)
         local randomCoat = possibleCoats[math.random(1, #possibleCoats)]
         local randomBag = possibleBags[math.random(1, #possibleBags)]
         local randomMelee = possibleMelee[math.random(1, #possibleMelee)]
+        local randomGun = possibleGuns[math.random(1, #possibleGuns)]
         local randomLight = possibleLights[math.random(1, #possibleLights)]
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"),
             character.Inventory.GetItemInLimbSlot(InvSlotType.HealthInterface).OwnInventory, math.random(28, 81))
@@ -957,11 +964,56 @@ Traitormod.DoJobSet = function(character)
             end)
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomLight), character.Inventory, nil, nil,
             function(spawned)
-                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory,
-                    math.random(65, 100))
+                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))
             end)
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil,
-            math.random(0, 2))
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomMelee), character.Inventory, nil, math.random(0, 2))
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomGun), character.Inventory, nil, nil,
+            function(spawned)
+                local spawnedID = spawned.Prefab.Identifier.ToString()
+                local ammocount = 0
+                local ammoprefab = ""
+                local magprefab = nil
+                local extra_ammo = nil
+
+                if spawnedID == "pistol" then
+                    ammoprefab = "9mm_round"
+                    ammocount = 12
+                    magprefab = "husk_pistolmag"
+                    extra_ammo = 18
+                elseif spawnedID == "separatistderringer" then
+                    ammoprefab = "38_round"
+                    ammocount = 2
+                    extra_ammo = 24
+                elseif spawnedID == "shotgunsawedoff" then
+                    ammoprefab = "12_shell"
+                    ammocount = 2
+                    extra_ammo = 12
+                elseif spawnedID == "husk_revolver" then
+                    ammoprefab = "38_round"
+                    ammocount = 6
+                    extra_ammo = 12
+                end
+
+                Timer.Wait(function ()
+                    if magprefab then
+                        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(magprefab), spawned.OwnInventory, nil, nil, function(mag)
+                            for i = 1, ammocount, 1 do
+                                Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(ammoprefab), mag.OwnInventory, nil, nil)
+                            end
+                        end)
+                    else
+                        for i = 1, ammocount, 1 do
+                            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(ammoprefab), spawned.OwnInventory, nil, nil)
+                        end
+                    end
+
+                    if extra_ammo then
+                        for i = 1, extra_ammo, 1 do
+                            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(ammoprefab), character.Inventory, nil, nil)
+                        end
+                    end
+                end, 1500)
+            end)
     elseif character.HasJob("citizen") then
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("headset"), character.Inventory, nil, nil, function(spawned)
             character.Inventory.TryPutItem(spawned, character.Inventory.FindLimbSlot(InvSlotType.Headset), true, false, character)
