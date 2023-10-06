@@ -516,7 +516,7 @@ Traitormod.MonsterItemsets = {
         },
         Clothes = {"caveclothes1", "caveclothes1green", "caveclothes2", "caveclothes3", "prisonerclothes"},
         Items = {
-
+            {Chance = 1, Item = "husk_oxygenmask", ContainedItems = {"oxygentank"}},
         },
     },
 
@@ -533,7 +533,11 @@ Traitormod.MonsterItemsets = {
         },
         Clothes = {"divinginstructorgarments", "divinginstructorgarments_short"},
         Items = {
-
+            {Chance = 0.5, Item = "divingknife"},
+            {Chance = 0.7, Item = "handcuffs"},
+            {Chance = 0.95, Item = "husk_oxygenmask", ContainedItems = {"oxygentank"}},
+            {Chance = 0.8, Item = "scp_simplehelmet"},
+            {Chance = 0.7, Item = "stunbaton", ContainedItems = {"batterycell"}, ContainedConditionRange = {0, 45}},
         },
     },
 
@@ -553,10 +557,35 @@ Traitormod.MonsterItemsets = {
         },
     },
 
+    { -- Meltwater Security
+        Chance = 0.1,
+        IDCard = {Prefab = "melt_idcard", JobTitle = "security officer", JobID = "citizen", Description = "An old ID used by Meltwater Region residents."},
+
+        Suit = {
+            husk_brokensuit = 0.45,
+            scp_softvest = 0.7,
+            scp_riotvest = 0.9,
+            placeholdermask = 1,
+        },
+        Clothes = {"meltwatersecgarments"},
+        Items = {
+            {Chance = 0.5, Item = "husk_smgunique", ContainedItems = {"husk_smgmag"}},
+            {Chance = 0.9, Item = "flare"}, {Chance = 0.9, Item = "flare"}, {Chance = 0.9, Item = "flare"}, {Chance = 0.9, Item = "flare"},
+            {Chance = 0.85, Item = "husk_revolver"},
+            {Chance = 0.7, Item = "divingknife"},
+            {Chance = 0.5, Item = "scp_adrenaline"},
+            {Chance = 0.3, Item = "combatstimulantsyringe"}, {Chance = 0.1, Item = "combatstimulantsyringe"},
+            {Chance = 0.95, Item = "handcuffs"},
+            {Chance = 1, Item = "scp_simplehelmet"},
+            {Chance = 0.95, Item = "husk_oxygenmask", ContainedItems = {"oxygentank"}},
+            {Chance = 0.95, Item = "stunbaton", ContainedItems = {"fulguriumbatterycell"}, ContainedConditionRange = {0, 10}},
+        },
+    },
+
     -- Special Husk sets below
 
     { -- Clown (Rare)
-        Chance = 0.1,
+        Chance = 0.05,
 
         Suit = {clownmask = 1},
         Clothes = {"clowncostume"},
@@ -564,7 +593,7 @@ Traitormod.MonsterItemsets = {
     },
 
     { -- Unique Clown (Rare)
-        Chance = 0.08,
+        Chance = 0.03,
 
         Suit = {clownmaskunique = 1},
         Clothes = {"clownsuitunique"},
@@ -572,7 +601,7 @@ Traitormod.MonsterItemsets = {
     },
 
     { -- Cultist (Rare)
-        Chance = 0.04,
+        Chance = 0.01,
 
         Suit = {},
         Clothes = {"cultistrobes"},
@@ -605,7 +634,7 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
             local itemPrefab = ItemPrefab.GetItemPrefab(IdCard.Prefab)
             Entity.Spawner.AddItemToSpawnQueue(itemPrefab, character.Inventory, nil, nil, function(spawned)
                 character.Inventory.TryPutItemWithAutoEquipCheck(spawned, character, {InvSlotType.Card})
-                local randomname = Traitormod.AddStaticToMessage(Traitormod.GetRandomName(), math.random(1, 3))
+                local randomname = Traitormod.AddStaticToMessage(Traitormod.GetRandomName(), math.random(3, 5))
 
                 spawned.Tags = IDTags
                 spawned.AddTag("job:"..IdCard.JobTitle)
