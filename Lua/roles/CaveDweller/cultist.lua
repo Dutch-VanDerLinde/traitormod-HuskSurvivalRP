@@ -184,7 +184,7 @@ Hook.Add("husk.clientControlHusk", "Traitormod.Cultist.HuskControl", function (c
     if cultist then
         Traitormod.RoleManager.TransferRole(client.Character, cultist)
     else
-        Traitormod.RoleManager.AssignRole(client.Character, Traitormod.RoleManager.Roles.Husk:new())
+        Traitormod.RoleManager.AssignRole(client.Character, Traitormod.RoleManager.Roles["Husk"]:new())
     end
 end)
 
@@ -192,7 +192,7 @@ LuaUserData.MakeMethodAccessible(Descriptors["Barotrauma.StatusEffect"], "set_Af
 LuaUserData.MakeFieldAccessible(Descriptors["Barotrauma.Affliction"], "_strength")
 
 Hook.Add("meleeWeapon.handleImpact",  "Cultist.Stinger", function (melee, target)
-    if melee.Item.Prefab.Identifier ~= "huskstinger" and melee.Item.HasTag("cultist_stinger") then return end
+    if melee.Item.Prefab.Identifier ~= "huskstinger" or not melee.Item.HasTag("cultist_stinger") then return end
     if not LuaUserData.IsTargetType(target.UserData, "Barotrauma.Limb") then return end
     local character = target.UserData.character
 
