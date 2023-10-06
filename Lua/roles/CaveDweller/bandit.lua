@@ -123,7 +123,7 @@ function role:Start()
     local text = self:Greet()
     local client = Traitormod.FindClientCharacter(self.Character)
     if client then
-        Traitormod.SendTraitorMessageBox(client, text)
+        Traitormod.SendBoxMessage(client, text, "BanditCaveDweller.Icon")
         Traitormod.UpdateVanillaTraitor(client, true, text)
     end
 end
