@@ -640,7 +640,7 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
                 spawned.AddTag("job:"..IdCard.JobTitle)
                 spawned.AddTag("name:"..randomname)
                 spawned.AddTag("notracker")
-                spawned.Description = Traitormod.AddStaticToMessage(IdCard.Description, math.random(2, 4))
+                spawned.Description = IdCard.Description
 
                 local IdCardComponent = spawned.GetComponentString("IdCard")
                 IdCardComponent.OwnerJobId = IdCard.JobID
@@ -691,7 +691,7 @@ Hook.Add("character.created", "traitormod.huskmodspawn", function (character)
                             local containedPrefab = ItemPrefab.GetItemPrefab(itemID)
                             local condition = 100
 
-                            if ContainedConditionRange then 
+                            if ContainedConditionRange then
                                 condition = math.random(ContainedConditionRange[1], ContainedConditionRange[2])
                             end
 
