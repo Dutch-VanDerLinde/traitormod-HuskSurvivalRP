@@ -234,14 +234,18 @@ Traitormod.HealthToString = function (character)
         return "Deceased"
     end
 
-    local health = character.Vitality
-    if health > 75 then
-        return "Healthy"
-    elseif health > 50 then
-        return "Injured"
-    elseif health > 5 then
-        return "Unhealthy"
-    elseif health > 0 then
+    if character.Vitality then
+        local health = character.Vitality
+        if health > 75 then
+            return "Healthy"
+        elseif health > 50 then
+            return "Injured"
+        elseif health > 5 then
+            return "Unhealthy"
+        elseif health > 0 then
+            return "Deceased"
+        end
+    else
         return "Deceased"
     end
 end
@@ -308,8 +312,8 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
 
                 if distance <= 2 then direction = "•" end
 
-                local health = Traitormod.HealthToString(value.ParentInventory.Owner)
-                if LuaUserData.IsTargetType(value.ParentInventory.Owner, "Barotrauma.Character") then
+                local health = Traitormod.HealthToString(value)
+                if value.ParentInventory then
                     health = Traitormod.HealthToString(value.ParentInventory.Owner)
                 end
 
