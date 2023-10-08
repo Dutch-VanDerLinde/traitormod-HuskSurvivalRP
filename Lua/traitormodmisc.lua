@@ -219,6 +219,29 @@ Hook.Add("traitormod.terminalWrite", "HuskSurvival.Intercom", function(item, sen
     end
 end)
 
+local function degreeToOClock(v)
+    local oClock = math.floor(v / 30)
+    if oClock == 0 then oClock = 12 end
+    return oClock .. " o'clock"
+end
+
+Traitormod.HealthToString = function (character)
+    if HF.HasAffliction(character, "sym_unconsciousness", 1) then
+        return "Deceased"
+    end
+
+    local health = character.Vitality
+    if health > 75 then
+        return "Healthy"
+    elseif health > 50 then
+        return "Injured"
+    elseif health > 5 then
+        return "Unhealthy"
+    elseif health > 0 then
+        return "Deceased"
+    end
+end
+
 Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item, client, output)
     if not item.HasTag("idcardlocator") then return end
     if not client.Character then return end
@@ -237,7 +260,12 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
             local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
             truekey = truekey + 1
 
-            local direction = Traitormod.VectorCompassDirection(client.Character.WorldPosition, value.WorldPosition)
+            local center = client.Character.WorldPosition
+            local target = value.WorldPosition
+
+            local diff = center - target
+            local angle = math.deg(math.atan(diff.X, diff.Y)) + 180
+            local direction = degreeToOClock(angle)
 
             if distance <= 4 then direction = "•" end
 
@@ -258,6 +286,36 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
         Traitormod.Pointshop.ShowCategory(client)
     elseif item.Prefab.Identifier == "admindevicemelt" then
         Traitormod.Pointshop.ShowCategory(client)
+    elseif item.Prefab.Identifier == "azoecrewstatusdevice" then
+        local truekey = 0
+        for key, value in pairs(Util.GetItemsById("azoe_idcard")) do
+            if not value.Removed and not value.HasTag("notracker") then -- make sure our id isn't deleted
+                local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
+                local idCard = value.GetComponentString("IdCard")
+                local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
+                truekey = truekey + 1
+
+                local center = client.Character.WorldPosition
+                local target = value.WorldPosition
+
+                local diff = center - target
+                local angle = math.deg(math.atan(diff.X, diff.Y)) + 180
+                local direction = degreeToOClock(angle)
+
+                if distance <= 4 then direction = "•" end
+
+                local health = "Unknown"
+                if LuaUserData.IsTargetType(value.ParentInventory.Owner, "Barotrauma.Character") then
+                    health = Traitormod.HealthToString(value.ParentInventory.Owner)
+                end
+
+                local ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_resultmedic, tostring(ownerJobName), idCard.OwnerName, math.floor(distance), direction, health)
+                local netmessage = Networking.Start("Traitormod.IdCardLocator.MakeCrewList")
+                netmessage.WriteString(ShowMessage)
+                netmessage.WriteByte(Byte(truekey))
+                Networking.Send(netmessage, client.Connection)
+            end
+        end
     end
 end, Hook.HookMethodType.After)
 
