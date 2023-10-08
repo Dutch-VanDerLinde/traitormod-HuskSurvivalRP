@@ -226,6 +226,10 @@ local function degreeToOClock(v)
 end
 
 Traitormod.HealthToString = function (character)
+    if not LuaUserData.IsTargetType(character, "Barotrauma.Character") then
+        return "Unknown"
+    end
+
     if HF.HasAffliction(character, "sym_unconsciousness", 1) then
         return "Deceased"
     end
@@ -299,12 +303,12 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
                 local target = value.WorldPosition
 
                 local diff = center - target
-                local angle = math.deg(math.atan(diff.X, diff.Y)) + 180
+                local angle = math.deg(math.atan2(diff.X, diff.Y)) + 180
                 local direction = degreeToOClock(angle)
 
-                if distance <= 4 then direction = "•" end
+                if distance <= 2 then direction = "•" end
 
-                local health = "Unknown"
+                local health = Traitormod.HealthToString(value.ParentInventory.Owner)
                 if LuaUserData.IsTargetType(value.ParentInventory.Owner, "Barotrauma.Character") then
                     health = Traitormod.HealthToString(value.ParentInventory.Owner)
                 end
