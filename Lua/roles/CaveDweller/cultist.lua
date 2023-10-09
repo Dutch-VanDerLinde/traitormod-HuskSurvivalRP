@@ -4,11 +4,11 @@ role.RoleGear = {
     "syringegun",
     "huskstinger",
     "huskeggsbasic",
-    "huskeggsbasic",
+    "huskeggs",
+    "huskeggs",
     "huskeggs",
     "huskeggs",
     "unstablehuskeggs",
-    "handcuffs",
     "husk_campfire",
 }
 
@@ -40,7 +40,8 @@ function role:Start()
         local slot = self.Character.Inventory.FindLimbSlot(InvSlotType.Bag)
         self.Character.Inventory.TryPutItem(spawned, slot, true, false, self.Character)
         Timer.Wait(function ()
-            for i = 1, math.random(1, 4) do
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("handcuffs"), spawned.OwnInventory, nil, nil)
+            for i = 1, math.random(3, 5) do
                 Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygentank"), spawned.OwnInventory, nil, nil)
             end
         end, 100)
@@ -55,6 +56,20 @@ function role:Start()
             end)
          end
     end, 100)
+    --Gun spawn
+    Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("pistol"), self.Character.Inventory, nil, nil, function(spawned)
+        local huskroundprefab = ItemPrefab.GetItemPrefab("9mmhusk_round")
+        Timer.Wait(function ()
+            Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("husk_pistolmag"), spawned.OwnInventory, nil, nil, function(mag)
+                Timer.Wait(function ()
+                    for i = 1, 6 do
+                        Entity.Spawner.AddItemToSpawnQueue(huskroundprefab, mag.OwnInventory, nil, nil)
+                        Entity.Spawner.AddItemToSpawnQueue(huskroundprefab, self.Character.Inventory, nil, nil)
+                    end
+                end, 100)
+            end)
+        end, 100)
+    end)
 
     local pool = {}
     for key, value in pairs(self.AvailableObjectives) do pool[key] = value end
