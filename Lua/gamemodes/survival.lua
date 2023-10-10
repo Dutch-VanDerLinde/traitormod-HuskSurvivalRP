@@ -48,8 +48,8 @@ function gm:Start()
     Game.ExecuteCommand("enablecheats")
     Game.ExecuteCommand("disablecrewai") -- Disable human ai (It's laggy as hell)
 
-    local possiblespecialweaponholderTCI = {"autoshotgun","husk_assaultrifle","arcemitter","flamerunique"}
-    local possiblespecialweaponholderAzoe = {"autoshotgun","shotgununique","arcemitter","harpooncoilrifle"}
+    local possiblespecialweaponholderTCI = {"autoshotgun","husk_assaultrifle","arcemitter","flamerunique","grenadelauncher"}
+    local possiblespecialweaponholderAzoe = {"autoshotgun","shotgununique","arcemitter","harpooncoilrifle","grenadelauncher"}
     local randomweaponholderTCI = possiblespecialweaponholderTCI[math.random(#possiblespecialweaponholderTCI)]
     local randomweaponholderAzoe = possiblespecialweaponholderAzoe[math.random(#possiblespecialweaponholderAzoe)]
 
