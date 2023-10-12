@@ -227,7 +227,7 @@ end
 
 Traitormod.HealthToString = function (character)
     if LuaUserData.IsTargetType(character, "Barotrauma.Character") then
-        if HF.HasAffliction(character, "cardiacarrest", 1) then
+        if HF.HasAffliction(character, "cardiacarrest", 1) or character.IsDead then
             return "Deceased"
         end
 
@@ -236,13 +236,10 @@ Traitormod.HealthToString = function (character)
         end
 
         if character.Vitality then
-            local health = character.Vitality
-            if health > 75 then
+            if character.Vitality > 65 then
                 return "Healthy"
-            elseif health > 45 then
+            else
                 return "Injured"
-            elseif health > 0 then
-                return "Deceased"
             end
         else
             return "Deceased"
@@ -315,14 +312,21 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
                 if distance <= 2 then direction = "•" end
 
                 local health = "Unknown"
+                local healthcolor = Color.White
                 if value.ParentInventory and value.ParentInventory.Owner then
-                    health = Traitormod.HealthToString(value.ParentInventory.Owner)
+                    local char = value.ParentInventory.Owner
+                    if LuaUserData.IsTargetType(char, "Barotrauma.Character") then
+                        local charHealth = char.Vitality / char.MaxVitality
+                        health = Traitormod.HealthToString(char)
+                        healthcolor = Color.Lerp(Color.Red, Color.Green, charHealth)
+                    end
                 end
 
                 local ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_resultmedic, tostring(ownerJobName), idCard.OwnerName, math.floor(distance), direction, health)
                 local netmessage = Networking.Start("Traitormod.IdCardLocator.MakeCrewList")
                 netmessage.WriteString(ShowMessage)
                 netmessage.WriteByte(Byte(truekey))
+                netmessage.WriteColorR8G8B8(healthcolor)
                 Networking.Send(netmessage, client.Connection)
             end
         end
