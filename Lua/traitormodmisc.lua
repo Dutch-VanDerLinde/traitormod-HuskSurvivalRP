@@ -230,7 +230,7 @@ Traitormod.HealthToString = function (character)
         return "Unknown"
     end
 
-    if HF.HasAffliction(character, "sym_unconsciousness", 1) then
+    if HF.HasAffliction(character, "cardiacarrest", 1) then
         return "Deceased"
     end
 
@@ -312,8 +312,8 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
 
                 if distance <= 2 then direction = "•" end
 
-                local health = Traitormod.HealthToString(value)
-                if value.ParentInventory then
+                local health = "Unknown"
+                if value.ParentInventory and value.ParentInventory.Owner then
                     health = Traitormod.HealthToString(value.ParentInventory.Owner)
                 end
 
