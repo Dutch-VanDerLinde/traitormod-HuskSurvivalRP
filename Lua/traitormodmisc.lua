@@ -226,27 +226,29 @@ local function degreeToOClock(v)
 end
 
 Traitormod.HealthToString = function (character)
-    if not LuaUserData.IsTargetType(character, "Barotrauma.Character") then
-        return "Unknown"
-    end
+    if LuaUserData.IsTargetType(character, "Barotrauma.Character") then
+        if HF.HasAffliction(character, "cardiacarrest", 1) then
+            return "Deceased"
+        end
 
-    if HF.HasAffliction(character, "cardiacarrest", 1) then
-        return "Deceased"
-    end
+        if HF.HasAffliction(character, "sym_unconsciousness", 1) then
+            return "Unconscious"
+        end
 
-    if character.Vitality then
-        local health = character.Vitality
-        if health > 75 then
-            return "Healthy"
-        elseif health > 50 then
-            return "Injured"
-        elseif health > 5 then
-            return "Unhealthy"
-        elseif health > 0 then
+        if character.Vitality then
+            local health = character.Vitality
+            if health > 75 then
+                return "Healthy"
+            elseif health > 45 then
+                return "Injured"
+            elseif health > 0 then
+                return "Deceased"
+            end
+        else
             return "Deceased"
         end
     else
-        return "Deceased"
+        return "Unknown"
     end
 end
 
