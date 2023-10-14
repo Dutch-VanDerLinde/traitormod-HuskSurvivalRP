@@ -410,6 +410,7 @@ language.CMDHuskChat = "%s (as %s)"
 language.CMDOOCChat = "[OOC] %s (as %s)"
 language.CMDAliveNoPlayers = "There no alive human players currently."
 language.CMDPDAFeedback = "Sent '%s' to Administrator PDA %s."
+language.CMDRoundStarted = "You can only use this command in the lobby."
 
 language.MaleNames = {"Liam","Noah","James","Oliver","Benjamin","Elijah","Lucas","Mason","Logan","Alexander","Ethan","Jacob","Michael","Daniel",
 "Henry","Jackson","Sebastian","Aiden","Matthew","Samuel","David","Joseph","Carter","Owen","Wyatt","John","Jack","Luke","Jayden","Dylan",

@@ -22,15 +22,16 @@ extension.Init = function ()
 
         local character = sender.Character
         local ItemsToRemove = {}
-
         local itemsTable = {}
+
+        for value, amount in pairs(itemEntryRecipe) do
+            itemsTable[value] = 0
+        end
+
         for item in character.Inventory.AllItems do
             for value, amount in pairs(itemEntryRecipe) do
                 if value == item.Prefab.Identifier.ToString() then
-                    if not itemsTable[value] then
-                        itemsTable[value] = 1
-                        table.insert(ItemsToRemove, item)
-                    elseif itemsTable[value] < amount then
+                    if itemsTable[value] < amount then
                         itemsTable[value] = itemsTable[value] + 1
                         table.insert(ItemsToRemove, item)
                     end
@@ -38,12 +39,10 @@ extension.Init = function ()
             end
         end
 
-        for key, item in pairs(itemsTable) do
-            print(key..": "..item)
-        end
-
-        local MaxRequiredItems = #itemEntryRecipe
+        local MaxRequiredItems = 0
         local RequiredItemsFound = 0
+        for v in itemEntryRecipe do MaxRequiredItems = MaxRequiredItems + 1 end -- get the correct length of items
+
         for item, item_amount in pairs(itemEntryRecipe) do
             for value, amount in pairs(itemsTable) do
                 if item == value and item_amount == amount then
@@ -66,7 +65,7 @@ extension.Init = function ()
                     Entity.Spawner.AddItemToSpawnQueue(prefab, character.Inventory, nil, nil, nil)
                 end
                 Game.Log(tostring(prefab).." has been crafted by "..sender.Name, ServerLogMessageType.Spawning)
-            end, 2000)
+            end, (itemEntry.CraftingTime or 0.05) * 1000)
         else
             Husk.SendHuskAlertMessage(string.format(extension.FailedCraftMessage, prefab.Name.ToString()), Color.Red, sender)
             Game.Log(sender.Name.." has attempted to craft "..tostring(prefab)..", but failed.", ServerLogMessageType.Spawning)

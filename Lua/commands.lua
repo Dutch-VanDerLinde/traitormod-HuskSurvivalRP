@@ -23,6 +23,12 @@ Traitormod.AddCommand("!setrpname", function (client, args)
         return true
     end
 
+    if Game.RoundStarted then
+        Traitormod.SendMessage(client, Traitormod.Language.CMDRoundStarted)
+
+        return true
+    end
+
     local name = table.remove(args, 1)
     for word in args do
         name = name .. " " .. word
