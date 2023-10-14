@@ -9,11 +9,7 @@ extension.Init = function ()
         local itemID = msg.ReadString()
         local prefab = ItemPrefab.GetItemPrefab(itemID)
         local itemEntry = Husk.ConstructionMenuList[itemID]
-
-        local clonedTable = {}
-        for item in itemEntry do
-            table.insert(clonedTable, item) -- clone the table because table.remove
-        end
+        local itemEntryRecipe = itemEntry.Recipe
 
         if not sender.Character
             or sender.Character.IsDead
@@ -25,30 +21,38 @@ extension.Init = function ()
         end
 
         local character = sender.Character
-        local MaxRequiredItems = #itemEntry
-        local RequiredItemsPicked = 0
         local ItemsToRemove = {}
 
         local itemsTable = {}
         for item in character.Inventory.AllItems do
-            for key, value in pairs(clonedTable) do
+            for value, amount in pairs(itemEntryRecipe) do
                 if value == item.Prefab.Identifier.ToString() then
-                    table.insert(itemsTable, item)
+                    if not itemsTable[value] then
+                        itemsTable[value] = 1
+                        table.insert(ItemsToRemove, item)
+                    elseif itemsTable[value] < amount then
+                        itemsTable[value] = itemsTable[value] + 1
+                        table.insert(ItemsToRemove, item)
+                    end
                 end
             end
         end
 
-        for item in itemsTable do
-            for key, value in ipairs(clonedTable) do
-                if item.Prefab.Identifier.ToString() == value and RequiredItemsPicked < MaxRequiredItems then
-                    RequiredItemsPicked = RequiredItemsPicked + 1
-                    table.remove(clonedTable, key)
-                    table.insert(ItemsToRemove, item)
+        for key, item in pairs(itemsTable) do
+            print(key..": "..item)
+        end
+
+        local MaxRequiredItems = #itemEntryRecipe
+        local RequiredItemsFound = 0
+        for item, item_amount in pairs(itemEntryRecipe) do
+            for value, amount in pairs(itemsTable) do
+                if item == value and item_amount == amount then
+                    RequiredItemsFound = RequiredItemsFound + 1
                 end
             end
         end
 
-        if RequiredItemsPicked >= MaxRequiredItems then
+        if RequiredItemsFound >= MaxRequiredItems then
             for item in ItemsToRemove do
                 if item.OwnInventory then
                     for containeditem in item.OwnInventory.AllItemsMod do
@@ -58,7 +62,9 @@ extension.Init = function ()
                 Entity.Spawner.AddEntityToRemoveQueue(item)
             end
             Timer.Wait(function ()
-                Entity.Spawner.AddItemToSpawnQueue(prefab, character.Inventory, nil, nil, nil)
+                for i = 1, itemEntry.Amount do
+                    Entity.Spawner.AddItemToSpawnQueue(prefab, character.Inventory, nil, nil, nil)
+                end
                 Game.Log(tostring(prefab).." has been crafted by "..sender.Name, ServerLogMessageType.Spawning)
             end, 2000)
         else
