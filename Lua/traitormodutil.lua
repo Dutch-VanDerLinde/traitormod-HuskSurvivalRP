@@ -749,10 +749,7 @@ Traitormod.GiveJobItems = function(character)
             LimbType.LeftArm
         }
         local limb = possibleLimbs[math.random(1, #possibleLimbs)]
-        NT.SurgicallyAmputateLimb(character, limb, 100, 0)
-        if math.random(1, 2) == 1 then
-            NTCyb.CyberifyLimb(character, limb)
-        end
+        NTCyb.CyberifyLimb(character, limb)
     end
 
     Traitormod.SendJobInfoMsg(client, job)
