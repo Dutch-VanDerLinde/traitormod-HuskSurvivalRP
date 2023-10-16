@@ -280,6 +280,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
             local netmessage = Networking.Start("Traitormod.IdCardLocator.MakeCrewList")
             netmessage.WriteString(ShowMessage)
             netmessage.WriteByte(Byte(truekey))
+            netmessage.WriteColorR8G8B8(Color.White)
             Networking.Send(netmessage, client.Connection)
         end
     end
