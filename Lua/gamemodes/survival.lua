@@ -489,6 +489,7 @@ function gm:PreStart()
     end, Hook.HookMethodType.After)
 
     Traitormod.AzoeRadioChannel = math.random(250, 9000) + math.random(1, 100)
+    Traitormod.AzoeLaunchCodes = math.random(10000, 50000)
     Traitormod.InstituteRadioChannel = math.random(500, 9000) + math.random(100, 200)
 
     Traitormod.AmountMiners = 0
@@ -830,6 +831,7 @@ function gm:Think()
             Game.EndGame()
             Traitormod.InstituteRadioChannel = nil
             Traitormod.AzoeRadioChannel = nil
+            Traitormod.AzoeLaunchCodes = nil
         end, delay * 1000)
 
         self.Ending = true

@@ -10,6 +10,7 @@ Traitormod.Language = Traitormod.DefaultLanguage
 
 Traitormod.AzoeRadioChannel = nil
 Traitormod.InstituteRadioChannel = nil
+Traitormod.AzoeLaunchCodes = nil
 
 Traitormod.AmountMiners = 0
 Traitormod.AmountTechnicians = 0
@@ -911,29 +912,25 @@ Traitormod.DoJobSet = function(character)
         local possibleMelee = { -- Multiple of the same item to increase commonness
             "divingknife",
             "divingknife",
-            "divingknife",
-            "divingknife",
+            "husk_improvknife",
+            "husk_improvknife",
+            "husk_improvknife",
+            "husk_improvknife",
             "crowbar",
             "crowbar",
-            "crowbar",
-            "scp_m9bayonet",
-            "scp_m9bayonet",
             "scp_improvmachete",
             "scp_improvmachete",
             "scp_machete",
         }
         local possibleGuns = { -- Multiple of the same item to increase commonness
-            "pistol",
-            "shotgunsawedoff",
+            "separatistderringer",
+            "separatistderringer",
             "separatistderringer",
             "husk_revolver",
-        }
-        local possibleLights = { -- Multiple of the same item to increase commonness
-            "flashlight",
-            "flashlight",
-            "flashlight",
-            "thgflashlightheavy",
-            "thgflashlightheavy",
+            "husk_revolver",
+            "husk_piperifle",
+            "shotgunsawedoff",
+            "pistol",
         }
 
         local randomHat = possibleHats[math.random(1, #possibleHats)]
@@ -941,7 +938,6 @@ Traitormod.DoJobSet = function(character)
         local randomBag = possibleBags[math.random(1, #possibleBags)]
         local randomMelee = possibleMelee[math.random(1, #possibleMelee)]
         local randomGun = possibleGuns[math.random(1, #possibleGuns)]
-        local randomLight = possibleLights[math.random(1, #possibleLights)]
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("oxygenitetank"),
             character.Inventory.GetItemInLimbSlot(InvSlotType.HealthInterface).OwnInventory, math.random(28, 81))
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomHat), character.Inventory, nil, nil,
@@ -959,7 +955,7 @@ Traitormod.DoJobSet = function(character)
                     end
                 end
             end)
-        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(randomLight), character.Inventory, nil, nil,
+        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("flashlight"), character.Inventory, nil, nil,
             function(spawned)
                 Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("batterycell"), spawned.OwnInventory, math.random(65, 100))
             end)
@@ -988,6 +984,10 @@ Traitormod.DoJobSet = function(character)
                 elseif spawnedID == "husk_revolver" then
                     ammoprefab = "38_round"
                     ammocount = 6
+                    extra_ammo = 12
+                elseif spawnedID == "husk_piperifle" then
+                    ammoprefab = "husk_30round"
+                    ammocount = 1
                     extra_ammo = 12
                 end
 
@@ -1090,7 +1090,8 @@ Traitormod.DoJobSet = function(character)
         headset.CreateServerEvent(component, component)
 
         local colororange = "‖color:gui.orange‖%s‖color:end‖"
-        local colorired = "‖color:gui.green‖%s‖color:end‖"
+        local colorgreen = "‖color:gui.green‖%s‖color:end‖"
+        local colorred = "‖color:gui.red‖%s‖color:end‖"
 
         if character.HasJob("researchdirector") then
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil,
@@ -1098,19 +1099,26 @@ Traitormod.DoJobSet = function(character)
                     local sb = Traitormod.StringBuilder:new()
                     sb(Traitormod.Language.InstituteCodes, character.Name)
                     sb("\n\nThe institute radio channel is: %s",string.format(colororange, Traitormod.InstituteRadioChannel))
-                    sb("\nThe undercover agent codewords are: %s", string.format(colorired, "hello"))
+                    sb("\nThe undercover agent codewords are: %s", string.format(colorgreen, "hello"))
 
                     spawned.Description = sb:concat()
                 end)
         elseif character.HasJob("adminone") then
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminpaper"), character.Inventory, nil, nil,
                 function(spawned)
-                    local sb = Traitormod.StringBuilder:new()
-                    sb(Traitormod.Language.AzoeCodes, character.Name)
-                    sb("\n\nThe Azoe Region radio channel is: %s",
-                        string.format(colororange, Traitormod.AzoeRadioChannel))
+                    local radiocodesdesc = string.format("The Azoe Region radio channel is: %s", string.format(colororange, Traitormod.AzoeRadioChannel))
+                    local launchcodesdesc = string.format("The Azoe Region nuclear launch code is: %s", string.format(colorred, Traitormod.AzoeLaunchCodes))
+                    local vaultsdesc = string.format("The Azoe Region vault access code is: %s", string.format(colorgreen, "5325"))
 
-                    spawned.Description = sb:concat()
+                    Timer.Wait(function ()
+                        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminazoeradio"), spawned.OwnInventory, nil, nil, function (radiocodes)
+                            radiocodes.Description = radiocodesdesc
+                        end)
+
+                        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminazoenukecodes"), spawned.OwnInventory, nil, nil, function (launchcodes)
+                            launchcodes.Description = launchcodesdesc
+                        end)
+                    end, 250)
                 end)
         end
     end, 200)
