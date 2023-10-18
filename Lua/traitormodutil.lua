@@ -284,7 +284,12 @@ Traitormod.SelectCodeWords = function()
         table.insert(selected2, copied[Random.Range(1, #copied + 1)])
     end
 
-    return { selected, selected2 }
+    local selected3 = {}
+    for i = 1, Traitormod.Config.AmountCodeWords, 1 do
+        table.insert(selected3, copied[Random.Range(1, #copied + 1)])
+    end
+
+    return { selected, selected2, selected3 }
 end
 
 Traitormod.ParseCommand = function(text)
@@ -1096,12 +1101,18 @@ Traitormod.DoJobSet = function(character)
         if character.HasJob("researchdirector") then
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil,
                 function(spawned)
-                    local sb = Traitormod.StringBuilder:new()
-                    sb(Traitormod.Language.InstituteCodes, character.Name)
-                    sb("\n\nThe institute radio channel is: %s",string.format(colororange, Traitormod.InstituteRadioChannel))
-                    sb("\nThe undercover agent codewords are: %s", string.format(colorgreen, "hello"))
+                    local radiocodesdesc = string.format("The institute radio channel is: %s", string.format(colororange, Traitormod.InstituteRadioChannel))
+                    local codewordsdesc = string.format("The institute undercover agent codewords are: %s", string.format(colorgreen, Traitormod.SelectCodeWords))
 
-                    spawned.Description = sb:concat()
+                    Timer.Wait(function ()
+                        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("tciradio"), spawned.OwnInventory, nil, nil, function (radiocodes)
+                            radiocodes.Description = radiocodesdesc
+                        end)
+
+                        Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("tci_antagcodewords"), spawned.OwnInventory, nil, nil, function (codewords)
+                            codewords.Description = codewordsdesc
+                        end)
+                    end, 250)
                 end)
         elseif character.HasJob("adminone") then
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("adminpaper"), character.Inventory, nil, nil,
