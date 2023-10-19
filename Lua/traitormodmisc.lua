@@ -502,6 +502,8 @@ Traitormod.FlaggedRP_Phrases = {
     ["ty"] = "thank you",
     ["afk"] = "",
     ["lmk"] = "let me know",
+    ["wyd"] = "what you doing",
+    ["fyi"] = "for your information",
     --Laughs
     ["lmao"] = { Traitormod.Laugh, "laughs" },
     ["lol"] = { Traitormod.Laugh, "laughs" },
