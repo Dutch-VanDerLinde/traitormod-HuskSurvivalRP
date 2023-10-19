@@ -90,9 +90,7 @@ function role:Greet()
     if #agents < 2 then
         sb(Traitormod.Language.SoloAgent)
     else
-        sb(Traitormod.Language.BanditNoticePartners)
-        sb("\n")
-        sb(Traitormod.Language.Partners, partners)
+        sb(Traitormod.Language.AgentNoticeCodewords, Traitormod.CodeWords)
     end
 
     return sb:concat()

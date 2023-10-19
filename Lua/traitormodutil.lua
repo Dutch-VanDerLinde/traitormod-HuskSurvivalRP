@@ -269,27 +269,20 @@ Traitormod.SendObjectiveFailed = function(client, objectiveText)
 end
 
 Traitormod.SelectCodeWords = function()
-    local copied = {}
-    for key, value in pairs(Traitormod.Config.Codewords) do
-        copied[key] = value
-    end
+    local verbs = Traitormod.Config.CodewordsVerbs
+    local adjectives = Traitormod.Config.CodewordsAdjectives
 
     local selected = {}
-    for i = 1, Traitormod.Config.AmountCodeWords, 1 do
-        table.insert(selected, copied[Random.Range(1, #copied + 1)])
+
+    for i = 1, 2, 1 do
+        local random_verb = verbs[math.random(#verbs)]
+        table.insert(selected, random_verb)
     end
 
-    local selected2 = {}
-    for i = 1, Traitormod.Config.AmountCodeWords, 1 do
-        table.insert(selected2, copied[Random.Range(1, #copied + 1)])
-    end
+    local random_adjective = verbs[math.random(#adjectives)]
+    table.insert(selected, random_adjective)
 
-    local selected3 = {}
-    for i = 1, Traitormod.Config.AmountCodeWords, 1 do
-        table.insert(selected3, copied[Random.Range(1, #copied + 1)])
-    end
-
-    return { selected, selected2, selected3 }
+    return table.concat(selected, ", ")
 end
 
 Traitormod.ParseCommand = function(text)
@@ -1102,7 +1095,7 @@ Traitormod.DoJobSet = function(character)
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("institutepaper"), character.Inventory, nil, nil,
                 function(spawned)
                     local radiocodesdesc = string.format("The institute radio channel is: %s", string.format(colororange, Traitormod.InstituteRadioChannel))
-                    local codewordsdesc = string.format("The institute undercover agent codewords are: %s", string.format(colorgreen, Traitormod.SelectCodeWords))
+                    local codewordsdesc = string.format("The institute undercover agent codewords are: %s", string.format(colorgreen, Traitormod.CodeWords))
 
                     Timer.Wait(function ()
                         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("tciradio"), spawned.OwnInventory, nil, nil, function (radiocodes)
