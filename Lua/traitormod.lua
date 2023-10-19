@@ -59,7 +59,7 @@ Traitormod.PreRoundStart = function (submarineInfo, chooseGamemode)
             Traitormod.SelectedGamemode[key] = value
         end
     end
-    
+
     if Game.ServerSettings.GameModeIdentifier ~= "pvp" then
         Traitormod.SelectedGamemode = Traitormod.Gamemodes.Survival:new()
     end
