@@ -51,8 +51,7 @@ function role:StealLoop(first)
 
         if not first then
             local ItemToStealPrefab = ItemPrefab.GetItemPrefab(objectToSteal)
-            Traitormod.SendMessage(client, string.format(Traitormod.Language.HeistNewObjective, tostring(ItemToStealPrefab.Name)),
-                "GameModeIcon.pvp")
+            Traitormod.SendMessage(client, string.format(Traitormod.Language.HeistNewObjective, tostring(ItemToStealPrefab.Name)), "GameModeIcon.pvp")
             Traitormod.UpdateVanillaTraitor(client, true, self:Greet())
         end
     else

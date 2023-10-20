@@ -231,7 +231,6 @@ Traitormod.UpdateVanillaTraitor = function(client, enabled, objectiveSummary, mi
 
     client.Character.IsTraitor = enabled
     client.Character.TraitorCurrentObjective = objectiveSummary
-    --Game.SendTraitorMessage(client, objectiveSummary, missionIdentifier or Traitormod.MissionIdentifier, TraitorMessageType.Objective)
 end
 
 -- send feedback to the character for completing a traitor objective and update vanilla traitor state
