@@ -192,7 +192,8 @@ Hook.Add("roundEnd", "Traitormod.RoundEnd", function()
     Traitormod.RespawnedCharacters = {}
 
     if Traitormod.SelectedGamemode then
-        return Traitormod.SelectedGamemode:TraitorResults()
+        --return Traitormod.SelectedGamemode:TraitorResults()
+        return nil
     end
 end)
 
