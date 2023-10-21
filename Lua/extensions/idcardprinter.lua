@@ -98,6 +98,10 @@ extension.Init = function()
                     table.insert(IDTags, "azoe_gov")
                     table.insert(AccessTable, "government access")
                 end
+
+                if CustomInterfaceList[7].Signal ~= nil and CustomInterfaceList[7].Signal ~= "" then
+                    idjobname = CustomInterfaceList[7].Signal
+                end
             elseif computerID == "husk_idterminaltci" then
                 local secaccess = CustomInterfaceList[1].State
                 local labaccess = CustomInterfaceList[2].State
@@ -116,6 +120,10 @@ extension.Init = function()
                     idjobname = "security officer"
                     table.insert(IDTags, "tci_guard")
                     table.insert(AccessTable, "security access")
+                end
+
+                if CustomInterfaceList[4].Signal ~= nil and CustomInterfaceList[7].Signal ~= "" then
+                    idjobname = CustomInterfaceList[7].Signal
                 end
             end
 
