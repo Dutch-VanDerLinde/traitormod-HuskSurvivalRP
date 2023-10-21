@@ -6,7 +6,7 @@ objective.AmountPoints = 1000
 objective.PossibleItems = {
     admindeviceazoe = {
         text = "Steal the Azoe Region Administrator's PDA.",
-        points = 1800,
+        points = 2000,
     },
     husk_wallet = {
         text = "Steal someone's wallet.",
@@ -20,13 +20,21 @@ objective.PossibleItems = {
         text = "Steal scientist goggles.",
         points = 850,
     },
-    adminpaper = {
-        text = "Steal the Azoe Region Administrator's classified codes document.",
-        points = 2100,
+    adminazoenukecodes = {
+        text = "Steal the Azoe Region Administrator's nuclear launch code document.",
+        points = 2800,
     },
-    institutepaper = {
-        text = "Steal the Institute Research Director's classified codes document.",
-        points = 2200,
+    tci_antagcodewords = {
+        text = "Steal the Institute Research Director's undercover agent codeword document.",
+        points = 2500,
+    },
+    admindevicetci = {
+        text = "Steal the Institute Research Director's PDA.",
+        points = 2000,
+    },
+    azoe_bodyarmor = {
+        text = "Steal the Azoe Region Administrator's advanced body armor.",
+        points = 2000,
     },
 }
 

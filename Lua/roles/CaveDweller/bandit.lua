@@ -7,11 +7,13 @@ role.IsAntagonist = true
 role.MaxStealTargets = 3
 role.PossibleStealTargets = {
     "admindeviceazoe",
-    "adminpaper",
-    "institutepaper",
+    "adminazoenukecodes",
+    "tci_antagcodewords",
     "husk_wallet",
     "expeditionsuit_institute",
     "scientistscannerhud",
+    "admindevicetci",
+    "azoe_bodyarmor",
 }
 
 function role:StealLoop(first)

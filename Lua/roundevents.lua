@@ -101,22 +101,23 @@ re.SendEventMessage = function (text, icon, team)
     text = "NOTICE: "..text
 
     for key, value in pairs(Client.ClientList) do
-        local messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
         local messageBox = ChatMessage.Create("", text, ChatMessageType.ServerMessageBoxInGame, nil, nil)
         messageBox.IconStyle = icon
 
         if value.Character and not value.Character.IsDead and value.Character.IsHuman then
             if value.Character.Inventory.FindItemByIdentifier("admindeviceazoe", true) and team == "both" or team == "azoe" then
+                local messageChat = ChatMessage.Create("ADMINISTRATOR PDA", text, ChatMessageType.Default, nil, nil)
                 messageChat.Color = Color.DeepSkyBlue
                 Game.SendDirectChatMessage(messageBox, value)
                 Game.SendDirectChatMessage(messageChat, value)
-            elseif value.Character.Inventory.FindItemByIdentifier("admindevicemelt", true) and team == "both" or team == "melt" then
-                messageChat.Color = Color.Khaki
+            elseif value.Character.Inventory.FindItemByIdentifier("admindevicetci", true) and team == "both" or team == "tci" then
+                local messageChat = ChatMessage.Create("RESEARCH DIRECTOR PDA", text, ChatMessageType.Default, nil, nil)
+                messageChat.Color = Color.Aquamarine
                 Game.SendDirectChatMessage(messageBox, value)
                 Game.SendDirectChatMessage(messageChat, value)
             end
         end
-    end 
+    end
 end
 
 local lastRandomEventCheck = 0
