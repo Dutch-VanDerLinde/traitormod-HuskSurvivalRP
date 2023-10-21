@@ -259,8 +259,15 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
     local idcardidentifier = "tci_idcard"
     if itemID == "admindeviceazoe" then idcardidentifier = "azoe_idcard" end
 
+    local idcards = {}
+    for v in Item.ItemList do
+        if v.Prefab.Identifier == idcardidentifier then
+            table.insert(idcards, v)
+        end
+    end
+
     local truekey = 0
-    for key, value in pairs(Util.GetItemsById(idcardidentifier)) do
+    for key, value in pairs(idcards) do
         if not value.Removed and not value.HasTag("notracker") then -- make sure our id isn't deleted
             local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
             local idCard = value.GetComponentString("IdCard")
@@ -292,11 +299,18 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
 
     if item.Prefab.Identifier == "admindeviceazoe" then
         Traitormod.Pointshop.ShowCategory(client)
-    elseif item.Prefab.Identifier == "admindevicemelt" then
+    elseif item.Prefab.Identifier == "admindevicetci" then
         Traitormod.Pointshop.ShowCategory(client)
     elseif item.Prefab.Identifier == "azoecrewstatusdevice" then
+        local idcards = {}
+        for v in Item.ItemList do
+            if v.Prefab.Identifier == "azoe_idcard" then
+                table.insert(idcards, v)
+            end
+        end
+
         local truekey = 0
-        for key, value in pairs(Util.GetItemsById("azoe_idcard")) do
+        for key, value in pairs(idcards) do
             if not value.Removed and not value.HasTag("notracker") then -- make sure our id isn't deleted
                 local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
                 local idCard = value.GetComponentString("IdCard")
