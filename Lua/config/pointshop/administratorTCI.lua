@@ -3,8 +3,10 @@ local category = {}
 category.Identifier = "administrator1"
 category.CanAccess = function(client)
     if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.Inventory.FindItemByIdentifier("admindevicetci") then
+        print('h!')
         return true
     else
+        print('hi!!!!!!')
         return false
     end
 end
@@ -19,7 +21,7 @@ local function SpawnCrate(client, items, color, description)
     Game.SendDirectChatMessage(messageBox, client)
 
     Timer.Wait(function ()
-        local spawn = Traitormod.GetRandomJobWaypoint("DeliverySpawnAzoe")
+        local spawn = Traitormod.GetRandomJobWaypoint("DeliverySpawnTci")
 
         Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab("securemetalcrate"), spawn.WorldPosition, nil, nil, function (item)
             item.Description = description
@@ -52,7 +54,7 @@ end, 5000)
 
 category.Products = {
     {
-        Identifier = "Medical Delivery",
+        Identifier = "testing",
         Price = 1000,
         Limit = 2,
         PricePerLimit = 1000,
