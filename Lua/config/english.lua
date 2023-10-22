@@ -365,8 +365,8 @@ language.Pointshop = {
     deathspawn = "Death Spawn",
     wiring = "Wiring",
     ores = "Ores",
-    administrator2 = "Administrator",
-    administrator = "Administrator",
+    administrator2 = "Order Cargo",
+    administrator1 = "Order Cargo",
     security = "Security",
     ships = "Ships",
     materials = "Materials",
@@ -495,12 +495,11 @@ language.InstituteCodes = "This document is for %s, the latest research director
 language.AzoeCodes = "This document is for %s, the newly appointed Azoe Region administrator. These codes should be given to trusted personnel only."
 
 language.ToAzoe = "There's a label on it, it says: 'To Azoe Region'"
-language.ToMeltwater = "There's a label on it, it says: 'To Meltwater Region'"
+language.ToTCI = "There's a label on it, it says: 'To The Centrum Institute'"
 language.DeliverySuccess = "Thank you for purchasing. Your supplies will be delivered to you shortly. ETA: 3 minutes"
-language.DeliveryArrival = "Your delivery has arrived! It is in the cargo bay of your region."
+language.DeliveryArrival = "Your delivery has arrived! It is in the cargo bay of your outpost."
 
 language.MedicalDeliveryCrate = "A crate full of medical supplies. %s"
-
 
 language.IntercomSentBy = "Sent by %s (%s)"
 

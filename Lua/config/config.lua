@@ -268,6 +268,7 @@ config.PointShopConfig = {
     ItemCategories = {
         dofile(Traitormod.Path .. "/Lua/config/pointshop/deathspawn.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorAzoe.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorTCI.lua"),
         --dofile(Traitormod.Path .. "/Lua/config/pointshop/ships.lua"),
     }
 }
