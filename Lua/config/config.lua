@@ -243,21 +243,8 @@ config.ObjectiveConfig = {
 ----- EVENTS -----
 config.RandomEventConfig = {
     Events = {
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/communicationsoffline.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/superballastflora.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/maintenancetoolsdelivery.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/medicaldelivery.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/ammodelivery.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/hiddenpirate.lua"),
         dofile(Traitormod.Path .. "/Lua/config/randomevents/electricalfixdischarge.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/wreckpirate.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/beaconpirate.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/lightsoff.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/shadymission.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/oxygengenpoison.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/oxygengenhusk.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/randomlights.lua"),
-        --dofile(Traitormod.Path .. "/Lua/config/randomevents/clownmagic.lua"),
     }
 }
 
@@ -268,7 +255,7 @@ config.PointShopConfig = {
     ItemCategories = {
         dofile(Traitormod.Path .. "/Lua/config/pointshop/deathspawn.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorAzoe.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorTCI.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorTci.lua"),
         --dofile(Traitormod.Path .. "/Lua/config/pointshop/ships.lua"),
     }
 }
