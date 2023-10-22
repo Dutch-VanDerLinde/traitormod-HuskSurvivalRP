@@ -3,10 +3,8 @@ local category = {}
 category.Identifier = "administrator1"
 category.CanAccess = function(client)
     if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.Inventory.FindItemByIdentifier("admindevicetci") then
-        print('h!')
         return true
     else
-        print('hi!!!!!!')
         return false
     end
 end
