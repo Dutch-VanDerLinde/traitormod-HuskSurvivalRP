@@ -631,15 +631,16 @@ function gm:SelectAntagonist(client)
         if thisRoundNumber ~= Traitormod.RoundNumber or not Game.RoundStarted then return end
 
         local antagonists = {}
-        local randomnumber = math.random(3, 7)
 
         if this.AntagFilter(client) > 0 then
             if not client.Character.IsDead and Traitormod.RoleManager.GetRole(client.Character) == nil then
                 if self.AmountAntags < self.AmountTotalAntags then
-                    if math.random(randomnumber) == 1 then
+                    if math.random(5) == 1 then
                         Traitormod.Log("Chose "..client.Name.." as antag")
                         table.insert(antagonists, client.Character)
                         self:AssignAntagonists(antagonists)
+                    else
+                        Traitormod.Log("Attempted to choose "..client.Name.." as antag")
                     end
                 end
             end
