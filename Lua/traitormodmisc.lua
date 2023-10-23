@@ -271,8 +271,15 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
         if not value.Removed and not value.HasTag("notracker") then -- make sure our id isn't deleted
             local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
             local idCard = value.GetComponentString("IdCard")
-            local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
-            truekey = truekey + 1
+
+            local ownerJobName = "Unknown"
+            local tags = HF.SplitString(value.Tags, ",")
+            for tag in tags do
+                if HF.StartsWith(tag, "job:") then
+                    local split = HF.SplitString(tag, ":")
+                    if split[2] ~= (nil or "") then ownerJobName = split[2] end
+                end
+            end
 
             local center = client.Character.WorldPosition
             local target = value.WorldPosition
@@ -282,6 +289,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
             local direction = degreeToOClock(angle)
 
             if distance <= 4 then direction = "•" end
+            truekey = truekey + 1
 
             local ShowMessage = string.format(Traitormod.Language.Pointshop.idcardlocator_result, tostring(ownerJobName), idCard.OwnerName, math.floor(distance), direction)
             local netmessage = Networking.Start("Traitormod.IdCardLocator.MakeCrewList")

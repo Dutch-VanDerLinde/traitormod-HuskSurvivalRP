@@ -15,14 +15,20 @@ extension.Init = function()
         Entity.Spawner.AddItemToRemoveQueue(oldItem)
         Timer.Wait(function ()
             Entity.Spawner.AddItemToSpawnQueue(ItemPrefab.GetItemPrefab(newPrefab), targetInventory, nil, nil, function(spawnedidcard)
+                local idcard = spawnedidcard.GetComponentString("IdCard")
+                idcard.OwnerName = name
+                idcard.OwnerJobId = jobid
+
+                for key, character in pairs(Character.CharacterList) do
+                    if character.IsHuman then
+                        idcard.Initialize(nil, character)
+                    end
+                end
+
                 spawnedidcard.Tags = tags
                 spawnedidcard.Description = description
                 spawnedidcard.AddTag("name:" .. name)
                 spawnedidcard.AddTag("job:" .. jobname)
-                -- Below is to change the IdCardComponent so it displays the targetCharacter's name rather than nothing
-                local idcard = spawnedidcard.GetComponentString("IdCard")
-                idcard.OwnerName = name
-                idcard.OwnerJobId = jobid
                 spawnedidcard.CreateServerEvent(idcard, idcard)
             end)
         end, 500)
@@ -122,8 +128,8 @@ extension.Init = function()
                     table.insert(AccessTable, "security access")
                 end
 
-                if CustomInterfaceList[4].Signal ~= nil and CustomInterfaceList[7].Signal ~= "" then
-                    idjobname = CustomInterfaceList[7].Signal
+                if CustomInterfaceList[4].Signal ~= nil and CustomInterfaceList[4].Signal ~= "" then
+                    idjobname = CustomInterfaceList[4].Signal
                 end
             end
 
