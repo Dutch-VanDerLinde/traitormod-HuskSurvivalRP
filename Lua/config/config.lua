@@ -253,9 +253,8 @@ config.PointShopConfig = {
     DeathTimeoutTime = 60,
     DeathSpawnRefundAtEndRound = true,
     ItemCategories = {
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/deathspawn.lua"),
-        dofile(Traitormod.Path .. "/Lua/config/pointshop/administratorAzoe.lua"),
         dofile(Traitormod.Path .. "/Lua/config/pointshop/institute.lua"),
+        dofile(Traitormod.Path .. "/Lua/config/pointshop/administrator.lua"),
         --dofile(Traitormod.Path .. "/Lua/config/pointshop/ships.lua"),
     }
 }

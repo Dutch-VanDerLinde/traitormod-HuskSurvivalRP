@@ -18,13 +18,6 @@ extension.Init = function()
                 local idcard = spawnedidcard.GetComponentString("IdCard")
                 idcard.OwnerName = name
                 idcard.OwnerJobId = jobid
-
-                for key, character in pairs(Character.CharacterList) do
-                    if character.IsHuman then
-                        idcard.Initialize(nil, character)
-                    end
-                end
-
                 spawnedidcard.Tags = tags
                 spawnedidcard.Description = description
                 spawnedidcard.AddTag("name:" .. name)

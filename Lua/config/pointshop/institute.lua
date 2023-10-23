@@ -1,18 +1,14 @@
 local category = {}
 
-category.Identifier = "administrator1"
+category.Identifier = "cargoinstitute"
 category.CanAccess = function(client)
-    if client.Character then
-        if not client.Character.IsDead and client.Character.IsHuman then
-            print(client.Character.Inventory.FindItemByIdentifier("admindevicetci"))
-            return client.Character.Inventory.FindItemByIdentifier("admindevicetci")
-        end
+    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.Inventory.FindItemByIdentifier("admindevicetci") then
+        return true
+    else
+        return false
     end
-
-    return false
 end
 
-local team = "Placeholder"
 local function SpawnCrate(client, items, color, description)
     local messageChat = ChatMessage.Create("RESEARCH DIRECTOR PDA", Traitormod.Language.DeliverySuccess, ChatMessageType.Default, nil, nil)
     local messageBox = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.ServerMessageBoxInGame, nil, nil)
@@ -49,22 +45,18 @@ local function SpawnCrate(client, items, color, description)
     end, math.random(2, 4)*60000)
 end
 
-Timer.Wait(function ()
-    team = Traitormod.Language.ToTCI
-end, 5000)
-
 category.Products = {
     {
-        Identifier = "testing",
+        Identifier = "Medical Delivery",
         Price = 1000,
         Limit = 2,
         PricePerLimit = 1000,
         Action = function (client, product, paidPrice)
-            local description = string.format(Traitormod.Language.MedicalDeliveryCrate, team)
+            local description = string.format(Traitormod.Language.MedicalDeliveryCrate, Traitormod.Language.ToTCI)
             local color = Color(250, 80, 65, 255)
             local items = {
                 "antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1",
-
+                "antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1",
             }
 
             SpawnCrate(client, items, color, description)

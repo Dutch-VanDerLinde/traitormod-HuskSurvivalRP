@@ -1,6 +1,6 @@
 local category = {}
 
-category.Identifier = "administrator2"
+category.Identifier = "cargoazoe"
 category.CanAccess = function(client)
     if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.Inventory.FindItemByIdentifier("admindeviceazoe") then
         return true
@@ -9,7 +9,6 @@ category.CanAccess = function(client)
     end
 end
 
-local team = "Placeholder"
 local function SpawnCrate(client, items, color, description)
     local messageChat = ChatMessage.Create("ADMINISTRATOR PDA", Traitormod.Language.DeliverySuccess, ChatMessageType.Default, nil, nil)
     local messageBox = ChatMessage.Create("", Traitormod.Language.DeliverySuccess, ChatMessageType.ServerMessageBoxInGame, nil, nil)
@@ -38,17 +37,13 @@ local function SpawnCrate(client, items, color, description)
 
         messageChat = ChatMessage.Create("ADMINISTRATOR PDA", Traitormod.Language.DeliveryArrival, ChatMessageType.Default, nil, nil)
         messageChat.Color = Color.DeepSkyBlue
-        for key, client in pairs(Client.ClientList) do
-            if client.Character and client.Character.Inventory.FindItemByIdentifier("admindeviceazoe", true) then
-                Game.SendDirectChatMessage(messageChat, client)
+        for key, v in pairs(Client.ClientList) do
+            if v.Character and v.Character.Inventory.FindItemByIdentifier("admindeviceazoe", true) then
+                Game.SendDirectChatMessage(messageChat, v)
             end
         end
     end, math.random(2, 4)*60000)
 end
-
-Timer.Wait(function ()
-    team = Traitormod.Language.ToAzoe
-end, 5000)
 
 category.Products = {
     {
@@ -57,7 +52,7 @@ category.Products = {
         Limit = 2,
         PricePerLimit = 1000,
         Action = function (client, product, paidPrice)
-            local description = string.format(Traitormod.Language.MedicalDeliveryCrate, team)
+            local description = string.format(Traitormod.Language.MedicalDeliveryCrate, Traitormod.Language.ToAzoe)
             local color = Color(250, 80, 65, 255)
             local items = {
                 "antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1","antidama1",
