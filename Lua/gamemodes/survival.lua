@@ -455,6 +455,7 @@ function gm:PreStart()
         local client = Traitormod.FindClientCharacter(character)
 
         if client and self.AntagsSelected then
+            Traitormod.Log("Attempted to choose "..client.Name.." as antag")
             self:SelectAntagonist(client)
         end
     end)
@@ -638,8 +639,6 @@ function gm:SelectAntagonist(client)
                         Traitormod.Log("Chose "..client.Name.." as antag")
                         table.insert(antagonists, client.Character)
                         self:AssignAntagonists(antagonists)
-                    else
-                        Traitormod.Log("Attempted to choose "..client.Name.." as antag")
                     end
                 end
             end
