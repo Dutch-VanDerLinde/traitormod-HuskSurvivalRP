@@ -2,11 +2,14 @@ local category = {}
 
 category.Identifier = "administrator1"
 category.CanAccess = function(client)
-    if client.Character and not client.Character.IsDead and client.Character.IsHuman and client.Character.Inventory.FindItemByIdentifier("admindevicetci") then
-        return true
-    else
-        return false
+    if client.Character then
+        if not client.Character.IsDead and client.Character.IsHuman then
+            print(client.Character.Inventory.FindItemByIdentifier("admindevicetci"))
+            return client.Character.Inventory.FindItemByIdentifier("admindevicetci")
+        end
     end
+
+    return false
 end
 
 local team = "Placeholder"

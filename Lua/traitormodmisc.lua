@@ -137,6 +137,8 @@ Traitormod.MineralsTable = {
     "stannite",
     "amblygonite",
     "yeastshroom",
+    "redwire",
+    "redwire",
 }
 
 Traitormod.AddStaticToMessage = function(msg, chance)
@@ -272,7 +274,7 @@ Hook.Add("traitormod.terminalWrite", "Traitormod.IdCardLocator", function (item,
             local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
             local idCard = value.GetComponentString("IdCard")
 
-            local ownerJobName = "Unknown"
+            local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
             local tags = HF.SplitString(value.Tags, ",")
             for tag in tags do
                 if HF.StartsWith(tag, "job:") then
@@ -322,8 +324,15 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
             if not value.Removed and not value.HasTag("notracker") then -- make sure our id isn't deleted
                 local distance = Vector2.Distance(client.Character.WorldPosition, value.WorldPosition) / 122
                 local idCard = value.GetComponentString("IdCard")
+
                 local ownerJobName = idCard.OwnerJob and idCard.OwnerJob.Name or "Unknown"
-                truekey = truekey + 1
+                local tags = HF.SplitString(value.Tags, ",")
+                for tag in tags do
+                    if HF.StartsWith(tag, "job:") then
+                        local split = HF.SplitString(tag, ":")
+                        if split[2] ~= (nil or "") then ownerJobName = split[2] end
+                    end
+                end
 
                 local center = client.Character.WorldPosition
                 local target = value.WorldPosition
@@ -333,6 +342,7 @@ Hook.Patch("Barotrauma.Items.Components.CustomInterface", "ServerEventRead", fun
                 local direction = degreeToOClock(angle)
 
                 if distance <= 2 then direction = "•" end
+                truekey = truekey + 1
 
                 local health = "Unknown"
                 local healthcolor = Color.White

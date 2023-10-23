@@ -39,12 +39,12 @@ Traitormod.Loadouts = {
         {"shotgunshell", math.random(6,12), 0.5},
         {"flare", math.random(2, 6), 0.4},
         {"flare", math.random(1, 2), 0.9},
-        {"batterycell", math.random(2), 0.4},
-        {"oxygentank", math.random(3, 5), 1},
-        {"oxygentank", math.random(2), 0.3},
-        {"oxygentank", 2, 0.5},
+        {"batterycell", math.random(2), 0.2},
+        {"oxygentank", 2, 1},
         {"thgmultitool", 1, 0.5},
         {"huskstinger", 1, 0.4},
+        {"redwire", math.random(4), 0.5},
+        {"redwire", 2, 1},
     },
 
     medicaldoctor = {
