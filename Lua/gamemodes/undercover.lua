@@ -20,11 +20,17 @@ function gm:AssignAntagonists(antagonists)
         table.insert(roles, role)
     end
 
-    Timer.Wait(function ()
+    if self.AntagsSelected then
         Assign(roles)
         self.AntagsSelected = true
         Traitormod.Log("Antagonists have been assigned: " .. tostring(self.AntagsSelected))
-    end, math.random(2, 4) * 60000)
+    else
+        Timer.Wait(function ()
+            Assign(roles)
+            self.AntagsSelected = true
+            Traitormod.Log("Antagonists have been assigned: " .. tostring(self.AntagsSelected))
+        end, math.random(2, 4) * 60000)
+    end
 end
 
 return gm
