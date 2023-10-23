@@ -2,6 +2,7 @@ local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
 local gm = Traitormod.Gamemodes.Gamemode:new()
 
 gm.Name = "Survival"
+gm.AntagsSelected = false
 
 function gm:CharacterDeath(character)
     local client = Traitormod.FindClientCharacter(character)
@@ -453,7 +454,6 @@ function gm:PreStart()
 
         local client = Traitormod.FindClientCharacter(character)
 
-        print(self.AntagsSelected)
         if client and self.AntagsSelected then
             self:SelectAntagonist(client)
         end
