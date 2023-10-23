@@ -88,7 +88,7 @@ end
 ----- GAMEMODE -----
 config.GamemodeConfig = {
     Survival = {
-        PointshopCategories = {"deathspawn", "administrator2"},
+        PointshopCategories = {"cargoinstitute", "cargoazoe"},
         EndOnComplete = true,           -- end round everyone but traitors are dead
         EnableRandomEvents = true,
         EndGameDelaySeconds = 10,

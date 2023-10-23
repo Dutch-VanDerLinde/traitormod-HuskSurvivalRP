@@ -157,7 +157,7 @@ ps.FindProductByName = function (client, name)
                 end
             end
         end
-    end 
+    end
 end
 
 ps.CanClientAccessCategory = function(client, category)
