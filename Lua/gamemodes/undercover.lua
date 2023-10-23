@@ -22,6 +22,8 @@ function gm:AssignAntagonists(antagonists)
 
     Timer.Wait(function ()
         Assign(roles)
+        self.AntagsSelected = true
+        Traitormod.Log("Antagonists have been assigned: " .. tostring(self.AntagsSelected))
     end, math.random(2, 4) * 60000)
 end
 

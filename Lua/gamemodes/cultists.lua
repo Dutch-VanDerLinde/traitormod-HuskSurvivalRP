@@ -21,6 +21,8 @@ function gm:AssignAntagonists(antagonists)
         table.insert(roles, role)
     end
     Assign(roles)
+    self.AntagsSelected = true
+    Traitormod.Log("Antagonists have been assigned: " .. tostring(self.AntagsSelected))
 end
 
 return gm
