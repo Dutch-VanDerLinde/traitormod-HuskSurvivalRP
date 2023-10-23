@@ -527,21 +527,6 @@ Traitormod.GetJobString = function(character)
     return prefix
 end
 
--- returns true if character has reached the end of the level
-Traitormod.EndReached = function(character, distance)
-    if LevelData and LevelData.LevelType and LevelData.LevelType.Outpost then
-        return true
-    end
-
-    if Level.Loaded.EndOutpost == nil then
-        return Submarine.MainSub.AtEndExit
-    end
-
-    local characterInsideOutpost = not character.IsDead and character.Submarine == Level.Loaded.EndOutpost
-    -- character is inside or docked to outpost
-    return characterInsideOutpost or Vector2.Distance(character.WorldPosition, Level.Loaded.EndPosition) < distance
-end
-
 Traitormod.VectorCompassDirection = function(vector1, vector2)
     local dx = vector2.X - vector1.X
     local dy = vector2.Y - vector1.Y

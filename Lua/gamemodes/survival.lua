@@ -535,7 +535,7 @@ function gm:AwardCrew()
             end
 
             -- if client was no traitor, and in reach of end position, gain a live
-            if not wasAntagonist and Traitormod.EndReached(value.Character, self.DistanceToEndOutpostRequired) then
+            if not wasAntagonist then
                 local msg = ""
 
                 -- award points for mission completion
