@@ -75,7 +75,7 @@ Traitormod.PreRoundStart = function (submarineInfo, chooseGamemode)
 end
 
 Traitormod.RoundStart = function()
-    Traitormod.Log("Starting traitor round - Traitor Mod v" .. Traitormod.VERSION)
+    Traitormod.Log("Starting round - Husk Survival Traitormod v" .. Traitormod.VERSION)
     pointsGiveTimer = Timer.GetTime() + Traitormod.Config.ExperienceTimer
 
     Traitormod.CodeWords = Traitormod.SelectCodeWords()

@@ -618,6 +618,7 @@ function gm:SelectAntagonists()
         self.AmountAntags = AmountAntags
         self.AmountTotalAntags = #antagonists
         self.AntagsSelected = true
+        Traitormod.Log("Antagonists have been selected: " .. self.AntagsSelected)
         self:AssignAntagonists(antagonists)
     end, 8500)
 end
