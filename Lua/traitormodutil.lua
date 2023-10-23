@@ -463,14 +463,7 @@ end
 Traitormod.GetDataInfo = function(client, showWeights)
     local weightInfo = ""
     if showWeights then
-        local maxPoints = 0
-        for index, value in pairs(Client.ClientList) do
-            if value.Character and not value.Character.IsDead or not Game.RoundStarted then
-                maxPoints = maxPoints + (Traitormod.GetData(value, "Weight") or 0)
-            end
-        end
-
-        local percentage = (Traitormod.GetData(client, "Weight") or 0) / maxPoints * 100
+        local percentage = (Traitormod.GetData(client, "Weight") or 0)
 
         if percentage ~= percentage then
             percentage = 100 -- percentage is NaN, set it to 100%
