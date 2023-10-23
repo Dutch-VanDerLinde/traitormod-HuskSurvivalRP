@@ -453,6 +453,7 @@ function gm:PreStart()
 
         local client = Traitormod.FindClientCharacter(character)
 
+        print(self.AntagsSelected)
         if client and self.AntagsSelected then
             self:SelectAntagonist(client)
         end
@@ -560,101 +561,6 @@ function gm:AwardCrew()
     end
 end
 
-function gm:AssignAntagonists(antagonists)
-    --[[
-    local function AssignCrew()
-        for key, value in pairs(Client.ClientList) do
-            if value.Character ~= nil and value.Character.IsHuman and not value.SpectateOnly and not value.Character.IsDead and value.Character.TeamID == CharacterTeamType.Team1 then
-                local role = Traitormod.RoleManager.GetRole(value.Character)
-                if role == nil then
-                    role = Traitormod.RoleManager.Roles["Crew"]
-                    Traitormod.RoleManager.AssignRole(value.Character, role:new())
-                end
-            end
-        end
-
-        Hook.Add("traitormod.midroundspawn", "Traitormod.Secret.MidRoundSpawn", function (client, character)
-            local role = Traitormod.RoleManager.GetRole(character)
-            if role == nil then
-                role = Traitormod.RoleManager.Roles["Crew"]
-                Traitormod.RoleManager.AssignRole(character, role:new())
-            end
-        end)
-    end
-    --]]
-
-    local function Assign(roles)
-        for key, role in pairs(roles) do
-            if role.Name == "Cultist" then
-                self.RoundEndIcon = "oneofus"
-            end
-        end
-
-        local newRoles = {}
-
-        for key, value in pairs(antagonists) do
-            table.insert(newRoles, roles[key]:new())
-        end
-
-        Traitormod.RoleManager.AssignRoles(antagonists, newRoles)
-
-        --AssignCrew()
-    end
-
-    if self.AntagSelectionMode == "Random" then
-        local role = Traitormod.RoleManager.Roles[weightedRandom.Choose(self.AntagTypeChance)]
-
-        local roles = {}
-        for key, value in pairs(antagonists) do
-            table.insert(roles, role)
-        end
-        Assign(roles)
-    else
-        local options = {}
-        for key, value in pairs(self.AntagTypeChance) do
-            table.insert(options, key)
-        end
-
-        local clients = {}
-
-        for key, value in pairs(antagonists) do
-            local client = Traitormod.FindClientCharacter(value)
-            if client then
-                table.insert(clients, client)
-            end
-        end
-
-        if #clients == 0 then
-            Assign({})
-            return
-        end
-
-        Traitormod.Voting.StartVote(Traitormod.Language.SecretTraitorAssigned, options, 25, function (results, clientVotes)
-            local highestVoted = nil
-            local highestedVotedRole = nil
-            for key, value in pairs(options) do
-                if highestVoted == nil or results[key] > highestVoted then
-                    highestVoted = results[key]
-                    highestedVotedRole = value
-                end
-            end
-
-            local roles = {}
-            for key, value in pairs(clientVotes) do
-                local role = ""
-                if value == -1 then
-                    role = Traitormod.RoleManager.Roles[highestedVotedRole]
-                else
-                    role = Traitormod.RoleManager.Roles[options[value]]
-                end
-
-                table.insert(roles, role)
-            end
-            Assign(roles)
-        end, clients)
-    end
-end
-
 function gm:SelectAntagonists()
     local this = self
     local thisRoundNumber = Traitormod.RoundNumber
@@ -726,8 +632,7 @@ function gm:SelectAntagonist(client)
         local antagonists = {}
         local randomnumber = math.random(3, 7)
 
-        if this.AntagFilter(client) > 0 and Traitormod.GetData(client, "NonTraitor") ~= true then
-            -- players are alive or if respawning is on and config allows dead traitors (not supported yet)
+        if this.AntagFilter(client) > 0 then
             if not client.Character.IsDead and Traitormod.RoleManager.GetRole(client.Character) == nil then
                 if self.AmountAntags < self.AmountTotalAntags then
                     if math.random(randomnumber) == 1 then

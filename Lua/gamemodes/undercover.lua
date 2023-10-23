@@ -13,15 +13,16 @@ function gm:AssignAntagonists(antagonists)
         Traitormod.RoleManager.AssignRoles(antagonists, newRoles)
     end
 
-    if self.AntagSelectionMode == "Random" then
-        local role = Traitormod.RoleManager.Roles["InstituteUndercover"]
+    local role = Traitormod.RoleManager.Roles["InstituteUndercover"]
 
-        local roles = {}
-        for key, value in pairs(antagonists) do
-            table.insert(roles, role)
-        end
-        Assign(roles)
+    local roles = {}
+    for key, value in pairs(antagonists) do
+        table.insert(roles, role)
     end
+
+    Timer.Wait(function ()
+        Assign(roles)
+    end, math.random(2, 4) * 60000)
 end
 
 return gm

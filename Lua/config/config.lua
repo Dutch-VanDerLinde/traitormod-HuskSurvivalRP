@@ -98,9 +98,6 @@ config.GamemodeConfig = {
         EnableRandomEvents = true,
         EndGameDelaySeconds = 10,
 
-        PointsGainedFromCrewMissionsCompleted = 1000,
-        LivesGainedFromCrewMissionsCompleted = 1,
-
         AmountAntags = function (amountPlayers)
             config.TestMode = false
             if amountPlayers > 22 then return 5 end
@@ -151,60 +148,6 @@ config.GamemodeConfig = {
             if client.Character.TeamID ~= CharacterTeamType.Team1 then return 0 end
             if not client.Character.IsHuman then return 0 end
             if client.Character.HasJob("citizen") then return 0.65 end
-            if not client.Character.HasJob("cavedweller") then return 0 end
-
-            return 1
-        end
-    },
-
-    Cultists = {
-        AmountAntags = function (amountPlayers)
-            config.TestMode = false
-            if amountPlayers > 22 then return 5 end
-            if amountPlayers > 18 and math.random() < 0.25 then return 4 end
-            if amountPlayers > 12 then return 3 end
-            if amountPlayers > 7 then return 2 end
-            if amountPlayers > 3 then return 1 end
-            if amountPlayers == 1 then
-                Traitormod.SendMessageEveryone(Traitormod.Language.TestingMode)
-                config.TestMode = true
-                return 1
-            end
-            return 0
-        end,
-
-        -- 0 = 0% chance
-        -- 1 = 100% chance
-        AntagFilter = function (client)
-            if client.Character.TeamID ~= CharacterTeamType.Team1 then return 0 end
-            if not client.Character.IsHuman then return 0 end
-            if not client.Character.HasJob("cavedweller") then return 0 end
-
-            return 1
-        end
-    },
-
-    Bandits = {
-        AmountAntags = function (amountPlayers)
-            config.TestMode = false
-            if amountPlayers > 22 then return 5 end
-            if amountPlayers > 18 and math.random() < 0.25 then return 4 end
-            if amountPlayers > 12 then return 3 end
-            if amountPlayers > 7 then return 2 end
-            if amountPlayers > 3 then return 1 end
-            if amountPlayers == 1 then
-                Traitormod.SendMessageEveryone(Traitormod.Language.TestingMode)
-                config.TestMode = true
-                return 1
-            end
-            return 0
-        end,
-
-        -- 0 = 0% chance
-        -- 1 = 100% chance
-        AntagFilter = function (client)
-            if client.Character.TeamID ~= CharacterTeamType.Team1 then return 0 end
-            if not client.Character.IsHuman then return 0 end
             if not client.Character.HasJob("cavedweller") then return 0 end
 
             return 1
