@@ -133,6 +133,10 @@ rm.AssignRoles = function(characters, newRoles)
     for i = 1, #characters, 1 do
         rm.RoundRoles[characters[i]] = newRoles[i]
         newRoles[i]:Init(characters[i])
+        if newRoles[i].StartSound then
+            HF.AddAffliction(characters[i],newRoles[i].StartSound,2)
+            Timer.Wait(function () HF.AddAffliction(characters[i],newRoles[i].StartSound,-2) end, 1000)
+        end
     end
 
     for i = 1, #characters, 1 do
