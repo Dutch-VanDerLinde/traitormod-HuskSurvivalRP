@@ -625,25 +625,33 @@ end
 
 function gm:SelectAntagonist(client)
     local this = self
-    local thisRoundNumber = Traitormod.RoundNumber
 
     Timer.Wait(function()
-        if thisRoundNumber ~= Traitormod.RoundNumber or not Game.RoundStarted then return end
+        if not Game.RoundStarted then return end
 
         local antagonists = {}
+        local randomNumber = math.random(2, 6)
 
         if this.AntagFilter(client) > 0 then
-            if not client.Character.IsDead and Traitormod.RoleManager.GetRole(client.Character) == nil then
+            if not client.Character.IsDead then
                 if self.AmountAntags < self.AmountTotalAntags then
-                    if math.random(5) == 1 then
+                    if math.random(randomNumber) == 1 then
                         Traitormod.Log("Chose "..client.Name.." as antag")
                         table.insert(antagonists, client.Character)
                         self:AssignAntagonists(antagonists)
+                    else
+                        Traitormod.Log(client.Name.." Failed to become an antag. Reason: Random chance. The number was: "..randomNumber)
                     end
+                else
+                    Traitormod.Log(client.Name.." Failed to become an antag. Reason: Maximum amount of antags reached.")
                 end
+            else
+                Traitormod.Log(client.Name.." Failed to become an antag. Reason: Client's character was dead.")
             end
+        else
+            Traitormod.Log(client.Name.." Failed to become an antag. Reason: Antag filter.")
         end
-    end, 8500)
+    end, 1500)
 end
 
 function gm:TraitorResults()
