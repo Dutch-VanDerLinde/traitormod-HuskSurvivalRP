@@ -64,38 +64,14 @@ m.TryCreateClientCharacter = function(submarine, client)
 
     local jobPreference = client.JobPreferences[1]
 
-    if jobPreference == nil then
-        -- if no jobPreference, set cavedweller or citizen
-        local randomJob = ""
-        if math.random(1, 2) == 1 then
-            randomJob = "citizen"
-        else
-            randomJob = "cavedweller"
-        end
-        
-        jobPreference = m.GetJobVariant(randomJob)
-    elseif preventMultiCaptain and jobPreference.Prefab.Identifier == "adminone" then
-        -- if crew has a admin, spawn as cave dweller
-        if m.CrewHasJob("adminone") then
-            Traitormod.Log(client.Name .. " tried to mid-round spawn as second administrator - assigning cave dweller instead.")
-            -- set jobPreference = security
-            jobPreference = m.GetJobVariant("cavedweller")
-        end
-    elseif jobPreference.Prefab.Identifier == "husk_researchdirector" then
-        -- if crew has a director, spawn as scientist
-        if m.CrewHasJob("researchdirector") then
-            Traitormod.Log(client.Name .. " tried to mid-round spawn as second research director - assigning scientist instead.")
-            -- set jobPreference = security
-            jobPreference = m.GetJobVariant("thal_scientist")
-        end
-    elseif jobPreference.Prefab.Identifier == "guardone" then
-        -- if crew has a director, spawn as scientist
-        if m.CrewHasJobNumber("guardone") >= 3 then
-            Traitormod.Log(client.Name .. " tried to mid-round spawn as fourth azoe security - assigning cave dweller instead.")
-            -- set jobPreference = security
-            jobPreference = m.GetJobVariant("cavedweller")
-        end
+    local randomJob = ""
+    if math.random(1, 2) == 1 then
+        randomJob = "citizen"
+    else
+        randomJob = "cavedweller"
     end
+
+    jobPreference = m.GetJobVariant(randomJob)
 
     client.AssignedJob = jobPreference
     client.CharacterInfo.Job = Job(jobPreference.Prefab, 0, jobPreference.Variant);

@@ -60,9 +60,8 @@ Traitormod.PreRoundStart = function (submarineInfo, chooseGamemode)
         end
     end
 
-    if Game.ServerSettings.GameModeIdentifier ~= "pvp" then
-        Traitormod.SelectedGamemode = Traitormod.Gamemodes.Survival:new()
-    end
+    local weightedRandom = dofile(Traitormod.Path .. "/Lua/weightedrandom.lua")
+    Traitormod.SelectedGamemode = Traitormod.Gamemodes[weightedRandom.Choose(Traitormod.Config.GamemodeChances)]
 
     if Traitormod.SelectedGamemode.RequiredGamemode then
         Traitormod.OriginalGamemode = Game.ServerSettings.GameModeIdentifier
@@ -420,6 +419,9 @@ dofile(Traitormod.Path .. "/Lua/traitormodmisc.lua")
 
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/gamemode.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/survival.lua"))
+Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/cultists.lua"))
+Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/undercover.lua"))
+Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/bandits.lua"))
 Traitormod.AddGamemode(dofile(Traitormod.Path .. "/Lua/gamemodes/attackdefend.lua"))
 
 Traitormod.RoleManager.AddObjective(dofile(Traitormod.Path .. "/Lua/objectives/objective.lua"))

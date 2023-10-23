@@ -57,12 +57,12 @@ end
 weightedRandom.Choose = function (subjects, variable, subVariable)
 
     local res = nil
-    if variable == nil then 
-        res = Depth0(subjects) 
-    elseif variable ~= nil and subVariable ~= nil then 
+    if variable == nil then
+        res = Depth0(subjects)
+    elseif variable ~= nil and subVariable ~= nil then
         res = Depth2(subjects, variable, subVariable)
-    elseif variable ~= nil then 
-        res = Depth1(subjects, variable) 
+    elseif variable ~= nil then
+        res = Depth1(subjects, variable)
     end
 
     if res == nil then
