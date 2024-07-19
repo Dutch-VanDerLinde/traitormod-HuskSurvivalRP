@@ -31,7 +31,7 @@ extension.Init = function ()
         for item in character.Inventory.AllItems do
             for value, amount in pairs(itemEntryRecipe) do
                 if value == item.Prefab.Identifier.ToString() then
-                    if itemsTable[value] < amount then
+                    if itemsTable[value] < amount and item.Condition == 100 then
                         itemsTable[value] = itemsTable[value] + 1
                         table.insert(ItemsToRemove, item)
                     end
